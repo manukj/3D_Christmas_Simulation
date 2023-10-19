@@ -1,4 +1,3 @@
-package code2;
 
 import java.nio.FloatBuffer;
 
@@ -46,7 +45,7 @@ public class TriangleListener implements GLEventListener {
     private int[] vertexBufferId = new int[1];
     private int[] vertexArrayId = new int[1];
 
-    private void fillBuffers(GL3 gl){
+    private void fillBuffers(GL3 gl) {
         gl.glGenVertexArrays(1, vertexArrayId, 0);
         gl.glBindVertexArray(vertexArrayId[0]);
 
@@ -55,10 +54,10 @@ public class TriangleListener implements GLEventListener {
 
         FloatBuffer fb = Buffers.newDirectFloatBuffer(vertices);
 
-        gl.glBufferData(GL.GL_ARRAY_BUFFER, Float.BYTES * vertices.length,fb, GL.GL_STATIC_DRAW);
-        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 3*Float.BYTES, 0);
+        gl.glBufferData(GL.GL_ARRAY_BUFFER, Float.BYTES * vertices.length, fb, GL.GL_STATIC_DRAW);
+        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 3 * Float.BYTES, 0);
         gl.glEnableVertexAttribArray(0);
-        
+
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
         gl.glBindVertexArray(0);
     }

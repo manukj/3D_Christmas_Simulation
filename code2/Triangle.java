@@ -1,4 +1,4 @@
-package code2;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
@@ -17,7 +17,7 @@ public class Triangle extends JFrame {
   private static final Dimension dimension = new Dimension(WIDTH, HEIGHT);
   private GLCanvas canvas;
   private GLEventListener glEventListener;
-  private FPSAnimator animator; 
+  private FPSAnimator animator;
 
   public static void main(String[] args) {
     Triangle b1 = new Triangle("Triangle");
@@ -32,7 +32,7 @@ public class Triangle extends JFrame {
     canvas = new GLCanvas(glcapabilities);
     glEventListener = new TriangleListener();
     canvas.addGLEventListener(glEventListener);
-    getContentPane().add(canvas, BorderLayout.CENTER);
+    getContentPane().add(canvas);
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent e) {
         animator.stop();
@@ -44,5 +44,4 @@ public class Triangle extends JFrame {
     animator = new FPSAnimator(canvas, 60);
     animator.start();
   }
-  
 }
