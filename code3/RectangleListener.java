@@ -41,12 +41,14 @@ public class RectangleListener implements GLEventListener {
             0.5f, -0.5f, 0.0f, // 1
             -0.5f, 0.5f, 0.0f, // 2
             0.5f, 0.5f, 0.0f, // 3
-
+            -0.5f, 1.0f, 0.0f // 4
     };
 
     private int[] indices = {
-            0, 1, 2, // first triangle
-            2, 1, 3
+            1, 0, 2, // first triangle
+            1, 2, 3, // second triangle
+            3, 0, 2, // third traignle
+            4, 2, 1 // 4th traignle which is bigger
     };
 
     // The Buffers
@@ -144,7 +146,7 @@ public class RectangleListener implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glUseProgram(shaderProgram);
         gl.glBindVertexArray(vertexArrayId[0]);
-        gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);  
+        gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
         gl.glBindVertexArray(0);
     }
 
