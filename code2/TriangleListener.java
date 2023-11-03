@@ -38,10 +38,9 @@ public class TriangleListener implements GLEventListener {
 
     // The Data
     private float[] vertices = {
-            // its a 2 D traingle
-            -0.5f, -0.5f, 0.0f, // Bottom Left
-            0.5f, -0.5f, 0.0f, // Bottom Right
-            0.0f, 0.5f, 0.0f // Top middle
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // Bottom Left, blue (r=0, g=0, b=1)
+            0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // Bottom Right, green
+            0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f // Top middle, red
     };
 
     // The Buffers
@@ -54,12 +53,20 @@ public class TriangleListener implements GLEventListener {
 
         gl.glGenBuffers(1, vertexBufferId, 0);
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
-
         FloatBuffer fb = Buffers.newDirectFloatBuffer(vertices);
-
         gl.glBufferData(GL.GL_ARRAY_BUFFER, Float.BYTES * vertices.length, fb, GL.GL_STATIC_DRAW);
-        gl.glVertexAttribPointer(0, 3, GL.GL_FLOAT, false, 3 * Float.BYTES, 0);
+
+        int stride = vertexStride;
+        int numXYZFloats = vertexXYZFloats;
+        int offset = 0;
+        gl.glVertexAttribPointer(0, numXYZFloats, GL.GL_FLOAT, false, stride * Float.BYTES, 0);
         gl.glEnableVertexAttribArray(0);
+
+        int numColorFloats = vertexColourFloats;
+        offset = numXYZFloats * Float.BYTES;
+        gl.glVertexAttribPointer(1, numColorFloats, GL.GL_FLOAT, false,
+                stride * Float.BYTES, offset);
+        gl.glEnableVertexAttribArray(1);
 
         gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
         gl.glBindVertexArray(0);
@@ -73,24 +80,31 @@ public class TriangleListener implements GLEventListener {
     private String vertexShaderSource = "#version 330 core\n" +
             "\n" +
             "layout (location = 0) in vec3 position;\n" +
+            "layout (location = 1) in vec3 color;\n" +
+            "out vec3 aColor;\n" +
             "\n" +
             "uniform vec2 uniformOffset;\n" +
             "\n" +
             "void main() {\n" +
             "  gl_Position = vec4(position.x+uniformOffset.x, position.y+uniformOffset.y, position.z, 1.0);\n" +
+            "  aColor = color;\n" +
             "}";
 
     private String fragmentShaderSource = "#version 330 core\n" +
             "\n" +
+            "in vec3 aColor;\n" +
             "out vec4 fragColor;\n" +
             "\n" +
             "uniform vec4 uniformColor;\n" +
             "\n" +
             "void main() {\n" +
-            "  fragColor = uniformColor;\n" +
+            "  fragColor = vec4(aColor, 1.0f);\n" +
             "}";
 
     private int shaderProgram;
+    private int vertexStride = 6;
+    private int vertexXYZFloats = 3;
+    private int vertexColourFloats = 3;
 
     private void initialiseShader(GL3 gl) {
         System.out.println(vertexShaderSource);
