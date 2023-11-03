@@ -128,6 +128,10 @@ public class TriangleListener implements GLEventListener {
         fillBuffers(gl);
     }
 
+    private double getSeconds() {
+        return System.currentTimeMillis() / 1000.0;
+    }
+
     public void render(GL3 gl) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glUseProgram(shaderProgram);
@@ -144,7 +148,4 @@ public class TriangleListener implements GLEventListener {
         gl.glBindVertexArray(0);
     }
 
-    private double getSeconds() {
-        return System.currentTimeMillis() / 1000.0;
-    }
 }
