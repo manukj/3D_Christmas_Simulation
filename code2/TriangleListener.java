@@ -149,6 +149,12 @@ public class TriangleListener implements GLEventListener {
         gl.glUseProgram(shaderProgram);
         double elapsedTime = getSeconds() - startTime;
 
+        replaceVBO_RGB(gl, 0, (float) Math.sin(elapsedTime), (float) Math.cos(elapsedTime), 0);
+        replaceVBO_RGB(gl, 1, (float) Math.sin(elapsedTime) * 0.5f,
+                (float) Math.cos(elapsedTime) * 0.5f, 0);
+        replaceVBO_RGB(gl, 2, (float) Math.cos(elapsedTime * 0.5),
+                (float) Math.sin(elapsedTime * 0.5), 0);
+
         float xOffset = (float) Math.sin(elapsedTime) * 0.5f;
         float yOffset = (float) Math.sin(elapsedTime / 2) * 0.5f;
         int offsetLocation = gl.glGetUniformLocation(shaderProgram, "uniformOffset");
@@ -167,5 +173,25 @@ public class TriangleListener implements GLEventListener {
 
     private double getSeconds() {
         return System.currentTimeMillis() / 1000.0;
+    }
+
+    private void replaceVBO_XYZ(GL3 gl, int index, float x, float y, float z) {
+        float[] aVertex = { x, y, z };
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
+        FloatBuffer fb = Buffers.newDirectFloatBuffer(aVertex);
+        gl.glBufferSubData(GL.GL_ARRAY_BUFFER,
+                Float.BYTES * index * vertexStride,
+                Float.BYTES * aVertex.length, fb);
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
+    }
+
+    private void replaceVBO_RGB(GL3 gl, int index, float x, float y, float z) {
+        float[] aVertex = { x, y, z };
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
+        FloatBuffer fb = Buffers.newDirectFloatBuffer(aVertex);
+        gl.glBufferSubData(GL.GL_ARRAY_BUFFER,
+                Float.BYTES * (index * vertexStride + vertexXYZFloats), // ***
+                Float.BYTES * aVertex.length, fb);
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
     }
 }
