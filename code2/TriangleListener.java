@@ -74,8 +74,10 @@ public class TriangleListener implements GLEventListener {
             "\n" +
             "layout (location = 0) in vec3 position;\n" +
             "\n" +
+            "uniform vec2 uniformOffset;\n" +
+            "\n" +
             "void main() {\n" +
-            "  gl_Position = vec4(position.x, position.y, position.z, 1.0f);\n" +
+            "  gl_Position = vec4(position.x+uniformOffset.x, position.y+uniformOffset.y, position.z, 1.0);\n" +
             "}";
 
     private String fragmentShaderSource = "#version 330 core\n" +
@@ -131,8 +133,13 @@ public class TriangleListener implements GLEventListener {
     public void render(GL3 gl) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glUseProgram(shaderProgram);
-
         double elapsedTime = getSeconds() - startTime;
+
+        float xOffset = (float) Math.sin(elapsedTime) * 0.5f;
+        float yOffset = (float) Math.sin(elapsedTime / 2) * 0.5f;
+        int offsetLocation = gl.glGetUniformLocation(shaderProgram, "uniformOffset");
+        gl.glUniform2f(offsetLocation, xOffset, yOffset);
+
         float redValue = 0.9f;
         float greenValue = (float) Math.sin(elapsedTime * 5);
         float blueValue = 0.2f;
