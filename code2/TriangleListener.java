@@ -9,6 +9,10 @@ import com.jogamp.opengl.util.glsl.*;
 
 public class TriangleListener implements GLEventListener {
     private double startTime;
+    private Shader shader;
+    private int vertexStride = 6;
+    private int vertexXYZFloats = 3;
+    private int vertexColourFloats = 3;
 
     public TriangleListener() {
     }
@@ -77,95 +81,14 @@ public class TriangleListener implements GLEventListener {
      * THE SHADER
      */
 
-    private String vertexShaderSource = "#version 330 core\n" +
-            "\n" +
-            "layout (location = 0) in vec3 position;\n" +
-            "layout (location = 1) in vec3 color;\n" +
-            "out vec3 aColor;\n" +
-            "\n" +
-            "uniform vec2 uniformOffset;\n" +
-            "\n" +
-            "void main() {\n" +
-            "  gl_Position = vec4(position.x+uniformOffset.x, position.y+uniformOffset.y, position.z, 1.0);\n" +
-            "  aColor = color;\n" +
-            "}";
-
-    private String fragmentShaderSource = "#version 330 core\n" +
-            "\n" +
-            "in vec3 aColor;\n" +
-            "out vec4 fragColor;\n" +
-            "\n" +
-            "uniform vec4 uniformColor;\n" +
-            "\n" +
-            "void main() {\n" +
-            "  fragColor = vec4(aColor, 1.0f);\n" +
-            "}";
-
-    private int shaderProgram;
-    private int vertexStride = 6;
-    private int vertexXYZFloats = 3;
-    private int vertexColourFloats = 3;
-
-    private void initialiseShader(GL3 gl) {
-        System.out.println(vertexShaderSource);
-        System.out.println(fragmentShaderSource);
-    }
-
-    private int compileAndLink(GL3 gl) {
-        String[][] sources = new String[1][1];
-        sources[0] = new String[] { vertexShaderSource };
-        ShaderCode vertexShaderCode = new ShaderCode(GL3.GL_VERTEX_SHADER,
-                sources.length, sources);
-        boolean compiled = vertexShaderCode.compile(gl, System.err);
-        if (!compiled)
-            System.err.println("[error] Unable to compile vertex shader: " + sources);
-
-        sources[0] = new String[] { fragmentShaderSource };
-        ShaderCode fragmentShaderCode = new ShaderCode(GL3.GL_FRAGMENT_SHADER,
-                sources.length, sources);
-        compiled = fragmentShaderCode.compile(gl, System.err);
-        if (!compiled)
-            System.err.println("[error] Unable to compile fragment shader: " + sources);
-
-        ShaderProgram program = new ShaderProgram();
-        program.init(gl);
-        program.add(vertexShaderCode);
-        program.add(fragmentShaderCode);
-        program.link(gl, System.out);
-        if (!program.validateProgram(gl, System.out))
-            System.err.println("[error] Unable to link program");
-
-        return program.program();
-    }
-
     public void initialise(GL3 gl) {
-        initialiseShader(gl);
-        shaderProgram = compileAndLink(gl);
+        shader = new Shader(gl, "./shaders/vs.txt", "./shaders/fs.txt");
         fillBuffers(gl);
     }
 
     public void render(GL3 gl) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        gl.glUseProgram(shaderProgram);
-        double elapsedTime = getSeconds() - startTime;
-
-        replaceVBO_RGB(gl, 0, (float) Math.sin(elapsedTime), (float) Math.cos(elapsedTime), 0);
-        replaceVBO_RGB(gl, 1, (float) Math.sin(elapsedTime) * 0.5f,
-                (float) Math.cos(elapsedTime) * 0.5f, 0);
-        replaceVBO_RGB(gl, 2, (float) Math.cos(elapsedTime * 0.5),
-                (float) Math.sin(elapsedTime * 0.5), 0);
-
-        float xOffset = (float) Math.sin(elapsedTime) * 0.5f;
-        float yOffset = (float) Math.sin(elapsedTime / 2) * 0.5f;
-        int offsetLocation = gl.glGetUniformLocation(shaderProgram, "uniformOffset");
-        gl.glUniform2f(offsetLocation, xOffset, yOffset);
-
-        float redValue = 0.9f;
-        float greenValue = (float) Math.sin(elapsedTime * 5);
-        float blueValue = 0.2f;
-        int vertexColourLocation = gl.glGetUniformLocation(shaderProgram, "uniformColor");
-        gl.glUniform4f(vertexColourLocation, redValue, greenValue, blueValue, 1.0f);
-
+        shader.use(gl);
         gl.glBindVertexArray(vertexArrayId[0]);
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3); // drawing one triangle
         gl.glBindVertexArray(0);
@@ -173,25 +96,5 @@ public class TriangleListener implements GLEventListener {
 
     private double getSeconds() {
         return System.currentTimeMillis() / 1000.0;
-    }
-
-    private void replaceVBO_XYZ(GL3 gl, int index, float x, float y, float z) {
-        float[] aVertex = { x, y, z };
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
-        FloatBuffer fb = Buffers.newDirectFloatBuffer(aVertex);
-        gl.glBufferSubData(GL.GL_ARRAY_BUFFER,
-                Float.BYTES * index * vertexStride,
-                Float.BYTES * aVertex.length, fb);
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-    }
-
-    private void replaceVBO_RGB(GL3 gl, int index, float x, float y, float z) {
-        float[] aVertex = { x, y, z };
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferId[0]);
-        FloatBuffer fb = Buffers.newDirectFloatBuffer(aVertex);
-        gl.glBufferSubData(GL.GL_ARRAY_BUFFER,
-                Float.BYTES * (index * vertexStride + vertexXYZFloats), // ***
-                Float.BYTES * aVertex.length, fb);
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
     }
 }
