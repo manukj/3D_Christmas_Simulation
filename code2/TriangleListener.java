@@ -9,9 +9,6 @@ import com.jogamp.opengl.util.glsl.*;
 import com.jogamp.opengl.util.texture.*;
 import com.jogamp.opengl.util.texture.awt.*;
 
-import texture.TextureUtil;
-
-
 
 public class TriangleListener implements GLEventListener {
     private double startTime;
@@ -21,7 +18,7 @@ public class TriangleListener implements GLEventListener {
     private int vertexXYZFloats = 3;
     private int vertexColourFloats = 3;
     private int vertexTexFloats = 2;
-    private Texture texture;
+    private TextureLibrary textures;
 
     private int[] indices = { // Note that we start from 0
             0, 1, 2
@@ -111,19 +108,28 @@ public class TriangleListener implements GLEventListener {
     public void initialise(GL3 gl) {
         shader = new Shader(gl, "./shaders/vs.txt", "./shaders/fs.txt");
         fillBuffers(gl);
-        texture = TextureUtil.loadTexture(gl, "./texture/cloud.jpg");
+        textures = new TextureLibrary();
+        textures.add(gl, "cloud1", "./texture/cloud.jpg");
+        textures.add(gl, "cloud2", "./texture/flower.jpeg");
     }
 
     public void render(GL3 gl) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         shader.use(gl);
+        shader.setInt(gl, "first_texture", 0);
+        shader.setInt(gl, "first_texture", 1);
 
         gl.glActiveTexture(GL.GL_TEXTURE0);
-        texture.bind(gl);
+        Texture textureId1 = textures.get("cloud1");
+        textureId1.bind(gl);
+        gl.glActiveTexture(GL.GL_TEXTURE1);
+        Texture textureId2 = textures.get("cloud2");
+        textureId2.bind(gl);
 
         gl.glBindVertexArray(vertexArrayId[0]);
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3); // drawing one triangle
         gl.glBindVertexArray(0);
+        gl.glActiveTexture(GL.GL_TEXTURE0);
     }
 
     private double getSeconds() {
