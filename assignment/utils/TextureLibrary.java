@@ -10,10 +10,10 @@ import com.jogamp.opengl.util.texture.*;
 
 public class TextureLibrary {
 
-    private Map textures;
+    private Map<String, Texture> textures;
 
     public TextureLibrary() {
-        textures = new HashMap();
+        textures = new HashMap<String, Texture>();
     }
 
     public void add(GL3 gl, String name, String filename) {
@@ -43,6 +43,12 @@ public class TextureLibrary {
             System.out.println("Error loading texture " + filename);
         }
         return t;
+    }
+
+    public void destroy(GL3 gl3) {
+        for (var entry : textures.entrySet()) {
+            entry.getValue().destroy(gl3);
+        }
     }
 
 }

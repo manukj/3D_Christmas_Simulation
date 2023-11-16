@@ -45,4 +45,9 @@ public class TextureLibrary {
         return t;
     }
 
+    public void destroy(GL3 gl3) {
+        for (var entry : textures.entrySet()) {
+            entry.getValue().destroy(gl3);
+        }
+    }
 }
