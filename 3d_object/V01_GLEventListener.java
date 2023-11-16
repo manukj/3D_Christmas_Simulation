@@ -76,7 +76,7 @@ public class V01_GLEventListener implements GLEventListener {
     shader = new Shader(gl, "vs_V01.txt", "fs_V01.txt");
     fillBuffers(gl);
     textures = new TextureLibrary();
-    textures.add(gl, "wattBook", "wattBook.jpg");
+    textures.add(gl, "wattBook", "pyramid.jpeg");
   }
 
   public void render(GL3 gl) {
@@ -86,22 +86,28 @@ public class V01_GLEventListener implements GLEventListener {
 
     Mat4 projectionMatrix = Mat4Transform.perspective(45, aspect);
     Mat4 viewMatrix = getViewMatrix();
-    Mat4 modelMatrix = getModelMatrix();
-    Mat4 mvpMatrix = Mat4.multiply(projectionMatrix, Mat4.multiply(viewMatrix, modelMatrix));
-
     shader.use(gl);
-    shader.setFloatArray(gl, "model", modelMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "view", viewMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "projection", projectionMatrix.toFloatArrayForGLSL());
-    shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
 
     gl.glActiveTexture(GL.GL_TEXTURE0);
     Texture textureId1 = textures.get("wattBook");
     textureId1.bind(gl);
 
-    gl.glBindVertexArray(vertexArrayId[0]);
-    gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
-    gl.glBindVertexArray(0);
+    for (int i = -2; i < 3; ++i) {
+      for (int j = -2; j < 3; ++j) {
+        Mat4 modelMatrix = getModelMatrix(2f * i, 2f * j);
+        Mat4 mvpMatrix = Mat4.multiply(projectionMatrix, Mat4.multiply(viewMatrix, modelMatrix));
+
+        shader.setFloatArray(gl, "model", modelMatrix.toFloatArrayForGLSL());
+        shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
+
+        gl.glBindVertexArray(vertexArrayId[0]);
+        gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
+        gl.glBindVertexArray(0);
+      }
+    }
+
   }
 
   // ***************************************************
@@ -123,15 +129,21 @@ public class V01_GLEventListener implements GLEventListener {
   private float[] vertices = new float[] { // x,y,z, colour, s,t
       -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 0
       -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 1
-      -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // 2
-      -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // 3
-      0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 4
-      0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 5
+      0.0f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // 2
+
+      0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 3
+      0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 4
+
+      // -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // 3
+      // 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 4
+      0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 5
+
       0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // 6
       0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // 7
 
       -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // 8
       -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, // 9
+
       -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // 10
       -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // 11
       0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, // 12
@@ -150,18 +162,21 @@ public class V01_GLEventListener implements GLEventListener {
   };
 
   private int[] indices = new int[] {
-      0, 1, 3, // x -ve
-      3, 2, 0, // x -ve
-      4, 6, 7, // x +ve
-      7, 5, 4, // x +ve
-      9, 13, 15, // z +ve
-      15, 11, 9, // z +ve
-      8, 10, 14, // z -ve
-      14, 12, 8, // z -ve
-      16, 20, 21, // y -ve
-      21, 17, 16, // y -ve
-      23, 22, 18, // y +ve
-      18, 19, 23 // y +ve
+      0, 1, 2, // x -ve // first traingle
+      1, 3, 2,
+      4, 3, 2,
+      0, 4, 2,
+      // 3, 2, 0, // x -ve
+      // 4, 6, 7, // x +ve
+      // // 7, 5, 4, // x +ve
+      // 9, 13, 15, // z +ve
+      // // 15, 11, 9, // z +ve
+      // 8, 10, 14, // z -ve
+      // // 14, 12, 8, // z -ve
+      // 16, 20, 21, // y -ve
+      // 21, 17, 16, // y -ve
+      // 23, 22, 18, // y +ve
+      // 18, 19, 23 // y +ves
   };
 
   private int vertexStride = 8;
@@ -216,13 +231,14 @@ public class V01_GLEventListener implements GLEventListener {
     gl.glBindVertexArray(0);
   }
 
-  private Mat4 getModelMatrix() {
+  private Mat4 getModelMatrix(float i, float j) {
     double elapsedTime = getSeconds() - startTime;
-    // float angle = -55;
-    float angle = (float)(-115*Math.sin(Math.toRadians(elapsedTime*50)));
+    float angle = (float) (elapsedTime * 50);
     Mat4 modelMatrix = new Mat4(1);
-    // modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(angle), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(angle), modelMatrix);
+    // modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundY(angle));
+    modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(i, 0, j));
+    // modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundX(angle));
+    modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundY(angle));
     return modelMatrix;
   }
 
@@ -230,7 +246,7 @@ public class V01_GLEventListener implements GLEventListener {
     double elapsedTime = getSeconds() - startTime;
     float xposition = 2;
     float yposition = 3;
-    float zposition = 4;
+    float zposition = 10;
     // float xposition = 3.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
     // float zposition = 3.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
     Mat4 viewMatrix = Mat4Transform.lookAt(new Vec3(xposition, yposition, zposition),
