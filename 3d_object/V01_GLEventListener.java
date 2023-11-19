@@ -15,9 +15,11 @@ public class V01_GLEventListener implements GLEventListener {
   private static final boolean DISPLAY_SHADERS = false;
   private Shader shader;
   private float aspect;
+  private Camera camera;
 
   /* The constructor is not used to initialise anything */
-  public V01_GLEventListener() {
+  public V01_GLEventListener(Camera camera) {
+    this.camera = camera;
   }
 
   // ***************************************************
@@ -45,6 +47,7 @@ public class V01_GLEventListener implements GLEventListener {
     GL3 gl = drawable.getGL().getGL3();
     gl.glViewport(x, y, width, height);
     aspect = (float) width / (float) height;
+    camera.setPerspectiveMatrix(Mat4Transform.perspective(45, aspect));
   }
 
   /* Draw */
@@ -84,8 +87,9 @@ public class V01_GLEventListener implements GLEventListener {
 
     double elapsedTime = getSeconds() - startTime;
 
-    Mat4 projectionMatrix = Mat4Transform.perspective(45, aspect);
-    Mat4 viewMatrix = getViewMatrix();
+    Mat4 projectionMatrix = camera.getPerspectiveMatrix();
+    Mat4 viewMatrix = camera.getViewMatrix();
+
     shader.use(gl);
     shader.setFloatArray(gl, "view", viewMatrix.toFloatArrayForGLSL());
     shader.setFloatArray(gl, "projection", projectionMatrix.toFloatArrayForGLSL());
@@ -96,7 +100,9 @@ public class V01_GLEventListener implements GLEventListener {
 
     for (int i = -2; i < 3; ++i) {
       for (int j = -2; j < 3; ++j) {
-        Mat4 modelMatrix = getModelMatrix(2f * i, 2f * j);
+        Mat4 modelMatrix = getModelMatrix(2f * i, 2f * j, 1);
+        if (i % 3 == 0)
+          modelMatrix = getModelMatrix(2f * i, 2f * j, 2);
         Mat4 mvpMatrix = Mat4.multiply(projectionMatrix, Mat4.multiply(viewMatrix, modelMatrix));
 
         shader.setFloatArray(gl, "model", modelMatrix.toFloatArrayForGLSL());
@@ -239,6 +245,20 @@ public class V01_GLEventListener implements GLEventListener {
     modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(i, 0, j));
     // modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundX(angle));
     modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundY(angle));
+    return modelMatrix;
+  }
+
+  private Mat4 getModelMatrix(float i, float j, int choice) {
+    double elapsedTime = getSeconds() - startTime;
+    float angle = (float) (elapsedTime * 50);
+    Mat4 modelMatrix = new Mat4(1);
+    if (choice == 1) {
+      modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(i, 0, j));
+      modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundY(angle));
+    } else {
+      modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(i, 0, j));
+      modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.rotateAroundY(angle));
+    }
     return modelMatrix;
   }
 

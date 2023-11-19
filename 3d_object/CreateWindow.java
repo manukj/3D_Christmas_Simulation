@@ -13,13 +13,15 @@ public class CreateWindow extends JFrame {
     private GLEventListener glEventListener;
     private final FPSAnimator animator;
 
-    public CreateWindow(String title, GLEventListener glEventListener) {
+    public CreateWindow(String title, GLEventListener glEventListener, Camera camera) {
         super(title);
         this.glEventListener = glEventListener;
         GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL3));
         canvas = new GLCanvas(glCapabilities);
         getContentPane().add(canvas, BorderLayout.CENTER);
         canvas.addGLEventListener(glEventListener);
+        canvas.addMouseMotionListener(new MyMouseInput(camera));
+        canvas.addKeyListener(new MyKeyboardInput(camera));
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 animator.stop();
