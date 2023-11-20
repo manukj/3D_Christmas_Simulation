@@ -92,11 +92,12 @@ public class AssignmentGLEventListener implements GLEventListener {
         // name = "cube";
         // mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
         // shader = new Shader(gl, "vs_standard.txt", "fs_standard_0t.txt");
-        // material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f),
-        //         32.0f);
+        // material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f,
+        // 0.31f), new Vec3(0.5f, 0.5f, 0.5f),
+        // 32.0f);
         // // set up the model using a constructor
         // cube = new Model(name, mesh, new Mat4(1), shader, material, light, camera);
 
-        // roomTransforms = setupRoomTransforms();
+        roomTransforms = AssignmentUtil.getBackDropTransformation();
     }
 }
