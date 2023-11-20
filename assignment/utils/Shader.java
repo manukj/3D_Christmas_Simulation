@@ -18,9 +18,15 @@ public class Shader {
 
     /* The constructor */
     public Shader(GL3 gl, String vertexPath, String fragmentPath) {
+        System.out.println("GL Object: " + gl);
+        System.out.println("Absolute Path for vs_light.txt: " + Paths.get(vertexPath).toAbsolutePath());
+        System.out.println("Absolute Path for fs_light.txt: " + Paths.get(fragmentPath).toAbsolutePath());
+
         try {
-            vertexShaderSource = new String(Files.readAllBytes(Paths.get(vertexPath)), Charset.defaultCharset());
-            fragmentShaderSource = new String(Files.readAllBytes(Paths.get(fragmentPath)), Charset.defaultCharset());
+            vertexShaderSource = new String(Files.readAllBytes(Paths.get(vertexPath).toAbsolutePath()),
+                    Charset.defaultCharset());
+            fragmentShaderSource = new String(Files.readAllBytes(Paths.get(fragmentPath).toAbsolutePath()),
+                    Charset.defaultCharset());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,6 +89,7 @@ public class Shader {
         String[][] sources = new String[1][1];
         sources[0] = new String[] { vertexShaderSource };
         ShaderCode vertexShaderCode = new ShaderCode(GL3.GL_VERTEX_SHADER, sources.length, sources);
+        System.out.println("GL Object: " + gl);
         boolean compiled = vertexShaderCode.compile(gl, System.err);
         if (!compiled)
             System.err.println("[error] Unable to compile vertex shader: " + sources);

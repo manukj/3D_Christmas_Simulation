@@ -43,7 +43,6 @@ public class Assignment extends JFrame {
 
         canvas.addMouseMotionListener(new MouseInput(camera));
         canvas.addKeyListener(new KeyboardInput(camera));
-        
 
         getContentPane().add(canvas, BorderLayout.CENTER);
         addWindowListener(new WindowAdapter() {

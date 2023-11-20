@@ -37,6 +37,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         gl.glFrontFace(GL.GL_CCW); // default is 'CCW'
         gl.glEnable(GL.GL_CULL_FACE); // default is 'not enabled'
         gl.glCullFace(GL.GL_BACK); // default is 'back', assuming CCW
+        System.out.println("OpenGL: " + gl.glGetString(GL.GL_VERSION));
         initialise(gl);
         startTime = AssignmentUtil.getSeconds();
     }

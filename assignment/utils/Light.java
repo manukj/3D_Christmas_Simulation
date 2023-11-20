@@ -22,10 +22,7 @@ public class Light {
     material.setSpecular(1.0f, 1.0f, 1.0f);
     position = new Vec3(3f, 2f, 1f);
     model = new Mat4(1);
-    System.out.println("rendering Shaders");
-    System.out.println(Constants.VERTEX_SHADER_STANDARD_PATH);
-    System.out.println(Constants.FRAGMENT_SHADER_STANDARD_PATH);
-    shader = new Shader(gl, "../shader/vs_light.txt", "../shader/fs_light.txt");
+    shader = new Shader(gl, Constants.VERTEX_SHADER_LIGHT_PATH, Constants.FRAGMENT_SHADER_LIGHT_PATH);
     fillBuffers(gl);
   }
 
