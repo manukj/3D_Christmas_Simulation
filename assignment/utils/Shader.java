@@ -1,6 +1,6 @@
 package utils;
 
-import java.io.File;
+import gmaths.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,22 +8,19 @@ import java.nio.charset.Charset;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.glsl.*;
 
-/**
- * Shader
- */
 public class Shader {
 
     private static final boolean DISPLAY_SHADERS = false;
+
     private int ID;
     private String vertexShaderSource;
     private String fragmentShaderSource;
 
+    /* The constructor */
     public Shader(GL3 gl, String vertexPath, String fragmentPath) {
         try {
-            vertexShaderSource = new String(Files.readAllBytes(Paths.get(vertexPath)),
-                    Charset.defaultCharset());
-            fragmentShaderSource = new String(Files.readAllBytes(Paths.get(fragmentPath)),
-                    Charset.defaultCharset());
+            vertexShaderSource = new String(Files.readAllBytes(Paths.get(vertexPath)), Charset.defaultCharset());
+            fragmentShaderSource = new String(Files.readAllBytes(Paths.get(fragmentPath)), Charset.defaultCharset());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,6 +60,16 @@ public class Shader {
     public void setFloat(GL3 gl, String name, float f1, float f2, float f3, float f4) {
         int location = gl.glGetUniformLocation(ID, name);
         gl.glUniform4f(location, f1, f2, f3, f4);
+    }
+
+    public void setFloatArray(GL3 gl, String name, float[] f) {
+        int location = gl.glGetUniformLocation(ID, name);
+        gl.glUniformMatrix4fv(location, 1, false, f, 0);
+    }
+
+    public void setVec3(GL3 gl, String name, Vec3 v) {
+        int location = gl.glGetUniformLocation(ID, name);
+        gl.glUniform3f(location, v.x, v.y, v.z);
     }
 
     private void display() {

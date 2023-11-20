@@ -2,13 +2,21 @@
 /**
  * AssignmentGLEventListener
  */
-import utils.AssignmentUtil;
+import utils.*;
+import gmaths.*;
+
+import java.nio.*;
+import com.jogamp.common.nio.*;
+import com.jogamp.opengl.*;
+import com.jogamp.opengl.util.*;
+import com.jogamp.opengl.util.awt.*;
+import com.jogamp.opengl.util.glsl.*;
 
 public class AssignmentGLEventListener implements GLEventListener {
     private static final boolean DISPLAY_SHADERS = false;
     private Camera camera;
     private double startTime;
-    private Model backDrop;
+    // private Model backDrop;
     private Light light;
     private Mat4[] roomTransforms;
 
@@ -27,7 +35,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         gl.glFrontFace(GL.GL_CCW); // default is 'CCW'
         gl.glEnable(GL.GL_CULL_FACE); // default is 'not enabled'
         gl.glCullFace(GL.GL_BACK); // default is 'back', assuming CCW
-        initialise(gl);
+        // initialise(gl);
         startTime = AssignmentUtil.getSeconds();
     }
 
@@ -40,13 +48,13 @@ public class AssignmentGLEventListener implements GLEventListener {
 
     public void display(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
-        render(gl);
+        // render(gl);
     }
 
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         // cube.dispose(gl);
-        backDrop.dispose(gl);
+        // backDrop.dispose(gl);
         light.dispose(gl);
     }
 }

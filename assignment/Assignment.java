@@ -38,7 +38,7 @@ public class Assignment extends JFrame {
         canvas = new GLCanvas(glCapabilities);
         Camera camera = new Camera(Camera.DEFAULT_POSITION, Camera.DEFAULT_TARGET, Camera.DEFAULT_UP);
 
-        // glEventListener = new AssignmentGLEventListener(camera);
+        glEventListener = new AssignmentGLEventListener(camera);
         canvas.addMouseMotionListener(new MouseInput(camera));
         canvas.addKeyListener(new KeyboardInput(camera));
         
