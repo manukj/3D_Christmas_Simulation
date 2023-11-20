@@ -39,12 +39,13 @@ public class Assignment extends JFrame {
         Camera camera = new Camera(Camera.DEFAULT_POSITION, Camera.DEFAULT_TARGET, Camera.DEFAULT_UP);
 
         glEventListener = new AssignmentGLEventListener(camera);
+        canvas.addGLEventListener(glEventListener);
+
         canvas.addMouseMotionListener(new MouseInput(camera));
         canvas.addKeyListener(new KeyboardInput(camera));
         
 
         getContentPane().add(canvas, BorderLayout.CENTER);
-        // canvas.addGLEventListener(glEventListener);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 animator.stop();

@@ -24,7 +24,7 @@ public class AssignmentGLEventListener implements GLEventListener {
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
-        this.camera.setPosition(new Vec3(0f, 0f, 17f));
+        this.camera.setPosition(new Vec3(6f, 9f, 17f));
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -50,7 +50,7 @@ public class AssignmentGLEventListener implements GLEventListener {
 
     public void display(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
-        // render(gl);
+        render(gl);
     }
 
     public void dispose(GLAutoDrawable drawable) {
@@ -69,7 +69,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         // make mesh
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
         // make shader
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_PATH, Constants.FRAGMENT_SHADER_PATH);
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
         // make material
         Material material = new Material(new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.1f, 0.5f, 0.91f),
                 new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
@@ -99,5 +99,28 @@ public class AssignmentGLEventListener implements GLEventListener {
         // cube = new Model(name, mesh, new Mat4(1), shader, material, light, camera);
 
         roomTransforms = AssignmentUtil.getBackDropTransformation();
+    }
+
+    public void render(GL3 gl) {
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+        // updateLightColour();
+        light.setPosition(AssignmentUtil.getLightPosition(startTime)); // changing light position each frame
+        light.render(gl);
+
+        // this transform could have been set up when the cube model was created,
+        // since it is the same every time.
+        // However, it illustrates that the transform could be changed, e.g. for
+        // animation.
+        // cube.setModelMatrix(getMforCube()); // change transform
+        // cube.render(gl);
+
+        // drawing the backdrop
+        backDrop.setModelMatrix(roomTransforms[0]); // change transform
+        backDrop.render(gl);
+        backDrop.setModelMatrix(roomTransforms[1]); // change transform
+        backDrop.render(gl);
+        // tt1.setModelMatrix(roomTransforms[2]); // change transform
+        // tt1.render(gl);
     }
 }

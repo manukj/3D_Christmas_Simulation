@@ -5,6 +5,8 @@ import java.nio.*;
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 
+import constants.Constants;
+
 public class Light {
 
   private Material material;
@@ -20,7 +22,10 @@ public class Light {
     material.setSpecular(1.0f, 1.0f, 1.0f);
     position = new Vec3(3f, 2f, 1f);
     model = new Mat4(1);
-    shader = new Shader(gl, "vs_light_01.txt", "fs_light_01.txt");
+    System.out.println("rendering Shaders");
+    System.out.println(Constants.VERTEX_SHADER_STANDARD_PATH);
+    System.out.println(Constants.FRAGMENT_SHADER_STANDARD_PATH);
+    shader = new Shader(gl, "../shader/vs_light.txt", "../shader/fs_light.txt");
     fillBuffers(gl);
   }
 

@@ -44,4 +44,12 @@ public class AssignmentUtil {
     // 0.5f, 0), modelMatrix);
     // return modelMatrix;
     // }
+
+    public static Vec3 getLightPosition(double startTime) {
+        double elapsedTime = getSeconds() - startTime;
+        float x = 3.0f * (float) (Math.sin(Math.toRadians(elapsedTime * 50)));
+        float y = 2.4f;
+        float z = 3.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 50)));
+        return new Vec3(x, y, z);
+    }
 }
