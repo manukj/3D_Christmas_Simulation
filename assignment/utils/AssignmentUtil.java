@@ -50,6 +50,6 @@ public class AssignmentUtil {
         float x = 3.0f * (float) (Math.sin(Math.toRadians(elapsedTime * 50)));
         float y = 2.4f;
         float z = 3.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 50)));
-        return new Vec3(x, y, z);
+        return new  Vec3(0f, 9f, 27f);
     }
 }

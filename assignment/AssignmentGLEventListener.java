@@ -24,7 +24,7 @@ public class AssignmentGLEventListener implements GLEventListener {
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
-        this.camera.setPosition(new Vec3(6f, 9f, 17f));
+        this.camera.setPosition(Constants.CAMERA_POISTION);
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -64,6 +64,7 @@ public class AssignmentGLEventListener implements GLEventListener {
     public void initialise(GL3 gl) {
         light = new Light(gl);
         light.setCamera(camera);
+        light.setPosition(Constants.LIGHT_POISTION);
 
         // Model 1 - a floor plane
         String name = "floor plane";
@@ -106,7 +107,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
         // updateLightColour();
-        light.setPosition(AssignmentUtil.getLightPosition(startTime)); // changing light position each frame
+
         light.render(gl);
 
         // this transform could have been set up when the cube model was created,

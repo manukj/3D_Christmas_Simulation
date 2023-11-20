@@ -141,6 +141,7 @@ public class Camera {
     front.z = (float) (sy * cp);
     front.normalize();
     target = Vec3.add(position, front);
+    System.out.println("dx,dy: " + target.x + "," + target.y + "," + target.z);
   }
 
   private void updateCameraVectors() {
