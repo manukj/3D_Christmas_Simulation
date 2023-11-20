@@ -12,8 +12,10 @@ import com.jogamp.opengl.util.*;
 import com.jogamp.opengl.util.awt.*;
 import com.jogamp.opengl.util.glsl.*;
 
+import constants.Constants;
+import constants.Constants.*;
+
 public class AssignmentGLEventListener implements GLEventListener {
-    private static final boolean DISPLAY_SHADERS = false;
     private Camera camera;
     private double startTime;
     private Model backDrop;
@@ -35,7 +37,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         gl.glFrontFace(GL.GL_CCW); // default is 'CCW'
         gl.glEnable(GL.GL_CULL_FACE); // default is 'not enabled'
         gl.glCullFace(GL.GL_BACK); // default is 'back', assuming CCW
-        // initialise(gl);
+        initialise(gl);
         startTime = AssignmentUtil.getSeconds();
     }
 
@@ -56,5 +58,45 @@ public class AssignmentGLEventListener implements GLEventListener {
         // cube.dispose(gl);
         backDrop.dispose(gl);
         light.dispose(gl);
+    }
+
+    public void initialise(GL3 gl) {
+        light = new Light(gl);
+        light.setCamera(camera);
+
+        // Model 1 - a floor plane
+        String name = "floor plane";
+        // make mesh
+        Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+        // make shader
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_PATH, Constants.FRAGMENT_SHADER_PATH);
+        // make material
+        Material material = new Material(new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.1f, 0.5f, 0.91f),
+                new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+
+        // set up the model using methods
+        backDrop = new Model();
+        backDrop.setName(name);
+        backDrop.setMesh(mesh);
+        backDrop.setModelMatrix(new Mat4(1));
+        backDrop.setShader(shader);
+        backDrop.setMaterial(material);
+        backDrop.setLight(light);
+        backDrop.setCamera(camera);
+        // quicker way using constructor
+        // tt1 = new Model(name, mesh, new Mat4(1), shader, material, light);
+
+        // Model 2 - A cube
+        // reuse method local variables
+        // same model matrix, light and camera
+        // name = "cube";
+        // mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
+        // shader = new Shader(gl, "vs_standard.txt", "fs_standard_0t.txt");
+        // material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f),
+        //         32.0f);
+        // // set up the model using a constructor
+        // cube = new Model(name, mesh, new Mat4(1), shader, material, light, camera);
+
+        // roomTransforms = setupRoomTransforms();
     }
 }
