@@ -16,7 +16,7 @@ public class AssignmentGLEventListener implements GLEventListener {
     private static final boolean DISPLAY_SHADERS = false;
     private Camera camera;
     private double startTime;
-    // private Model backDrop;
+    private Model backDrop;
     private Light light;
     private Mat4[] roomTransforms;
 
@@ -54,7 +54,7 @@ public class AssignmentGLEventListener implements GLEventListener {
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         // cube.dispose(gl);
-        // backDrop.dispose(gl);
+        backDrop.dispose(gl);
         light.dispose(gl);
     }
 }
