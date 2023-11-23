@@ -80,7 +80,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
         Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
         background = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
-                textures.get(Constants.TEXTURE_NAME_FLOOR));
+                textures.get(Constants.TEXTURE_NAME_BACKGROUND));
 
         // Model 2 - a background
         name = "background";
@@ -88,7 +88,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
         material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
         floor = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
-                textures.get(Constants.TEXTURE_NAME_BACKGROUND));
+                textures.get(Constants.TEXTURE_NAME_FLOOR));
 
         // quicker way using constructor
         // tt1 = new Model(name, mesh, new Mat4(1), shader, material, light);
@@ -116,10 +116,11 @@ public class AssignmentGLEventListener implements GLEventListener {
 
 
         // drawing the background
-        background.setModelMatrix(roomTransforms[0]); // change transform
-        background.render(gl);
-        floor.setModelMatrix(roomTransforms[1]); // change transform
+     
+        floor.setModelMatrix(roomTransforms[0]); // change transform
         floor.render(gl);
+        background.setModelMatrix(roomTransforms[1]); // change transform
+        background.render(gl);
     
     }
 }

@@ -21,3 +21,8 @@ all: $(CLASS_FILES)
 # Clean rule to remove all class files
 clean:
 	find $(TARGET_DIR) -name "*.class" -exec rm -f {} +
+
+
+run: clean
+	javac Assignment.java
+	java Assignment

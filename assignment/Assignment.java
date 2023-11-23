@@ -26,7 +26,8 @@ public class Assignment extends JFrame {
 
     public static void main(String[] args) {
         Assignment window = new Assignment();
-        window.getContentPane().setPreferredSize(dimension);
+        // window.getContentPane().setPreferredSize(dimension);
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         window.pack();
         window.setVisible(true);
         window.canvas.requestFocusInWindow();

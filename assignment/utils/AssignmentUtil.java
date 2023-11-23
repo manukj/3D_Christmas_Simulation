@@ -18,18 +18,21 @@ public class AssignmentUtil {
     }
 
     private static Mat4 getMforBackDrop1() {
-        float size = 16f;
+        float height = 6.66f;
+        float width = 12f;
         Mat4 modelMatrix = new Mat4(1);
-        modelMatrix = Mat4.multiply(Mat4Transform.scale(size, 1f, size), modelMatrix);
+        modelMatrix = Mat4.multiply(Mat4Transform.scale(width, 1f, height), modelMatrix);
         return modelMatrix;
     }
 
     private static Mat4 getMforBackDrop2() {
-        float size = 16f;
+        float height = 6.66f;
+        float width = 12f;
         Mat4 modelMatrix = new Mat4(1);
-        modelMatrix = Mat4.multiply(Mat4Transform.scale(size, 1f, size), modelMatrix);
+        modelMatrix = Mat4.multiply(Mat4Transform.scale(width, 1f, height), modelMatrix);
         modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-        modelMatrix = Mat4.multiply(Mat4Transform.translate(0, size * 0.5f, -size * 0.5f), modelMatrix);
+        modelMatrix = Mat4.multiply(Mat4Transform.translate(0f, height*0.5f, -3.33f),modelMatrix);
+        // modelMatrix);
         return modelMatrix;
     }
 
@@ -50,6 +53,6 @@ public class AssignmentUtil {
         float x = 3.0f * (float) (Math.sin(Math.toRadians(elapsedTime * 50)));
         float y = 2.4f;
         float z = 3.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 50)));
-        return new  Vec3(0f, 9f, 27f);
+        return new Vec3(0f, 9f, 27f);
     }
 }
