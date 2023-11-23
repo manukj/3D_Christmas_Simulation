@@ -18,9 +18,10 @@ import constants.Constants.*;
 public class AssignmentGLEventListener implements GLEventListener {
     private Camera camera;
     private double startTime;
-    private Model backDrop;
+    private Model background, floor;
     private Light light;
     private Mat4[] roomTransforms;
+    private TextureLibrary textures;
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
@@ -57,34 +58,38 @@ public class AssignmentGLEventListener implements GLEventListener {
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         // cube.dispose(gl);
-        backDrop.dispose(gl);
+        background.dispose(gl);
+        floor.dispose(gl);
         light.dispose(gl);
     }
 
     public void initialise(GL3 gl) {
+        Vec3 basecolor = new Vec3(0.5f, 0.5f, 0.5f);
+
+        textures = new TextureLibrary();
+        textures.add(gl, Constants.TEXTURE_NAME_BACKGROUND, Constants.TEXTURE_PATH_BACKGROUND);
+        textures.add(gl, Constants.TEXTURE_NAME_FLOOR, Constants.TEXTURE_PATH_FLOOR);
+
         light = new Light(gl);
         light.setCamera(camera);
         light.setPosition(Constants.LIGHT_POISTION);
 
-        // Model 1 - a floor plane
-        String name = "floor plane";
-        // make mesh
+        // Model 1 - a floor
+        String name = "floor";
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        // make shader
         Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
-        // make material
-        Material material = new Material(new Vec3(0.1f, 0.5f, 0.91f), new Vec3(0.1f, 0.5f, 0.91f),
-                new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+        Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+        background = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
+                textures.get(Constants.TEXTURE_NAME_FLOOR));
 
-        // set up the model using methods
-        backDrop = new Model();
-        backDrop.setName(name);
-        backDrop.setMesh(mesh);
-        backDrop.setModelMatrix(new Mat4(1));
-        backDrop.setShader(shader);
-        backDrop.setMaterial(material);
-        backDrop.setLight(light);
-        backDrop.setCamera(camera);
+        // Model 2 - a background
+        name = "background";
+        mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+        shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
+        material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+        floor = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
+                textures.get(Constants.TEXTURE_NAME_BACKGROUND));
+
         // quicker way using constructor
         // tt1 = new Model(name, mesh, new Mat4(1), shader, material, light);
 
@@ -106,23 +111,15 @@ public class AssignmentGLEventListener implements GLEventListener {
     public void render(GL3 gl) {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-        // updateLightColour();
-
         light.render(gl);
 
-        // this transform could have been set up when the cube model was created,
-        // since it is the same every time.
-        // However, it illustrates that the transform could be changed, e.g. for
-        // animation.
-        // cube.setModelMatrix(getMforCube()); // change transform
-        // cube.render(gl);
 
-        // drawing the backdrop
-        backDrop.setModelMatrix(roomTransforms[0]); // change transform
-        backDrop.render(gl);
-        backDrop.setModelMatrix(roomTransforms[1]); // change transform
-        backDrop.render(gl);
-        // tt1.setModelMatrix(roomTransforms[2]); // change transform
-        // tt1.render(gl);
+
+        // drawing the background
+        background.setModelMatrix(roomTransforms[0]); // change transform
+        background.render(gl);
+        floor.setModelMatrix(roomTransforms[1]); // change transform
+        floor.render(gl);
+    
     }
 }
