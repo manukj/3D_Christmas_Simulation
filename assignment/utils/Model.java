@@ -1,4 +1,5 @@
 package utils;
+
 import gmaths.*;
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -9,7 +10,6 @@ import com.jogamp.opengl.util.texture.spi.JPEGImage;
 import com.jogamp.opengl.util.texture.*;
 import com.jogamp.opengl.util.texture.awt.*;
 import com.jogamp.opengl.util.texture.spi.JPEGImage;
-
 
 public class Model {
 
@@ -95,8 +95,8 @@ public class Model {
     System.out.println("Name = " + name);
   }
 
-  public void render(GL3 gl) {
-    render(gl, modelMatrix);
+  public void render(GL3 gl, double startTime) {
+    render(gl, modelMatrix, startTime);
   }
 
   // second version of render is so that modelMatrix can be overriden with a new
@@ -105,7 +105,7 @@ public class Model {
   // This methoid assumes that the shader contains the variable names that are
   // used in all the set methods.
 
-  public void render(GL3 gl, Mat4 modelMatrix) {
+  public void render(GL3 gl, Mat4 modelMatrix, double startTime) {
     if (mesh_null()) {
       System.out.println("Error: null in model render");
       return;
@@ -147,6 +147,11 @@ public class Model {
       gl.glActiveTexture(GL.GL_TEXTURE1);
       specular.bind(gl);
     }
+
+    double t = (AssignmentUtil.getSeconds() - startTime) * 0.008; // *0.1 slows it down a bit
+    float offsetX = 0.1f;
+    float offsetY = (float) (t - Math.floor(t));
+    shader.setFloat(gl, "offset", offsetX, offsetY);
 
     // then render the mesh
     mesh.render(gl);

@@ -69,21 +69,22 @@ public class AssignmentGLEventListener implements GLEventListener {
         textures = new TextureLibrary();
         textures.add(gl, Constants.TEXTURE_NAME_BACKGROUND, Constants.TEXTURE_PATH_BACKGROUND);
         textures.add(gl, Constants.TEXTURE_NAME_FLOOR, Constants.TEXTURE_PATH_FLOOR);
+        textures.add(gl, Constants.TEXTURE_NAME_SNOWFALL, Constants.TEXTURE_PATH_SNOWFALL);
 
         light = new Light(gl);
         light.setCamera(camera);
         light.setPosition(Constants.LIGHT_POISTION);
 
-        // Model 1 - a floor
-        String name = "floor";
+        // Model 1 - a background
+        String name = "background";
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_MOVING_PATH, Constants.FRAGMENT_SHADER_MOVING_PATH);
         Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
         background = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
-                textures.get(Constants.TEXTURE_NAME_BACKGROUND));
+                textures.get(Constants.TEXTURE_NAME_BACKGROUND), textures.get(Constants.TEXTURE_NAME_SNOWFALL));
 
         // Model 2 - a background
-        name = "background";
+        name = "floor";
         mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
         shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
         material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
@@ -113,14 +114,9 @@ public class AssignmentGLEventListener implements GLEventListener {
 
         light.render(gl);
 
-
-
-        // drawing the background
-     
         floor.setModelMatrix(roomTransforms[0]); // change transform
-        floor.render(gl);
+        floor.render(gl,startTime);
         background.setModelMatrix(roomTransforms[1]); // change transform
-        background.render(gl);
-    
+        background.render(gl, startTime);
     }
 }
