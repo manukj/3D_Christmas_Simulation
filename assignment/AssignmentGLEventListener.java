@@ -18,10 +18,11 @@ import constants.Constants.*;
 public class AssignmentGLEventListener implements GLEventListener {
     private Camera camera;
     private double startTime;
-    private Model background, floor;
+    private Model background, floor, sphere;
     private Light light;
     private Mat4[] roomTransforms;
     private TextureLibrary textures;
+    private SGNode twoBranchRoot;
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
@@ -57,8 +58,8 @@ public class AssignmentGLEventListener implements GLEventListener {
 
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
-        // cube.dispose(gl);
         background.dispose(gl);
+        sphere.dispose(gl);
         floor.dispose(gl);
         light.dispose(gl);
     }
@@ -90,23 +91,44 @@ public class AssignmentGLEventListener implements GLEventListener {
         material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
         floor = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
                 textures.get(Constants.TEXTURE_NAME_FLOOR));
-
-        // quicker way using constructor
-        // tt1 = new Model(name, mesh, new Mat4(1), shader, material, light);
-
-        // Model 2 - A cube
-        // reuse method local variables
-        // same model matrix, light and camera
-        // name = "cube";
-        // mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
-        // shader = new Shader(gl, "vs_standard.txt", "fs_standard_0t.txt");
-        // material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f,
-        // 0.31f), new Vec3(0.5f, 0.5f, 0.5f),
-        // 32.0f);
-        // // set up the model using a constructor
-        // cube = new Model(name, mesh, new Mat4(1), shader, material, light, camera);
-
         roomTransforms = AssignmentUtil.getBackDropTransformation();
+
+        name = "sphere";
+        mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
+        shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
+        material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f),
+                32.0f);
+        Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
+        sphere = new Model(name, mesh, modelMatrix, shader, material, light, camera, textures.get("diffuse"),
+                textures.get("specular"));
+
+        twoBranchRoot = new NameNode("spot light");
+
+        NameNode lowerBranch = new NameNode("lower branch");
+        Mat4 m = Mat4Transform.scale(0.3f, 5, 0.3f);
+        m = Mat4.multiply(m, Mat4Transform.translate(-16f, 0.5f, 0));
+        TransformNode lowerBranchTransform = new TransformNode("scale(0.3f,5,0.3f); translate(-16,0.5,0)", m);
+        ModelNode lowerBranchShape = new ModelNode("sphere(0)", sphere);
+
+        TransformNode translateToTop = new TransformNode("translate(0,4,0)", Mat4Transform.translate(0, 5, 0));
+
+        NameNode upperBranch = new NameNode("upper branch");
+        m = Mat4Transform.scale(1f, 0.5f, 0.5f);
+        m = Mat4.multiply(m, Mat4Transform.translate(-4.3f, 0f, 0));
+        TransformNode upperBranchTransform = new TransformNode("scale(1.4f,3.9f,1.4f);translate(0,0.5,0)", m);
+        ModelNode upperBranchShape = new ModelNode("sphere(1)", sphere);
+
+        twoBranchRoot.addChild(lowerBranch);
+        lowerBranch.addChild(lowerBranchTransform);
+        lowerBranchTransform.addChild(lowerBranchShape);
+
+
+        lowerBranch.addChild(translateToTop);
+        translateToTop.addChild(upperBranch);
+        upperBranch.addChild(upperBranchTransform);
+        upperBranchTransform.addChild(upperBranchShape);
+
+        twoBranchRoot.update();
     }
 
     public void render(GL3 gl) {
@@ -115,8 +137,9 @@ public class AssignmentGLEventListener implements GLEventListener {
         light.render(gl);
 
         floor.setModelMatrix(roomTransforms[0]); // change transform
-        floor.render(gl,startTime);
+        floor.render(gl, startTime);
         background.setModelMatrix(roomTransforms[1]); // change transform
         background.render(gl, startTime);
+        twoBranchRoot.draw(gl);
     }
 }

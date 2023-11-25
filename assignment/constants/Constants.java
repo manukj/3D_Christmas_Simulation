@@ -16,7 +16,7 @@ public class Constants {
 
 
 
-    public static final Vec3 CAMERA_POISTION = new Vec3(0f, 4.200827f, 16.573412f);
+    public static final Vec3 CAMERA_POISTION = new Vec3(-12f, 6.200827f, 4.573412f);
     public static final Vec3 LIGHT_POISTION = new Vec3(-5f, 15f, 10f);
 
     public static final String TEXTURE_NAME_BACKGROUND = "background";

@@ -6,6 +6,9 @@ import gmaths.*;
  * AssignmentUtil
  */
 public class AssignmentUtil {
+    public static final float BACKDROP_HEIGHT = 6.66f;
+    public static final float BACKDROP_WIDTH = 12f;
+
     public static double getSeconds() {
         return System.currentTimeMillis() / 1000.0;
     }
@@ -18,10 +21,8 @@ public class AssignmentUtil {
     }
 
     private static Mat4 getMforBackDrop1() {
-        float height = 6.66f;
-        float width = 12f;
         Mat4 modelMatrix = new Mat4(1);
-        modelMatrix = Mat4.multiply(Mat4Transform.scale(width, 1f, height), modelMatrix);
+        modelMatrix = Mat4.multiply(Mat4Transform.scale(BACKDROP_WIDTH, 1f, BACKDROP_HEIGHT), modelMatrix);
         return modelMatrix;
     }
 
@@ -29,9 +30,9 @@ public class AssignmentUtil {
         float height = 6.66f;
         float width = 12f;
         Mat4 modelMatrix = new Mat4(1);
-        modelMatrix = Mat4.multiply(Mat4Transform.scale(width, 1f, height), modelMatrix);
+        modelMatrix = Mat4.multiply(Mat4Transform.scale(BACKDROP_WIDTH, 1f, BACKDROP_HEIGHT), modelMatrix);
         modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-        modelMatrix = Mat4.multiply(Mat4Transform.translate(0f, height*0.5f, -3.33f),modelMatrix);
+        modelMatrix = Mat4.multiply(Mat4Transform.translate(0f, BACKDROP_HEIGHT * 0.5f, -3.33f), modelMatrix);
         // modelMatrix);
         return modelMatrix;
     }
