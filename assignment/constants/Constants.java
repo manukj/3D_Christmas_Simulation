@@ -14,9 +14,7 @@ public class Constants {
     public static final String VERTEX_SHADER_MOVING_PATH = "shader/vs_moving_shader.txt";
     public static final String FRAGMENT_SHADER_MOVING_PATH = "shader/fs_moving_shader.txt";
 
-
-
-    public static final Vec3 CAMERA_POISTION = new Vec3(-12f, 6.200827f, 4.573412f);
+    public static final Vec3 CAMERA_POISTION = new Vec3(0f, 4.200827f, 16.573412f);
     public static final Vec3 LIGHT_POISTION = new Vec3(-5f, 15f, 10f);
 
     public static final String TEXTURE_NAME_BACKGROUND = "background";
@@ -25,4 +23,8 @@ public class Constants {
     public static final String TEXTURE_PATH_FLOOR = "textures/floor.png";
     public static final String TEXTURE_NAME_SNOWFALL = "snowfall";
     public static final String TEXTURE_PATH_SNOWFALL = "textures/snowfall.png";
+    public static final String TEXTURE_NAME_CAMERA = "camera";
+    public static final String TEXTURE_PATH_CAMERA = "textures/camera.jpeg";
+    public static final String TEXTURE_NAME_STEEL = "steel";
+    public static final String TEXTURE_PATH_STEEL = "textures/steel.jpeg";
 }

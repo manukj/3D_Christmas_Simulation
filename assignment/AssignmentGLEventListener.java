@@ -4,6 +4,7 @@
  */
 import utils.*;
 import gmaths.*;
+import model.SpotLight;
 
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -18,11 +19,11 @@ import constants.Constants.*;
 public class AssignmentGLEventListener implements GLEventListener {
     private Camera camera;
     private double startTime;
-    private Model background, floor, sphere;
+    private Model background, floor;
     private Light light;
     private Mat4[] roomTransforms;
     private TextureLibrary textures;
-    private SGNode twoBranchRoot;
+    private SpotLight spotLight;
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
@@ -59,7 +60,6 @@ public class AssignmentGLEventListener implements GLEventListener {
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         background.dispose(gl);
-        sphere.dispose(gl);
         floor.dispose(gl);
         light.dispose(gl);
     }
@@ -71,6 +71,8 @@ public class AssignmentGLEventListener implements GLEventListener {
         textures.add(gl, Constants.TEXTURE_NAME_BACKGROUND, Constants.TEXTURE_PATH_BACKGROUND);
         textures.add(gl, Constants.TEXTURE_NAME_FLOOR, Constants.TEXTURE_PATH_FLOOR);
         textures.add(gl, Constants.TEXTURE_NAME_SNOWFALL, Constants.TEXTURE_PATH_SNOWFALL);
+        textures.add(gl, Constants.TEXTURE_NAME_CAMERA, Constants.TEXTURE_PATH_CAMERA);
+        textures.add(gl, Constants.TEXTURE_NAME_STEEL, Constants.TEXTURE_PATH_STEEL);
 
         light = new Light(gl);
         light.setCamera(camera);
@@ -84,7 +86,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         background = new Model(name, mesh, new Mat4(1), shader, material, light, camera,
                 textures.get(Constants.TEXTURE_NAME_BACKGROUND), textures.get(Constants.TEXTURE_NAME_SNOWFALL));
 
-        // Model 2 - a background
+        // Model 2 - a floor
         name = "floor";
         mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
         shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
@@ -93,42 +95,36 @@ public class AssignmentGLEventListener implements GLEventListener {
                 textures.get(Constants.TEXTURE_NAME_FLOOR));
         roomTransforms = AssignmentUtil.getBackDropTransformation();
 
-        name = "sphere";
-        mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-        shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
-        material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f),
-                32.0f);
-        Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
-        sphere = new Model(name, mesh, modelMatrix, shader, material, light, camera, textures.get("diffuse"),
-                textures.get("specular"));
+        spotLight = new SpotLight(gl, camera, light, textures.get(Constants.TEXTURE_NAME_STEEL),
+                textures.get(Constants.TEXTURE_NAME_CAMERA));
 
-        twoBranchRoot = new NameNode("spot light");
+        // NameNode lowerBranch = new NameNode("lower branch");
+        // Mat4 m = Mat4Transform.scale(0.3f, 5, 0.3f);
+        // m = Mat4.multiply(m, Mat4Transform.translate(-16f, 0.5f, 0));
+        // TransformNode lowerBranchTransform = new TransformNode("scale(0.3f,5,0.3f);
+        // translate(-16,0.5,0)", m);
+        // ModelNode lowerBranchShape = new ModelNode("sphere(0)", sphere);
 
-        NameNode lowerBranch = new NameNode("lower branch");
-        Mat4 m = Mat4Transform.scale(0.3f, 5, 0.3f);
-        m = Mat4.multiply(m, Mat4Transform.translate(-16f, 0.5f, 0));
-        TransformNode lowerBranchTransform = new TransformNode("scale(0.3f,5,0.3f); translate(-16,0.5,0)", m);
-        ModelNode lowerBranchShape = new ModelNode("sphere(0)", sphere);
+        // TransformNode translateToTop = new TransformNode("translate(0,4,0)",
+        // Mat4Transform.translate(0, 5, 0));
 
-        TransformNode translateToTop = new TransformNode("translate(0,4,0)", Mat4Transform.translate(0, 5, 0));
+        // NameNode upperBranch = new NameNode("upper branch");
+        // m = Mat4Transform.scale(1f, 0.5f, 0.5f);
+        // m = Mat4.multiply(m, Mat4Transform.translate(-4.3f, 0f, 0));
+        // TransformNode upperBranchTransform = new
+        // TransformNode("scale(1.4f,3.9f,1.4f);translate(0,0.5,0)", m);
+        // ModelNode upperBranchShape = new ModelNode("sphere(1)", sphere);
 
-        NameNode upperBranch = new NameNode("upper branch");
-        m = Mat4Transform.scale(1f, 0.5f, 0.5f);
-        m = Mat4.multiply(m, Mat4Transform.translate(-4.3f, 0f, 0));
-        TransformNode upperBranchTransform = new TransformNode("scale(1.4f,3.9f,1.4f);translate(0,0.5,0)", m);
-        ModelNode upperBranchShape = new ModelNode("sphere(1)", sphere);
+        // twoBranchRoot.addChild(lowerBranch);
+        // lowerBranch.addChild(lowerBranchTransform);
+        // lowerBranchTransform.addChild(lowerBranchShape);
 
-        twoBranchRoot.addChild(lowerBranch);
-        lowerBranch.addChild(lowerBranchTransform);
-        lowerBranchTransform.addChild(lowerBranchShape);
+        // lowerBranch.addChild(translateToTop);
+        // translateToTop.addChild(upperBranch);
+        // upperBranch.addChild(upperBranchTransform);
+        // upperBranchTransform.addChild(upperBranchShape);
 
-
-        lowerBranch.addChild(translateToTop);
-        translateToTop.addChild(upperBranch);
-        upperBranch.addChild(upperBranchTransform);
-        upperBranchTransform.addChild(upperBranchShape);
-
-        twoBranchRoot.update();
+        // twoBranchRoot.update();
     }
 
     public void render(GL3 gl) {
@@ -140,6 +136,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         floor.render(gl, startTime);
         background.setModelMatrix(roomTransforms[1]); // change transform
         background.render(gl, startTime);
-        twoBranchRoot.draw(gl);
+
+        spotLight.render(gl);
     }
 }
