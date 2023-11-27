@@ -98,6 +98,20 @@ public class Alien {
         TransformNode rightEarTransform = new TransformNode("right ear transform", m);
         ModelNode rightEarShape = new ModelNode("Sphere(right ear)", sphere);
 
+        NameNode leftArm = new NameNode("left arm");
+        m = Mat4Transform.translate((bodyScale + armScale) * 0.5f, (bodyScale + armLength) * 0.5f, 0);
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundZ(-20));
+        m = Mat4.multiply(m, Mat4Transform.scale(armScale, armLength, armScale));
+        TransformNode leftArmTransform = new TransformNode("left arm transform", m);
+        ModelNode leftArmShape = new ModelNode("Sphere(left arm)", sphere);
+
+        NameNode rightArm = new NameNode("right arm");
+        m = Mat4Transform.translate(-(bodyScale + armScale) * 0.5f, (bodyScale + armLength) * 0.5f, 0);
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundZ(20));
+        m = Mat4.multiply(m, Mat4Transform.scale(armScale, armLength, armScale));
+        TransformNode rightArmTransform = new TransformNode("right arm transform", m);
+        ModelNode rightArmShape = new ModelNode("Sphere(right arm)", sphere);
+
         // body -> root
         root.addChild(rootTranslate);
         rootTranslate.addChild(body);
@@ -138,6 +152,16 @@ public class Alien {
         head.addChild(rightEar);
         rightEar.addChild(rightEarTransform);
         rightEarTransform.addChild(rightEarShape);
+
+        // leftArm -> body
+        body.addChild(leftArm);
+        leftArm.addChild(leftArmTransform);
+        leftArmTransform.addChild(leftArmShape);
+
+        // rightArm -> body
+        body.addChild(rightArm);
+        rightArm.addChild(rightArmTransform);
+        rightArmTransform.addChild(rightArmShape);
 
         root.update();
     }
