@@ -67,6 +67,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         light.dispose(gl);
         spotLight.dispose(gl);
         alien1.dispose(gl);
+        alien2.dispose(gl);
     }
 
     public void initialise(GL3 gl) {
@@ -105,7 +106,8 @@ public class AssignmentGLEventListener implements GLEventListener {
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien
-        alien1 = new Alien(gl, camera, light, -3f);
+        alien1 = new Alien(gl, camera, light, -2f);
+        alien2 = new Alien(gl, camera, light, 2f);
     }
 
     public void render(GL3 gl) {
@@ -123,5 +125,6 @@ public class AssignmentGLEventListener implements GLEventListener {
         spotLight.render(gl);
 
         alien1.render(gl);
+        alien2.render(gl);
     }
 }
