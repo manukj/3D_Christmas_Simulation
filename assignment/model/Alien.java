@@ -30,6 +30,8 @@ public class Alien {
 
         float bodyScale = 2f;
         float headScale = 1f;
+        float eyeWidth = 0.25f;
+        float eyeDepth = 0.15f;
         float eyeScale = 0.2f;
 
         float earLength = 0.5f;
@@ -68,53 +70,52 @@ public class Alien {
 
         NameNode antennaSphere = new NameNode("antenna sphere");
         m = Mat4Transform.translate(0, antennaLength * 0.5f + antennaSphereScale * 0.5f, 0);
-        m = Mat4.multiply(m, Mat4Transform.scale(antennaSphereScale,
-                antennaSphereScale, antennaSphereScale));
+        m = Mat4.multiply(m, Mat4Transform.scale(antennaSphereScale, antennaSphereScale, antennaSphereScale));
         TransformNode antennaSphereTransform = new TransformNode("antenna spheretransform", m);
-        ModelNode antennaSphereShape = new ModelNode("Sphere(antenna sphere)",
-                sphere);
+        ModelNode antennaSphereShape = new ModelNode("Sphere(antenna sphere)", sphere);
 
-        // NameNode leftEye = new NameNode("left eye");
-        // m = Mat4Transform.scale(eyeScale, eyeScale, eyeScale);
-        // m = Mat4.multiply(m, Mat4Transform.translate(headScale, headScale, headScale
-        // * 2));
-        // TransformNode leftEyeTransform = new TransformNode("left eye transform", m);
-        // ModelNode leftEyeShape = new ModelNode("Sphere(left eye)", sphere);
+        NameNode leftEye = new NameNode("left eye");
+        m = Mat4Transform.translate(headScale * 0.18f, headScale * 0.20f, headScale * 0.38f);
+        m = Mat4.multiply(m, Mat4Transform.scale(eyeWidth, eyeScale, eyeDepth));
+        TransformNode leftEyeTransform = new TransformNode("left eye transform", m);
+        ModelNode leftEyeShape = new ModelNode("Sphere(left eye)", sphere);
 
-        // NameNode rightEye = new NameNode("right eye");
-        // m = Mat4Transform.scale(eyeScale, eyeScale, eyeScale);
-        // m = Mat4.multiply(m, Mat4Transform.translate(-headScale, headScale, headScale
-        // * 2));
-        // TransformNode rightEyeTransform = new TransformNode("right eye transform",
-        // m);
-        // ModelNode rightEyeShape = new ModelNode("Sphere(right eye)", sphere);
+        NameNode rightEye = new NameNode("right eye");
+        m = Mat4Transform.translate(-headScale * 0.18f, headScale * 0.20f, headScale * 0.38f);
+        m = Mat4.multiply(m, Mat4Transform.scale(eyeWidth, eyeScale, eyeDepth));
+        TransformNode rightEyeTransform = new TransformNode("right eye transform", m);
+        ModelNode rightEyeShape = new ModelNode("Sphere(right eye)", sphere);
 
+        // body -> root
         root.addChild(rootTranslate);
         rootTranslate.addChild(body);
         body.addChild(bodyTransform);
         bodyTransform.addChild(bodyShape);
 
+        // head -> body
         body.addChild(headTranslate);
         headTranslate.addChild(head);
         head.addChild(headTransform);
         headTransform.addChild(headShape);
 
-        // head.addChild(leftEye);
-        // leftEye.addChild(leftEyeTransform);
-        // leftEyeTransform.addChild(leftEyeShape);
-
-        // head.addChild(rightEye);
-        // rightEye.addChild(rightEyeTransform);
-        // rightEyeTransform.addChild(rightEyeShape);
-
+        // antenna -> head
         head.addChild(antennaTranslate);
         antennaTranslate.addChild(antenna);
         antenna.addChild(antennaTransform);
         antennaTransform.addChild(antennaShape);
-
+        // antennaSphere -> antenna
         antenna.addChild(antennaSphere);
         antennaSphere.addChild(antennaSphereTransform);
         antennaSphereTransform.addChild(antennaSphereShape);
+
+        // leftEye -> head
+        head.addChild(leftEye);
+        leftEye.addChild(leftEyeTransform);
+        leftEyeTransform.addChild(leftEyeShape);
+        // rightEye -> head
+        head.addChild(rightEye);
+        rightEye.addChild(rightEyeTransform);
+        rightEyeTransform.addChild(rightEyeShape);
 
         root.update();
     }
