@@ -5,6 +5,7 @@
 import utils.*;
 import gmaths.*;
 import model.SpotLight;
+import utils.AssignmentUtil.*;
 
 import java.nio.*;
 import com.jogamp.common.nio.*;
@@ -136,6 +137,8 @@ public class AssignmentGLEventListener implements GLEventListener {
         floor.render(gl, startTime);
         background.setModelMatrix(roomTransforms[1]); // change transform
         background.render(gl, startTime);
+        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
+        spotLight.updateCameraAnimation(elapsedTime);
 
         spotLight.render(gl);
     }
