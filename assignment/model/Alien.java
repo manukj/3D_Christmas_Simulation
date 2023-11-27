@@ -34,9 +34,9 @@ public class Alien {
         float eyeDepth = 0.15f;
         float eyeScale = 0.2f;
 
-        float earLength = 0.5f;
-        float earWidth = 0.2f;
-        float earDepth = 0.5f;
+        float earLength = 0.8f;
+        float earWidth = 0.1f;
+        float earDepth = 0.3f;
 
         float antennaLength = 0.4f;
         float anteenaScale = 0.06f;
@@ -86,6 +86,12 @@ public class Alien {
         TransformNode rightEyeTransform = new TransformNode("right eye transform", m);
         ModelNode rightEyeShape = new ModelNode("Sphere(right eye)", sphere);
 
+        NameNode leftEar = new NameNode("left ear");
+        m = Mat4Transform.translate(headScale * 0.5f, earLength * 0.5f, 0);
+        m = Mat4.multiply(m, Mat4Transform.scale(earWidth, earLength, earDepth));
+        TransformNode leftEarTransform = new TransformNode("left ear transform", m);
+        ModelNode leftEarShape = new ModelNode("Sphere(left ear)", sphere);
+
         // body -> root
         root.addChild(rootTranslate);
         rootTranslate.addChild(body);
@@ -116,6 +122,11 @@ public class Alien {
         head.addChild(rightEye);
         rightEye.addChild(rightEyeTransform);
         rightEyeTransform.addChild(rightEyeShape);
+
+        // leftEar -> head
+        head.addChild(leftEar);
+        leftEar.addChild(leftEarTransform);
+        leftEarTransform.addChild(leftEarShape);
 
         root.update();
     }
