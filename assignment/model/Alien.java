@@ -92,6 +92,12 @@ public class Alien {
         TransformNode leftEarTransform = new TransformNode("left ear transform", m);
         ModelNode leftEarShape = new ModelNode("Sphere(left ear)", sphere);
 
+        NameNode rightEar = new NameNode("right ear");
+        m = Mat4Transform.translate(-headScale * 0.5f, earLength * 0.5f, 0);
+        m = Mat4.multiply(m, Mat4Transform.scale(earWidth, earLength, earDepth));
+        TransformNode rightEarTransform = new TransformNode("right ear transform", m);
+        ModelNode rightEarShape = new ModelNode("Sphere(right ear)", sphere);
+
         // body -> root
         root.addChild(rootTranslate);
         rootTranslate.addChild(body);
@@ -127,6 +133,11 @@ public class Alien {
         head.addChild(leftEar);
         leftEar.addChild(leftEarTransform);
         leftEarTransform.addChild(leftEarShape);
+
+        // rightEar -> head
+        head.addChild(rightEar);
+        rightEar.addChild(rightEarTransform);
+        rightEarTransform.addChild(rightEarShape);
 
         root.update();
     }
