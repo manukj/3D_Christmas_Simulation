@@ -30,38 +30,40 @@ public class SpotLight {
         sphere = makeSphere(gl, steelTexture);
         cameraSphere = makeSphere(gl, cameraTexture);
 
-        float spotLightHeight = 5f;
-        float spotLightWidth = 0.5f;
-        float spotLightDepth = 0.5f;
-        float spotCameraHeight = 0.5f;
-        float spotCameraWidth = 1f;
-        float spotCameraDepth = 0.5f;
+        float poleHeight = 5f;
+        float poleScale = 0.5f;
+
+        float cameraHeight = 0.5f;
+        float cameraWidth = 1f;
+        float cameraDepth = 0.5f;
 
         root = new NameNode("root");
+        TransformNode rootTranslate = new TransformNode("robot transform", Mat4Transform.translate(-5f, 0, 0));
 
-        NameNode spotLight = new NameNode("spot_light");
-        Mat4 m = Mat4Transform.translate(-5f, 0, 0);
-        m = Mat4.multiply(m, Mat4Transform.scale(spotLightWidth, spotLightHeight, spotLightDepth));
+        // Pole to the Camera
+        NameNode pole = new NameNode("spot_light");
+        Mat4 m = Mat4Transform.scale(poleScale, poleHeight, poleScale);
         m = Mat4.multiply(m, Mat4Transform.translate(0, 0.5f, 0));
-        TransformNode spotLightTransform = new TransformNode("body transform", m);
-        ModelNode spotLightShape = new ModelNode("Sphere(body)", sphere);
+        TransformNode poleTransform = new TransformNode("body transform", m);
+        ModelNode poleShape = new ModelNode("Sphere(body)", sphere);
 
         NameNode spotCamera = new NameNode("camera");
         TransformNode cameraTranslate = new TransformNode("leftarm translate",
-                Mat4Transform.translate(-5f, spotLightHeight, 0));
+                Mat4Transform.translate(0, poleHeight, 0));
         TransformNode cameraRotationZ = new TransformNode("leftarm rotate", Mat4Transform.rotateAroundZ(-30));
+
         cameraRotationY = new TransformNode("leftarm rotate", Mat4Transform.rotateAroundY(30));
-        m = Mat4Transform.scale(spotCameraWidth, spotCameraHeight, spotCameraDepth);
-        // m = Mat4.multiply(m, Mat4Transform.translate(-5f, 0, 0));
-        // m = Mat4.multiply(m, Mat4Transform.translate(0, spotLightHeight * 0.5f, 0));
+        m = Mat4Transform.scale(cameraWidth, cameraHeight, cameraDepth);
         TransformNode spotCameraTransform = new TransformNode("body transform", m);
         ModelNode spotCameraShape = new ModelNode("Sphere(body)", cameraSphere);
 
-        root.addChild(spotLight);
-        spotLight.addChild(spotLightTransform);
-        spotLightTransform.addChild(spotLightShape);
+        root.addChild(rootTranslate);
+        rootTranslate.addChild(pole);
 
-        spotLight.addChild(spotCamera);
+        pole.addChild(poleTransform);
+        poleTransform.addChild(poleShape);
+
+        pole.addChild(spotCamera);
         spotCamera.addChild(cameraTranslate);
         cameraTranslate.addChild(cameraRotationZ);
         cameraRotationZ.addChild(cameraRotationY);
