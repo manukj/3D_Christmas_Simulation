@@ -14,7 +14,8 @@ public class Constants {
     public static final String VERTEX_SHADER_MOVING_PATH = "shader/vs_moving_shader.txt";
     public static final String FRAGMENT_SHADER_MOVING_PATH = "shader/fs_moving_shader.txt";
 
-    public static final Vec3 CAMERA_POISTION = new Vec3(0f, 4.200827f, 16.573412f);
+    public static final Vec3 CAMERA_POISTION = new Vec3(0f, 4.200827f, 10.573412f);
+
     public static final Vec3 LIGHT_POISTION = new Vec3(-5f, 15f, 10f);
 
     public static final String TEXTURE_NAME_BACKGROUND = "background";

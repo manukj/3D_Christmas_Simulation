@@ -5,6 +5,7 @@
 import utils.*;
 import gmaths.*;
 import model.SpotLight;
+import model.Alien;
 import utils.AssignmentUtil.*;
 
 import java.nio.*;
@@ -25,6 +26,7 @@ public class AssignmentGLEventListener implements GLEventListener {
     private Mat4[] roomTransforms;
     private TextureLibrary textures;
     private SpotLight spotLight;
+    private Alien alien1, alien2;
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
@@ -63,6 +65,8 @@ public class AssignmentGLEventListener implements GLEventListener {
         background.dispose(gl);
         floor.dispose(gl);
         light.dispose(gl);
+        spotLight.dispose(gl);
+        alien1.dispose(gl);
     }
 
     public void initialise(GL3 gl) {
@@ -96,36 +100,12 @@ public class AssignmentGLEventListener implements GLEventListener {
                 textures.get(Constants.TEXTURE_NAME_FLOOR));
         roomTransforms = AssignmentUtil.getBackDropTransformation();
 
+        // spot Light
         spotLight = new SpotLight(gl, camera, light, textures.get(Constants.TEXTURE_NAME_STEEL),
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
-        // NameNode lowerBranch = new NameNode("lower branch");
-        // Mat4 m = Mat4Transform.scale(0.3f, 5, 0.3f);
-        // m = Mat4.multiply(m, Mat4Transform.translate(-16f, 0.5f, 0));
-        // TransformNode lowerBranchTransform = new TransformNode("scale(0.3f,5,0.3f);
-        // translate(-16,0.5,0)", m);
-        // ModelNode lowerBranchShape = new ModelNode("sphere(0)", sphere);
-
-        // TransformNode translateToTop = new TransformNode("translate(0,4,0)",
-        // Mat4Transform.translate(0, 5, 0));
-
-        // NameNode upperBranch = new NameNode("upper branch");
-        // m = Mat4Transform.scale(1f, 0.5f, 0.5f);
-        // m = Mat4.multiply(m, Mat4Transform.translate(-4.3f, 0f, 0));
-        // TransformNode upperBranchTransform = new
-        // TransformNode("scale(1.4f,3.9f,1.4f);translate(0,0.5,0)", m);
-        // ModelNode upperBranchShape = new ModelNode("sphere(1)", sphere);
-
-        // twoBranchRoot.addChild(lowerBranch);
-        // lowerBranch.addChild(lowerBranchTransform);
-        // lowerBranchTransform.addChild(lowerBranchShape);
-
-        // lowerBranch.addChild(translateToTop);
-        // translateToTop.addChild(upperBranch);
-        // upperBranch.addChild(upperBranchTransform);
-        // upperBranchTransform.addChild(upperBranchShape);
-
-        // twoBranchRoot.update();
+        // alien
+        alien1 = new Alien(gl, camera, light, -3f);
     }
 
     public void render(GL3 gl) {
@@ -141,5 +121,7 @@ public class AssignmentGLEventListener implements GLEventListener {
         spotLight.updateCameraAnimation(elapsedTime);
 
         spotLight.render(gl);
+
+        alien1.render(gl);
     }
 }

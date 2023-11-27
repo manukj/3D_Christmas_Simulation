@@ -148,7 +148,7 @@ public class Model {
       specular.bind(gl);
     }
 
-    double t = (AssignmentUtil.getSeconds() - startTime) * 0.008; // *0.1 slows it down a bit
+    double t = (AssignmentUtil.getSeconds() - startTime) * 0.1; // *0.1 slows it down a bit
     float offsetX = 0.1f;
     float offsetY = (float) (t - Math.floor(t));
     shader.setFloat(gl, "offset", offsetX, offsetY);

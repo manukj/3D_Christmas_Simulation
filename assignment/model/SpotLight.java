@@ -100,4 +100,10 @@ public class SpotLight {
         cameraRotationY.update();
     }
 
+    public void dispose(GL3 gl) {
+        sphere.dispose(gl);
+        cameraSphere.dispose(gl);
+
+    }
+
 }
