@@ -50,10 +50,10 @@ public class SpotLight {
         NameNode spotCamera = new NameNode("camera");
         TransformNode cameraTranslate = new TransformNode("leftarm translate",
                 Mat4Transform.translate(0, poleHeight, 0));
-        TransformNode cameraRotationZ = new TransformNode("leftarm rotate", Mat4Transform.rotateAroundZ(0));
 
         cameraRotationY = new TransformNode("leftarm rotate", Mat4Transform.rotateAroundY(30));
         m = Mat4Transform.scale(cameraWidth, cameraHeight, cameraDepth);
+        m = Mat4.multiply(m, Mat4Transform.translate(0.5f, 0, 0));
         TransformNode spotCameraTransform = new TransformNode("body transform", m);
         ModelNode spotCameraShape = new ModelNode("Sphere(body)", cameraSphere);
 
@@ -65,8 +65,7 @@ public class SpotLight {
 
         pole.addChild(spotCamera);
         spotCamera.addChild(cameraTranslate);
-        cameraTranslate.addChild(cameraRotationZ);
-        cameraRotationZ.addChild(cameraRotationY);
+        cameraTranslate.addChild(cameraRotationY);
         cameraRotationY.addChild(spotCameraTransform);
         spotCameraTransform.addChild(spotCameraShape);
 
@@ -95,7 +94,9 @@ public class SpotLight {
         // Convert the fraction of a full rotation to degrees (180 degrees for half a
         // circle)
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
-        cameraRotationY.setTransform(Mat4Transform.rotateAroundY(rotateAngle));
+        Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
+        rotationMatrix = Mat4.multiply(rotationMatrix, Mat4Transform.rotateAroundZ(-30));
+        cameraRotationY.setTransform(rotationMatrix);
         cameraRotationY.update();
     }
 
