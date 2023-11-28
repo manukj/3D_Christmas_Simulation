@@ -124,9 +124,12 @@ public class AssignmentGLEventListener implements GLEventListener {
 
         spotLight.render(gl);
 
-        alien1.startRockAnimation(elapsedTime,1f);
-        // alien1.startRollAnimation(elapsedTime);
-        alien1.startHeadRollAnimation(elapsedTime, 2f);
+        alien1.startRockAnimation(elapsedTime, 1f);
+        alien1.startHeadRollFrontNBackAnimation(elapsedTime, 2f);
+
+        alien2.startHeadRollSideToSideAnimation(elapsedTime, 1f);
+        alien2.startRockAnimation(elapsedTime, 2f);
+
         alien1.render(gl);
         alien2.render(gl);
     }

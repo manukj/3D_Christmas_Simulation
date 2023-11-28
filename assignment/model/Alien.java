@@ -203,7 +203,7 @@ public class Alien {
         rockAnimation.update();
     }
 
-    public void startHeadRollAnimation(double elapsedTime, float rollSpeed) {
+    public void startHeadRollFrontNBackAnimation(double elapsedTime, float rollSpeed) {
         float rollAngleMax = 20;
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
@@ -211,8 +211,18 @@ public class Alien {
         headRollAnimation.update();
     }
 
+    public void startHeadRollSideToSideAnimation(double elapsedTime, float rollSpeed) {
+        float rollAngleMax = 20;
+        float rollAngleDelta = rollSpeed * (float) elapsedTime;
+        float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
+        headRollAnimation.setTransform(Mat4Transform.rotateAroundY(rollAngle));
+        headRollAnimation.update();
+    }
+
     public void resetHeadRollAnimation() {
         headRollAnimation.setTransform(Mat4Transform.rotateAroundX(0));
+        headRollAnimation.update();
+        headRollAnimation.setTransform(Mat4Transform.rotateAroundY(0));
         headRollAnimation.update();
     }
 }
