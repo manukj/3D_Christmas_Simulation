@@ -22,6 +22,7 @@ public class Alien {
     private Light lightIn;
     private SGNode root;
     private Model sphere;
+    private TransformNode rockAnimation, headRollAnimation;
 
     public Alien(GL3 gl, Camera camera, Light light, float xPosition) {
         this.camera = camera;
@@ -47,6 +48,7 @@ public class Alien {
 
         root = new NameNode("root");
         TransformNode rootTranslate = new TransformNode("root translate", Mat4Transform.translate(xPosition, 0, 0));
+        rockAnimation = new TransformNode("rock animation", Mat4Transform.rotateAroundZ(0));
 
         NameNode body = new NameNode("body");
         Mat4 m = Mat4Transform.scale(bodyScale, bodyScale, bodyScale);
@@ -57,6 +59,7 @@ public class Alien {
         NameNode head = new NameNode("head");
         TransformNode headTranslate = new TransformNode("head translate",
                 Mat4Transform.translate(0, bodyScale + headScale * 0.5f, 0));
+        headRollAnimation = new TransformNode("head roll animation", Mat4Transform.rotateAroundZ(0));
         m = Mat4Transform.scale(headScale, headScale, headScale);
         TransformNode headTransform = new TransformNode("head transform", m);
         ModelNode headShape = new ModelNode("Sphere(head)", sphere);
@@ -114,13 +117,15 @@ public class Alien {
 
         // body -> root
         root.addChild(rootTranslate);
-        rootTranslate.addChild(body);
+        rootTranslate.addChild(rockAnimation);
+        rockAnimation.addChild(body);
         body.addChild(bodyTransform);
         bodyTransform.addChild(bodyShape);
 
         // head -> body
         body.addChild(headTranslate);
-        headTranslate.addChild(head);
+        headTranslate.addChild(headRollAnimation);
+        headRollAnimation.addChild(head);
         head.addChild(headTransform);
         headTransform.addChild(headShape);
 
@@ -183,5 +188,31 @@ public class Alien {
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
         Model sphere = new Model(name, mesh, modelMatrix, shader, material, lightIn, camera);
         return sphere;
+    }
+
+    public void startRockAnimation(double elapsedTime, float rollSpeed) {
+        float rollAngleMax = 30;
+        float rollAngleDelta = rollSpeed * (float) elapsedTime;
+        float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
+        rockAnimation.setTransform(Mat4Transform.rotateAroundZ(rollAngle));
+        rockAnimation.update();
+    }
+
+    public void restRockAnimation() {
+        rockAnimation.setTransform(Mat4Transform.rotateAroundZ(0));
+        rockAnimation.update();
+    }
+
+    public void startHeadRollAnimation(double elapsedTime, float rollSpeed) {
+        float rollAngleMax = 20;
+        float rollAngleDelta = rollSpeed * (float) elapsedTime;
+        float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
+        headRollAnimation.setTransform(Mat4Transform.rotateAroundX(rollAngle));
+        headRollAnimation.update();
+    }
+
+    public void resetHeadRollAnimation() {
+        headRollAnimation.setTransform(Mat4Transform.rotateAroundX(0));
+        headRollAnimation.update();
     }
 }
