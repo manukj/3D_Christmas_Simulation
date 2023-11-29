@@ -23,8 +23,11 @@ public class SpotLight {
     private Model sphere, cameraSphere;
     private SGNode root;
     private TransformNode cameraRotationY;
+    private Light lightSpotLightCamera;
 
-    public SpotLight(GL3 gl, Camera camera, Light lightIn, Texture steelTexture, Texture cameraTexture) {
+    public SpotLight(GL3 gl, Camera camera, Light lightIn, Texture steelTexture, Texture cameraTexture,
+            Light lightSpotLightCamera) {
+        this.lightSpotLightCamera = lightSpotLightCamera;
         this.camera = camera;
         this.lightIn = lightIn;
         sphere = makeSphere(gl, steelTexture);
@@ -56,6 +59,7 @@ public class SpotLight {
         m = Mat4.multiply(m, Mat4Transform.translate(0.5f, 0, 0));
         TransformNode spotCameraTransform = new TransformNode("body transform", m);
         ModelNode spotCameraShape = new ModelNode("Sphere(body)", cameraSphere);
+        // ModelNode spotLightCamera = new ModelNode("Sphere(body)", lightSpotLightCamera.getModel());
 
         root.addChild(rootTranslate);
         rootTranslate.addChild(pole);

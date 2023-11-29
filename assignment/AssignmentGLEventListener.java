@@ -110,7 +110,7 @@ public class AssignmentGLEventListener implements GLEventListener {
 
         // spot Light
         spotLight = new SpotLight(gl, camera, lights[0], textures.get(Constants.TEXTURE_NAME_STEEL),
-                textures.get(Constants.TEXTURE_NAME_CAMERA));
+                textures.get(Constants.TEXTURE_NAME_CAMERA), lights[1]);
 
         // alien
         alien1 = new Alien(gl, camera, lights[0], -2f);
@@ -118,14 +118,13 @@ public class AssignmentGLEventListener implements GLEventListener {
     }
 
     public void render(GL3 gl) {
+        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        lights[1].setPosition(getLight0Position());
         lights[0].render(gl);
-        lights[1].render(gl);
+        lights[1].render(gl, getSpotLightModelMatrix(elapsedTime));
 
         room.render(gl);
 
-        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         spotLight.updateCameraAnimation(elapsedTime);
 
         spotLight.render(gl);
@@ -140,11 +139,21 @@ public class AssignmentGLEventListener implements GLEventListener {
         // alien2.render(gl);
     }
 
-    private Vec3 getLight0Position() {
-        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
-        float x = -0.5f * (float) (Math.sin(Math.toRadians(elapsedTime * 50)));
-        float y = 5f;
-        float z = 0.5f * (float) (Math.cos(Math.toRadians(elapsedTime * 50)));
-        return new Vec3(x, y, z);
+    public Mat4 getSpotLightModelMatrix(double elapsedTime) {
+        double rotationFraction = elapsedTime % (2 * Math.PI);
+        float rotateAngle = (float) Math.toDegrees(rotationFraction);
+        // Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
+        Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
+        rotationMatrix = Mat4.multiply(rotationMatrix, Mat4Transform.rotateAroundZ(-30));
+
+      
+        Vec3 lightPosition = new Vec3(-5f, 5f, 0f);
+        Mat4 modelMatrix = Mat4Transform.translate(lightPosition);
+        // modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(lightPosition));
+        modelMatrix = Mat4.multiply(modelMatrix, rotationMatrix);
+        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.scale(0.1f, 0.1f, 0.1f));
+        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(10f, 0, 0));
+
+        return modelMatrix;
     }
 }
