@@ -18,8 +18,16 @@ public class Light {
   public Light(GL3 gl) {
     material = new Material();
     material.setAmbient(0.3f, 0.3f, 0.3f);
-    material.setDiffuse(0.7f, 0.7f, 0.7f);
+    material.setDiffuse(0.5f, 0.5f, 0.5f);
     material.setSpecular(1.0f, 1.0f, 1.0f);
+    position = new Vec3(3f, 2f, 1f);
+    model = new Mat4(1);
+    shader = new Shader(gl, Constants.VERTEX_SHADER_LIGHT_PATH, Constants.FRAGMENT_SHADER_LIGHT_PATH);
+    fillBuffers(gl);
+  }
+
+  public Light(GL3 gl, Material material) {
+    this.material = material;
     position = new Vec3(3f, 2f, 1f);
     model = new Mat4(1);
     shader = new Shader(gl, Constants.VERTEX_SHADER_LIGHT_PATH, Constants.FRAGMENT_SHADER_LIGHT_PATH);

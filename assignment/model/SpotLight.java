@@ -88,11 +88,7 @@ public class SpotLight {
     }
 
     public void updateCameraAnimation(double elapsedTime) {
-        // Calculate the fraction of a full rotation completed based on time
-        double rotationFraction = elapsedTime % (2 * Math.PI); // Restrict within one full rotation
-
-        // Convert the fraction of a full rotation to degrees (180 degrees for half a
-        // circle)
+        double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
         Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
         rotationMatrix = Mat4.multiply(rotationMatrix, Mat4Transform.rotateAroundZ(-30));
@@ -103,7 +99,6 @@ public class SpotLight {
     public void dispose(GL3 gl) {
         sphere.dispose(gl);
         cameraSphere.dispose(gl);
-
     }
 
 }
