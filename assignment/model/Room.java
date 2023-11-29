@@ -51,14 +51,17 @@ public class Room {
     }
 
     private ModelMultipleLights makeFloor(GL3 gl) {
+
+        // base blue color
+        Vec3 baseBluecolor = new Vec3(0.0f, 0.0f, 1.0f);
         String name = "floor";
         Mat4 modelMatrix = new Mat4(1);
         modelMatrix = Mat4.multiply(Mat4Transform.scale(roomWidth, 1f, roomHeight), modelMatrix);
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
         Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
                 Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS);
-        Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
-        return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, floorTexture);
+        Material material = new Material(baseBluecolor, baseBluecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+        return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera,floorTexture);
     }
 
     public void dispose(GL3 gl) {

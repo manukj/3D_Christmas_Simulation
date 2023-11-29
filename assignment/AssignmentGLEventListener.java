@@ -22,7 +22,6 @@ import constants.Constants.*;
 public class AssignmentGLEventListener implements GLEventListener {
     private Camera camera;
     private double startTime;
-    private Model background, floor;
     private Room room;
     private Light[] lights = new Light[2];
     private TextureLibrary textures;
@@ -63,8 +62,6 @@ public class AssignmentGLEventListener implements GLEventListener {
 
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
-        background.dispose(gl);
-        floor.dispose(gl);
         spotLight.dispose(gl);
         alien1.dispose(gl);
         alien2.dispose(gl);
@@ -91,22 +88,6 @@ public class AssignmentGLEventListener implements GLEventListener {
 
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),
                 textures.get(Constants.TEXTURE_NAME_FLOOR), textures.get(Constants.TEXTURE_NAME_SNOWFALL), startTime);
-
-        // Model 1 - a background
-        String name = "background";
-        Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_MOVING_PATH, Constants.FRAGMENT_SHADER_MOVING_PATH);
-        Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
-        background = new Model(name, mesh, new Mat4(1), shader, material, lights[0], camera,
-                textures.get(Constants.TEXTURE_NAME_BACKGROUND), textures.get(Constants.TEXTURE_NAME_SNOWFALL));
-
-        // Model 2 - a floor
-        name = "floor";
-        mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
-        material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
-        floor = new Model(name, mesh, new Mat4(1), shader, material, lights[0], camera,
-                textures.get(Constants.TEXTURE_NAME_FLOOR));
 
         // spot Light
         spotLight = new SpotLight(gl, camera, lights[0], textures.get(Constants.TEXTURE_NAME_STEEL),
@@ -146,13 +127,13 @@ public class AssignmentGLEventListener implements GLEventListener {
         Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
         rotationMatrix = Mat4.multiply(rotationMatrix, Mat4Transform.rotateAroundZ(-30));
 
-      
         Vec3 lightPosition = new Vec3(-5f, 5f, 0f);
         Mat4 modelMatrix = Mat4Transform.translate(lightPosition);
-        // modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(lightPosition));
+        // modelMatrix = Mat4.multiply(modelMatrix,
+        // Mat4Transform.translate(lightPosition));
         modelMatrix = Mat4.multiply(modelMatrix, rotationMatrix);
-        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.scale(0.1f, 0.1f, 0.1f));
-        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(10f, 0, 0));
+        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.scale(0.3f, 0.3f, 0.3f));
+        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(2.8f, 0, 0));
 
         return modelMatrix;
     }
