@@ -84,7 +84,7 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
         lights[1].setCamera(camera);
         lights[1].turnOnSpotLight();
         // orange
-        lights[1].setColor(new Vec4(1.0f, 0.8f, 0.0f, 0.3f));
+        lights[1].setColor(AssignmentUtil.SPOT_LIGHT_ON_COLOR);
         lights[0].setPosition(Constants.LIGHT_POISTION);
 
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),

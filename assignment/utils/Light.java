@@ -168,6 +168,7 @@ public class Light {
     material.setDiffuse(0.0f, 0.0f, 0.0f);
     material.setSpecular(0.0f, 0.0f, 0.0f);
     setMaterial(material);
+    lightColor = AssignmentUtil.LIGHT_OFF_COLOR;
     isOn = false;
   }
 
@@ -177,6 +178,7 @@ public class Light {
     material.setDiffuse(0.7f, 0.7f, 0.7f);
     material.setSpecular(1.0f, 1.0f, 1.0f);
     setMaterial(material);
+    lightColor = AssignmentUtil.LIGHT_ON_COLOR;
     isOn = true;
   }
 
@@ -186,6 +188,7 @@ public class Light {
     material.setDiffuse(0.5f, 0.25f, 0.0f);
     material.setSpecular(1.0f, 0.5f, 0.0f);
     setMaterial(material);
+    lightColor = AssignmentUtil.SPOT_LIGHT_ON_COLOR;
     isOn = true;
   }
 
