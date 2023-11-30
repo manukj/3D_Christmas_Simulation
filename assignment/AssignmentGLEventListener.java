@@ -82,9 +82,13 @@ public class AssignmentGLEventListener implements GLEventListener {
         lights[0].setCamera(camera);
         lights[1] = new Light(gl);
         lights[1].setCamera(camera);
-
         lights[0].setPosition(Constants.LIGHT_POISTION);
-        lights[1].setPosition(Constants.LIGHT_2_POISTION);
+
+        Material material = new Material();
+        material.setAmbient(0.0f, 0.0f, 0.0f); // Orange color for ambient
+        material.setDiffuse(0.0f, 0.0f, 0.0f); // Orange color for diffuse
+        material.setSpecular(1.0f, 0.5f, 0.0f); // Orange color for specular
+        lights[1].setMaterial(material);
 
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),
                 textures.get(Constants.TEXTURE_NAME_FLOOR), textures.get(Constants.TEXTURE_NAME_SNOWFALL), startTime);
@@ -102,7 +106,8 @@ public class AssignmentGLEventListener implements GLEventListener {
         double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         lights[0].render(gl);
-        lights[1].render(gl, getSpotLightModelMatrix(elapsedTime));
+        lights[1].setPosition(getLight1Position());
+        lights[1].render(gl);
 
         room.render(gl);
 
@@ -133,8 +138,16 @@ public class AssignmentGLEventListener implements GLEventListener {
         // Mat4Transform.translate(lightPosition));
         modelMatrix = Mat4.multiply(modelMatrix, rotationMatrix);
         modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.scale(0.3f, 0.3f, 0.3f));
-        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(2.8f, 0, 0));
+        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(12.8f, 0, 0));
 
         return modelMatrix;
+    }
+
+    private Vec3 getLight1Position() {
+        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
+        float x = 6.0f * (float) (Math.sin(Math.toRadians(elapsedTime * 80)));
+        float y = 5f;
+        float z = 1.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 80)));
+        return new Vec3(x, y, z);
     }
 }
