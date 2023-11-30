@@ -15,6 +15,7 @@ public class Light {
   private Shader shader;
   private Camera camera;
   public boolean isOn = true;
+  private Vec3 lightColor = new Vec3(1.0f, 1.0f, 1.0f);
 
   public Light(GL3 gl) {
     material = new Material();
@@ -55,6 +56,10 @@ public class Light {
     material = m;
   }
 
+  public void setColor(Vec3 color) {
+    lightColor = color;
+  }
+
   public Material getMaterial() {
     return material;
   }
@@ -78,6 +83,7 @@ public class Light {
 
     shader.use(gl);
     shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
+    shader.setFloat(gl, "lightColor", lightColor.x, lightColor.y, lightColor.z);
 
     gl.glBindVertexArray(vertexArrayId[0]);
     gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
@@ -191,7 +197,7 @@ public class Light {
           material.getDiffuse().z - 0.1f);
       material.setSpecular(material.getSpecular().x - 0.1f, material.getSpecular().y - 0.1f,
           material.getSpecular().z - 0.1f);
-    }else{
+    } else {
       isOn = false;
     }
   }
@@ -204,7 +210,7 @@ public class Light {
           material.getDiffuse().z + 0.1f);
       material.setSpecular(material.getSpecular().x + 0.1f, material.getSpecular().y + 0.1f,
           material.getSpecular().z + 0.1f);
-    }else{
+    } else {
       isOn = true;
     }
   }

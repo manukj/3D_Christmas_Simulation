@@ -83,6 +83,8 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
         lights[1] = new Light(gl);
         lights[1].setCamera(camera);
         lights[1].turnOnSpotLight();
+        // orange
+        lights[1].setColor(new Vec3(1.0f, 0.8f, 0.0f));
         lights[0].setPosition(Constants.LIGHT_POISTION);
 
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),
@@ -138,10 +140,10 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     private Vec3 getLightSpotPosition(double elapsedTime) {
         double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
-        float x = -100;
+        float x = -5f + (float) (Math.cos(Math.toRadians(rotateAngle)));
         float y = 0.5f;
-        float z = 0f;
-        return new Vec3(x, y, z);
+        float z = 1.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 80)));
+        return new Vec3(-5f, 5f, 0f);
     }
 
     @Override
