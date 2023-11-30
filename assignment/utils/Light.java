@@ -15,7 +15,7 @@ public class Light {
   private Shader shader;
   private Camera camera;
   public boolean isOn = true;
-  private Vec3 lightColor = new Vec3(1.0f, 1.0f, 1.0f);
+  private Vec4 lightColor = new Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
   public Light(GL3 gl) {
     material = new Material();
@@ -56,7 +56,7 @@ public class Light {
     material = m;
   }
 
-  public void setColor(Vec3 color) {
+  public void setColor(Vec4 color) {
     lightColor = color;
   }
 
@@ -83,7 +83,7 @@ public class Light {
 
     shader.use(gl);
     shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
-    shader.setFloat(gl, "lightColor", lightColor.x, lightColor.y, lightColor.z);
+    shader.setFloat(gl, "lightColor", lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 
     gl.glBindVertexArray(vertexArrayId[0]);
     gl.glDrawElements(GL.GL_TRIANGLES, indices.length, GL.GL_UNSIGNED_INT, 0);
