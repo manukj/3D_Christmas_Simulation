@@ -17,7 +17,7 @@ public class Camera {
   private static final float DEFAULT_RADIUS = 25;
   public static final Vec3 DEFAULT_POSITION = new Vec3(0, 0, 25);
   public static final Vec3 DEFAULT_POSITION_2 = new Vec3(25, 0, 0);
-  public static final Vec3 DEFAULT_TARGET = new Vec3(0, 0, 0);
+  public static final Vec3 DEFAULT_TARGET = new Vec3(0, 2, 0);
   public static final Vec3 DEFAULT_UP = new Vec3(0, 1, 0);
 
   public final float YAW = -90f;
@@ -141,7 +141,7 @@ public class Camera {
     front.z = (float) (sy * cp);
     front.normalize();
     target = Vec3.add(position, front);
-    System.out.println("dx,dy: " + target.x + "," + target.y + "," + target.z);
+    System.out.println("dx,dy: " + getPosition().x + "," + getPosition().y + "," + getPosition().z);
   }
 
   private void updateCameraVectors() {
