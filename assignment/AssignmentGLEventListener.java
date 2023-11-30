@@ -63,8 +63,8 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         spotLight.dispose(gl);
-        alien1.dispose(gl);
-        alien2.dispose(gl);
+        // alien1.dispose(gl);
+        // alien2.dispose(gl);
         room.dispose(gl);
     }
 
@@ -89,20 +89,20 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
                 textures.get(Constants.TEXTURE_NAME_FLOOR), textures.get(Constants.TEXTURE_NAME_SNOWFALL), startTime);
 
         // spot Light
-        spotLight = new SpotLight(gl, camera, lights[0], textures.get(Constants.TEXTURE_NAME_STEEL),
+        spotLight = new SpotLight(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_STEEL),
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien
-        alien1 = new Alien(gl, camera, lights[0], -2f);
-        alien2 = new Alien(gl, camera, lights[0], 2f);
+        // alien1 = new Alien(gl, camera, lights[0], -2f);
+        // alien2 = new Alien(gl, camera, lights[0], 2f);
     }
 
     public void render(GL3 gl) {
         double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         lights[0].render(gl);
-        lights[1].setPosition(getLight1Position());
-        lights[1].render(gl);
+        lights[1].setPosition(getLightSpotPosition(elapsedTime));
+        lights[1].render(gl, getSpotLightModelMatrix(elapsedTime));
 
         room.render(gl);
 
@@ -123,26 +123,25 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     public Mat4 getSpotLightModelMatrix(double elapsedTime) {
         double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
-        // Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
+
         Mat4 rotationMatrix = Mat4Transform.rotateAroundY(rotateAngle);
         rotationMatrix = Mat4.multiply(rotationMatrix, Mat4Transform.rotateAroundZ(-30));
 
         Vec3 lightPosition = new Vec3(-5f, 5f, 0f);
         Mat4 modelMatrix = Mat4Transform.translate(lightPosition);
-        // modelMatrix = Mat4.multiply(modelMatrix,
-        // Mat4Transform.translate(lightPosition));
         modelMatrix = Mat4.multiply(modelMatrix, rotationMatrix);
         modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.scale(0.3f, 0.3f, 0.3f));
-        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(12.8f, 0, 0));
-
+        modelMatrix = Mat4.multiply(modelMatrix, Mat4Transform.translate(2.8f, 0, 0));
         return modelMatrix;
     }
 
-    private Vec3 getLight1Position() {
-        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
-        float x = 6.0f * (float) (Math.sin(Math.toRadians(elapsedTime * 80)));
-        float y = 5f;
+    private Vec3 getLightSpotPosition(double elapsedTime) {
+        double rotationFraction = elapsedTime % (2 * Math.PI);
+        float rotateAngle = (float) Math.toDegrees(rotationFraction);
+        float x = -5f + (float) (Math.cos(Math.toRadians(rotateAngle)));
+        float y = 0.5f;
         float z = 1.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 80)));
+
         return new Vec3(x, y, z);
     }
 

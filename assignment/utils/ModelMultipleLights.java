@@ -101,6 +101,10 @@ public class ModelMultipleLights {
     render(gl, modelMatrix, startTime);
   }
 
+  public void render(GL3 gl, Mat4 modelMatrix) {
+    render(gl, modelMatrix, 0);
+  }
+
   // second version of render is so that modelMatrix can be overriden with a new
   // parameter
   private void render(GL3 gl, Mat4 modelMatrix, double startTime) {

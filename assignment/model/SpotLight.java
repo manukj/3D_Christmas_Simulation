@@ -19,14 +19,14 @@ import constants.Constants;
  */
 public class SpotLight {
     private Camera camera;
-    private Light lightIn;
-    private Model sphere, cameraSphere;
+    private Light[] lights;
+    private ModelMultipleLights sphere, cameraSphere;
     private SGNode root;
     private TransformNode cameraRotationY;
 
-    public SpotLight(GL3 gl, Camera camera, Light lightIn, Texture steelTexture, Texture cameraTexture) {
+    public SpotLight(GL3 gl, Camera camera, Light[] lights, Texture steelTexture, Texture cameraTexture) {
         this.camera = camera;
-        this.lightIn = lightIn;
+        this.lights = lights;
         sphere = makeSphere(gl, steelTexture);
         cameraSphere = makeSphere(gl, cameraTexture);
 
@@ -78,14 +78,15 @@ public class SpotLight {
         root.draw(gl);
     }
 
-    private Model makeSphere(GL3 gl, Texture t1) {
+    private ModelMultipleLights makeSphere(GL3 gl, Texture t1) {
         String name = "sphere";
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
                 new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
-        Model sphere = new Model(name, mesh, modelMatrix, shader, material, lightIn, camera, t1);
+        ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera,
+                t1);
         return sphere;
     }
 
