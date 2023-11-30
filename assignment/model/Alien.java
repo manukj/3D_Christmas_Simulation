@@ -19,12 +19,12 @@ import constants.Constants;
  */
 public class Alien {
     private Camera camera;
-    private Light lightIn;
+    private Light[] lightIn;
     private SGNode root;
-    private Model sphere;
+    private ModelMultipleLights sphere;
     private TransformNode rockAnimation, headRollAnimation;
 
-    public Alien(GL3 gl, Camera camera, Light light, float xPosition) {
+    public Alien(GL3 gl, Camera camera, Light[] light, float xPosition) {
         this.camera = camera;
         this.lightIn = light;
         sphere = makeSphere(gl);
@@ -179,14 +179,15 @@ public class Alien {
         sphere.dispose(gl);
     }
 
-    private Model makeSphere(GL3 gl) {
+    private ModelMultipleLights makeSphere(GL3 gl) {
         String name = "sphere";
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_STANDARD_PATH);
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
+                Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
                 new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
-        Model sphere = new Model(name, mesh, modelMatrix, shader, material, lightIn, camera);
+        ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lightIn, camera);
         return sphere;
     }
 

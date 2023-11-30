@@ -63,8 +63,8 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     public void dispose(GLAutoDrawable drawable) {
         GL3 gl = drawable.getGL().getGL3();
         spotLight.dispose(gl);
-        // alien1.dispose(gl);
-        // alien2.dispose(gl);
+        alien1.dispose(gl);
+        alien2.dispose(gl);
         room.dispose(gl);
     }
 
@@ -93,8 +93,8 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien
-        // alien1 = new Alien(gl, camera, lights[0], -2f);
-        // alien2 = new Alien(gl, camera, lights[0], 2f);
+        alien1 = new Alien(gl, camera, lights, -2f);
+        alien2 = new Alien(gl, camera, lights, 2f);
     }
 
     public void render(GL3 gl) {
@@ -110,14 +110,14 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
 
         spotLight.render(gl);
 
-        // alien1.startRockAnimation(elapsedTime, 1f);
-        // alien1.startHeadRollFrontNBackAnimation(elapsedTime, 2f);
+        alien1.startRockAnimation(elapsedTime, 1f);
+        alien1.startHeadRollFrontNBackAnimation(elapsedTime, 2f);
 
-        // alien2.startHeadRollSideToSideAnimation(elapsedTime, 1f);
-        // alien2.startRockAnimation(elapsedTime, 2f);
+        alien2.startHeadRollSideToSideAnimation(elapsedTime, 1f);
+        alien2.startRockAnimation(elapsedTime, 2f);
 
-        // alien1.render(gl);
-        // alien2.render(gl);
+        alien1.render(gl);
+        alien2.render(gl);
     }
 
     public Mat4 getSpotLightModelMatrix(double elapsedTime) {
@@ -138,10 +138,9 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     private Vec3 getLightSpotPosition(double elapsedTime) {
         double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
-        float x = -5f + (float) (Math.cos(Math.toRadians(rotateAngle)));
+        float x = -100;
         float y = 0.5f;
-        float z = 1.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 80)));
-
+        float z = 0f;
         return new Vec3(x, y, z);
     }
 
