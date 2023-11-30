@@ -13,9 +13,12 @@ public class Constants {
     public static final String FRAGMENT_SHADER_LIGHT_PATH = "shader/fs_light.txt";
     public static final String VERTEX_SHADER_MOVING_PATH = "shader/vs_moving_shader.txt";
     public static final String FRAGMENT_SHADER_MOVING_PATH = "shader/fs_moving_shader.txt";
-    public static final String FRAGMENT_SHADER_MULTIPLE_LIGHTS = "shader/fs_multiple_lights.txt";
+    public static final String FRAGMENT_SHADER_MULTIPLE_LIGHTS_0_TEXTURE = "shader/fs_standard_m_0t.txt";
+    public static final String FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE = "shader/fs_standard_m_1t.txt";
+    public static final String FRAGMENT_SHADER_MULTIPLE_LIGHTS_2_TEXTURE = "shader/fs_standard_m_2t.txt";
+    public static final String FRAGMENT_SHADER_MOVING_TEXTURE_MULTIPLE_LIGHTS = "shader/fs_moving_ml_2t.txt";
 
-    public static final Vec3 CAMERA_POISTION = new Vec3(0,6,14);
+    public static final Vec3 CAMERA_POISTION = new Vec3(0, 6, 14);
     // 0.037405625,5.9521856,15.164336
     // -0.31873077,7.803866,13.521669
     // new Vec3(4f,12f,18f)
