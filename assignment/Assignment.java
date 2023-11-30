@@ -4,12 +4,13 @@
  */
 import utils.*;
 
+import java.awt.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
@@ -27,7 +28,7 @@ public class Assignment extends JFrame {
     public static void main(String[] args) {
         Assignment window = new Assignment();
         // window.getContentPane().setPreferredSize(dimension);
-        window.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.pack();
         window.setVisible(true);
         window.canvas.requestFocusInWindow();
@@ -45,6 +46,8 @@ public class Assignment extends JFrame {
         canvas.addMouseMotionListener(new MouseInput(camera));
         canvas.addKeyListener(new KeyboardInput(camera));
 
+        buildButtons();
+
         getContentPane().add(canvas, BorderLayout.CENTER);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -58,4 +61,19 @@ public class Assignment extends JFrame {
         animator.start();
     }
 
+    private void buildButtons() {
+        ClickCallback callback = (ClickCallback) glEventListener;
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        JButton toggleSpotLight = new JButton("Toggle Spot light");
+        toogleSpotLight.addActionListener(e -> {
+            callback.toggleSpotLight();
+        });
+        panel.add(toggleSpotLight);
+        JButton toggleMainLight = new JButton("Toggle Main light");
+        toggleMainLight.addActionListener(e -> {
+            callback.toggleMainLight();
+        });
+        this.add(panel, BorderLayout.EAST);
+    }
 }

@@ -155,4 +155,20 @@ public class Light {
     // gl.glBindVertexArray(0);
   }
 
+  public void turnOf() {
+    Material material = new Material();
+    material.setAmbient(0.0f, 0.0f, 0.0f);
+    material.setDiffuse(0.0f, 0.0f, 0.0f);
+    material.setSpecular(0.0f, 0.0f, 0.0f);
+    setMaterial(material);
+  }
+
+  public void turnOn() {
+    Material material = new Material();
+    material.setAmbient(0.3f, 0.3f, 0.3f);
+    material.setDiffuse(0.7f, 0.7f, 0.7f);
+    material.setSpecular(1.0f, 1.0f, 1.0f);
+    setMaterial(material);
+  }
+
 }

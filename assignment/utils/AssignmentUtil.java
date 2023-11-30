@@ -29,4 +29,36 @@ public class AssignmentUtil {
         return new Vec3(0f, 9f, 27f);
     }
 
+    public static void dimLight(Light light) {
+        float dimFactor = 0.1f;
+        Material material = light.getMaterial();
+        material.setAmbient(material.getAmbient().x - dimFactor, material.getAmbient().y - dimFactor,
+                material.getAmbient().z - dimFactor);
+        material.setDiffuse(material.getDiffuse().x - dimFactor, material.getDiffuse().y - dimFactor,
+                material.getDiffuse().z - dimFactor);
+        material.setSpecular(material.getSpecular().x - dimFactor, material.getSpecular().y - dimFactor,
+                material.getSpecular().z - dimFactor);
+        light.setMaterial(material);
+    }
+
+    public static void turnOnLight(Light light) {
+        Material material = new Material();
+        material.setAmbient(0.3f, 0.3f, 0.3f);
+        material.setDiffuse(0.5f, 0.5f, 0.5f);
+        material.setSpecular(1.0f, 1.0f, 1.0f);
+        light.setMaterial(material);
+    }
+
+    public static void brightenLight(Light light) {
+        float dimFactor = 0.1f;
+        Material material = light.getMaterial();
+        material.setAmbient(material.getAmbient().x + dimFactor, material.getAmbient().y + dimFactor,
+                material.getAmbient().z + dimFactor);
+        material.setDiffuse(material.getDiffuse().x + dimFactor, material.getDiffuse().y + dimFactor,
+                material.getDiffuse().z + dimFactor);
+        material.setSpecular(material.getSpecular().x + dimFactor, material.getSpecular().y + dimFactor,
+                material.getSpecular().z + dimFactor);
+        light.setMaterial(material);
+    }
+
 }

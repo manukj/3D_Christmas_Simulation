@@ -19,7 +19,7 @@ import com.jogamp.opengl.util.glsl.*;
 import constants.Constants;
 import constants.Constants.*;
 
-public class AssignmentGLEventListener implements GLEventListener {
+public class AssignmentGLEventListener implements GLEventListener, ClickCallback {
     private Camera camera;
     private double startTime;
     private Room room;
@@ -27,6 +27,7 @@ public class AssignmentGLEventListener implements GLEventListener {
     private TextureLibrary textures;
     private SpotLight spotLight;
     private Alien alien1, alien2;
+    private boolean isSpotLightOn = true;
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
@@ -86,7 +87,7 @@ public class AssignmentGLEventListener implements GLEventListener {
 
         Material material = new Material();
         material.setAmbient(0.0f, 0.0f, 0.0f); // Orange color for ambient
-        material.setDiffuse(0.0f, 0.0f, 0.0f); // Orange color for diffuse
+        material.setDiffuse(0.5f, 0.25f, 0.0f); // Orange color for diffuse
         material.setSpecular(1.0f, 0.5f, 0.0f); // Orange color for specular
         lights[1].setMaterial(material);
 
@@ -150,4 +151,15 @@ public class AssignmentGLEventListener implements GLEventListener {
         float z = 1.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 80)));
         return new Vec3(x, y, z);
     }
+
+    @Override
+    public void toggleSpotLight() {
+        if (isSpotLightOn) {
+            lights[1].turnOf();
+        } else {
+            lights[1].turnOn();
+        }
+        isSpotLightOn = !isSpotLightOn;
+    }
+
 }
