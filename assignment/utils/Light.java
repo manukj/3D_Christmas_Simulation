@@ -14,6 +14,7 @@ public class Light {
   private Mat4 model;
   private Shader shader;
   private Camera camera;
+  public boolean isOn = true;
 
   public Light(GL3 gl) {
     material = new Material();
@@ -161,6 +162,7 @@ public class Light {
     material.setDiffuse(0.0f, 0.0f, 0.0f);
     material.setSpecular(0.0f, 0.0f, 0.0f);
     setMaterial(material);
+    isOn = false;
   }
 
   public void turnOn() {
@@ -169,6 +171,42 @@ public class Light {
     material.setDiffuse(0.7f, 0.7f, 0.7f);
     material.setSpecular(1.0f, 1.0f, 1.0f);
     setMaterial(material);
+    isOn = true;
+  }
+
+  public void turnOnSpotLight() {
+    Material material = new Material();
+    material.setAmbient(0.0f, 0.0f, 0.0f);
+    material.setDiffuse(0.5f, 0.25f, 0.0f);
+    material.setSpecular(1.0f, 0.5f, 0.0f);
+    setMaterial(material);
+    isOn = true;
+  }
+
+  public void dim() {
+    if (material.getAmbient().x >= 0.0f) {
+      material.setAmbient(material.getAmbient().x - 0.1f, material.getAmbient().y - 0.1f,
+          material.getAmbient().z - 0.1f);
+      material.setDiffuse(material.getDiffuse().x - 0.1f, material.getDiffuse().y - 0.1f,
+          material.getDiffuse().z - 0.1f);
+      material.setSpecular(material.getSpecular().x - 0.1f, material.getSpecular().y - 0.1f,
+          material.getSpecular().z - 0.1f);
+    }else{
+      isOn = false;
+    }
+  }
+
+  public void brighten() {
+    if (material.getAmbient().x <= 1.0f) {
+      material.setAmbient(material.getAmbient().x + 0.1f, material.getAmbient().y + 0.1f,
+          material.getAmbient().z + 0.1f);
+      material.setDiffuse(material.getDiffuse().x + 0.1f, material.getDiffuse().y + 0.1f,
+          material.getDiffuse().z + 0.1f);
+      material.setSpecular(material.getSpecular().x + 0.1f, material.getSpecular().y + 0.1f,
+          material.getSpecular().z + 0.1f);
+    }else{
+      isOn = true;
+    }
   }
 
 }

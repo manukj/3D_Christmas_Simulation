@@ -5,16 +5,16 @@ package utils;
  */
 public interface ClickCallback {
 
-    // public void dimMainLight();
+    public void dimMainLight();
 
-    // public void brightenMainLight();
+    public void brightenMainLight();
 
     public void toggleMainLight();
 
     public void toggleSpotLight();
 
-    // public void dimSpotLight();
+    public void dimSpotLight();
 
-    // public void brightenSpotLight();
+    public void brightenSpotLight();
 
 }

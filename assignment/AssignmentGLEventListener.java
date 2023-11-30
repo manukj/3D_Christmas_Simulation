@@ -27,7 +27,6 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     private TextureLibrary textures;
     private SpotLight spotLight;
     private Alien alien1, alien2;
-    private boolean isSpotLightOn = true;
 
     public AssignmentGLEventListener(Camera camera) {
         this.camera = camera;
@@ -83,20 +82,15 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
         lights[0].setCamera(camera);
         lights[1] = new Light(gl);
         lights[1].setCamera(camera);
+        lights[1].turnOnSpotLight();
         lights[0].setPosition(Constants.LIGHT_POISTION);
-
-        Material material = new Material();
-        material.setAmbient(0.0f, 0.0f, 0.0f); // Orange color for ambient
-        material.setDiffuse(0.5f, 0.25f, 0.0f); // Orange color for diffuse
-        material.setSpecular(1.0f, 0.5f, 0.0f); // Orange color for specular
-        lights[1].setMaterial(material);
 
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),
                 textures.get(Constants.TEXTURE_NAME_FLOOR), textures.get(Constants.TEXTURE_NAME_SNOWFALL), startTime);
 
         // spot Light
         spotLight = new SpotLight(gl, camera, lights[0], textures.get(Constants.TEXTURE_NAME_STEEL),
-                textures.get(Constants.TEXTURE_NAME_CAMERA), lights[1]);
+                textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien
         alien1 = new Alien(gl, camera, lights[0], -2f);
@@ -154,12 +148,40 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
 
     @Override
     public void toggleSpotLight() {
-        if (isSpotLightOn) {
+        if (lights[1].isOn) {
             lights[1].turnOf();
         } else {
-            lights[1].turnOn();
+            lights[1].turnOnSpotLight();
         }
-        isSpotLightOn = !isSpotLightOn;
+
     }
 
+    @Override
+    public void toggleMainLight() {
+        if (lights[0].isOn) {
+            lights[0].turnOf();
+        } else {
+            lights[0].turnOn();
+        }
+    }
+
+    @Override
+    public void dimMainLight() {
+        lights[0].dim();
+    }
+
+    @Override
+    public void brightenMainLight() {
+        lights[0].brighten();
+    }
+
+    @Override
+    public void dimSpotLight() {
+        lights[1].dim();
+    }
+
+    @Override
+    public void brightenSpotLight() {
+        lights[1].brighten();
+    }
 }
