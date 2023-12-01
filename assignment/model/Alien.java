@@ -35,6 +35,15 @@ public class Alien {
         this.camera = camera;
         this.lightIn = light;
         this.isRollingFrontNBack = isRollingFrontNBack;
+        // This change is just to show different speed for different aliens, nothing
+        // logical here
+        if (isRollingFrontNBack) {
+            rollSpeed = 1f;
+            rockSpeed = 2f;
+        } else {
+            rollSpeed = 2f;
+            rockSpeed = 1f;
+        }
         sphere = makeSphere(gl);
 
         float bodyScale = 2f;

@@ -20,7 +20,82 @@ public class Controls {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // main light controls
-        JLabel mainLightLabel = new JLabel("Main Light");
+        mainLightControls(callback);
+
+        // spot light controls
+        spotLightControls(callback);
+
+        // Alien 1 animation controls
+        addAlienControls(callback, 1);
+        addAlienControls(callback, 2);
+        JLabel endJLabel = new JLabel("----------------------------");
+        panel.add(endJLabel);
+    }
+
+    void addAlienControls(ClickCallback callback, int alienIndex) {
+        JLabel alienLabel = new JLabel("------- Animate Alien " + alienIndex + "-------");
+
+        // rock animation controls
+        JLabel rockLabel = new JLabel("**** Rock Animation  ****");
+        JButton alienIncreaseRockSpeed = new JButton("+ Speed");
+        alienIncreaseRockSpeed.addActionListener(e -> {
+            callback.increaseRockSpeed(alienIndex);
+        });
+        JButton alienDecreaseRockSpeed = new JButton("- Speed");
+        alienDecreaseRockSpeed.addActionListener(e -> {
+            callback.decreaseRockSpeed(alienIndex);
+        });
+        JPanel rockControlPanel = new JPanel();
+        rockControlPanel.setLayout(new BoxLayout(rockControlPanel, BoxLayout.X_AXIS));
+        rockControlPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        rockControlPanel.add(alienIncreaseRockSpeed);
+        rockControlPanel.add(alienDecreaseRockSpeed);
+        JButton toggleRockAnimation = new JButton("Toggle Rock Animation");
+        toggleRockAnimation.addActionListener(e -> {
+            callback.toggleRockAnimation(alienIndex);
+        });
+
+        // roll animation controls
+        JLabel rollLabel = new JLabel("**** Roll Animation Speed ****");
+        JButton alienIncreaseRollSpeed = new JButton("+ Speed");
+        alienIncreaseRollSpeed.addActionListener(e -> {
+            callback.increaseRollSpeed(alienIndex);
+        });
+        JButton alienDecreaseRollSpeed = new JButton("- Speed");
+        alienDecreaseRollSpeed.addActionListener(e -> {
+            callback.decreaseRollSpeed(alienIndex);
+        });
+        JPanel rollControlPanel = new JPanel();
+        rollControlPanel.setLayout(new BoxLayout(rollControlPanel, BoxLayout.X_AXIS));
+        rollControlPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        rollControlPanel.add(alienIncreaseRollSpeed);
+        rollControlPanel.add(alienDecreaseRollSpeed);
+        JButton toggleRollAnimation = new JButton("Toggle Roll Animation");
+        toggleRollAnimation.addActionListener(e -> {
+            callback.toggleRollAnimation(alienIndex);
+        });
+        JButton alienChangeRollDirection = new JButton("Change Roll Direction");
+        alienChangeRollDirection.addActionListener(e -> {
+            callback.changeRollDirection(alienIndex);
+        });
+
+        panel.add(alienLabel);
+
+        panel.add(rockLabel);
+        panel.add(toggleRockAnimation);
+        panel.add(rockControlPanel);
+
+        panel.add(rollLabel);
+        panel.add(toggleRollAnimation);
+        panel.add(alienChangeRollDirection);
+        panel.add(rollControlPanel);
+
+    }
+
+    void mainLightControls(ClickCallback callback) {
+        JLabel mainLightLabel = new JLabel("--------- Main Light ---------");
         JButton toggleMainLight = new JButton("Toggle Main light");
         toggleMainLight.addActionListener(e -> {
             callback.toggleMainLight();
@@ -37,9 +112,10 @@ public class Controls {
         panel.add(toggleMainLight);
         panel.add(dimMainLight);
         panel.add(brightenMainLight);
+    }
 
-        // spot light controls
-        JLabel spotLightLabel = new JLabel("SpotLight");
+    void spotLightControls(ClickCallback callback) {
+        JLabel spotLightLabel = new JLabel("--------- SpotLight ---------");
         JButton toggleSpotLight = new JButton("Toggle Spot light");
         toggleSpotLight.addActionListener(e -> {
             callback.toggleSpotLight();
@@ -52,50 +128,11 @@ public class Controls {
         brightenSpotLight.addActionListener(e -> {
             callback.brightenSpotLight();
         });
+
         panel.add(spotLightLabel);
         panel.add(toggleSpotLight);
         panel.add(dimSpotLight);
         panel.add(brightenSpotLight);
-
-        // Alien 1 animation controls
-        JLabel alien1Label = new JLabel("Animate Alien 1");
-        JButton alien1IncreaseRockSpeed = new JButton("Increase Rock Speed");
-        alien1IncreaseRockSpeed.addActionListener(e -> {
-            callback.increaseRockSpeed(1);
-        });
-        JButton alien1DecreaseRockSpeed = new JButton("Decrease Rock Speed");
-        alien1DecreaseRockSpeed.addActionListener(e -> {
-            callback.decreaseRockSpeed(1);
-        });
-        JButton alien1IncreaseRollSpeed = new JButton("Increase Roll Speed");
-        alien1IncreaseRollSpeed.addActionListener(e -> {
-            callback.increaseRollSpeed(1);
-        });
-        JButton alien1DecreaseRollSpeed = new JButton("Decrease Roll Speed");
-        alien1DecreaseRollSpeed.addActionListener(e -> {
-            callback.decreaseRollSpeed(1);
-        });
-        JButton alien1ChangeRollDirection = new JButton("Change Roll Direction");
-        alien1ChangeRollDirection.addActionListener(e -> {
-            callback.changeRollDirection(1);
-        });
-
-        JButton toggleRockAnimation = new JButton("Toggle Rock Animation");
-        toggleRockAnimation.addActionListener(e -> {
-            callback.toggleRockAnimation(1);
-        });
-        JButton toggleRollAnimation = new JButton("Toggle Roll Animation");
-        toggleRollAnimation.addActionListener(e -> {
-            callback.toggleRollAnimation(1);
-        });
-        panel.add(alien1Label);
-        panel.add(alien1IncreaseRockSpeed);
-        panel.add(alien1DecreaseRockSpeed);
-        panel.add(alien1IncreaseRollSpeed);
-        panel.add(alien1DecreaseRollSpeed);
-        panel.add(alien1ChangeRollDirection);
-        panel.add(toggleRockAnimation);
-        panel.add(toggleRollAnimation);
 
     }
 }
