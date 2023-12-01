@@ -23,10 +23,18 @@ public class Alien {
     private SGNode root;
     private ModelMultipleLights sphere;
     private TransformNode rockAnimation, headRollAnimation;
+    private double startTime;
+    private boolean isRocking = true;
+    private boolean isRolling = true;
+    private float rockSpeed = 2f;
+    private float rollSpeed = 2f;
+    private boolean isRollingFrontNBack = true;
 
-    public Alien(GL3 gl, Camera camera, Light[] light, float xPosition) {
+    public Alien(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime, boolean isRollingFrontNBack) {
+        this.startTime = startTime;
         this.camera = camera;
         this.lightIn = light;
+        this.isRollingFrontNBack = isRollingFrontNBack;
         sphere = makeSphere(gl);
 
         float bodyScale = 2f;
@@ -172,6 +180,20 @@ public class Alien {
     }
 
     public void render(GL3 gl) {
+        if (isRocking) {
+            startRockAnimation(rockSpeed);
+        } else {
+            stopRockAnimation();
+        }
+        if (isRolling) {
+            if (isRollingFrontNBack) {
+                startHeadRollFrontNBackAnimation(rollSpeed);
+            } else {
+                startHeadRollSideToSideAnimation(rollSpeed);
+            }
+        } else {
+            stopHeadRollAnimation();
+        }
         root.draw(gl);
     }
 
@@ -187,11 +209,13 @@ public class Alien {
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
                 new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
-        ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lightIn, camera);
+        ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lightIn,
+                camera);
         return sphere;
     }
 
-    public void startRockAnimation(double elapsedTime, float rollSpeed) {
+    private void startRockAnimation(float rollSpeed) {
+        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         float rollAngleMax = 30;
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
@@ -199,12 +223,13 @@ public class Alien {
         rockAnimation.update();
     }
 
-    public void restRockAnimation() {
+    public void stopRockAnimation() {
         rockAnimation.setTransform(Mat4Transform.rotateAroundZ(0));
         rockAnimation.update();
     }
 
-    public void startHeadRollFrontNBackAnimation(double elapsedTime, float rollSpeed) {
+    private void startHeadRollFrontNBackAnimation(float rollSpeed) {
+        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         float rollAngleMax = 20;
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
@@ -212,7 +237,8 @@ public class Alien {
         headRollAnimation.update();
     }
 
-    public void startHeadRollSideToSideAnimation(double elapsedTime, float rollSpeed) {
+    private void startHeadRollSideToSideAnimation(float rollSpeed) {
+        double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         float rollAngleMax = 20;
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
@@ -220,10 +246,38 @@ public class Alien {
         headRollAnimation.update();
     }
 
-    public void resetHeadRollAnimation() {
+    private void stopHeadRollAnimation() {
         headRollAnimation.setTransform(Mat4Transform.rotateAroundX(0));
         headRollAnimation.update();
         headRollAnimation.setTransform(Mat4Transform.rotateAroundY(0));
         headRollAnimation.update();
+    }
+
+    public void toggleRollAnimation() {
+        isRolling = !isRolling;
+    }
+
+    public void toggleRockAnimation() {
+        isRocking = !isRocking;
+    }
+
+    public void changeRollDirection() {
+        isRollingFrontNBack = !isRollingFrontNBack;
+    }
+
+    public void increaseRockSpeed() {
+        rockSpeed += 0.5f;
+    }
+
+    public void decreaseRockSpeed() {
+        rockSpeed -= 0.5f;
+    }
+
+    public void increaseRollSpeed() {
+        rollSpeed += 0.5f;
+    }
+
+    public void decreaseRollSpeed() {
+        rollSpeed -= 0.5f;
     }
 }

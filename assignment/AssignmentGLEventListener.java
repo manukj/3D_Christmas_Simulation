@@ -95,8 +95,8 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien
-        alien1 = new Alien(gl, camera, lights, -2f);
-        alien2 = new Alien(gl, camera, lights, 2f);
+        alien1 = new Alien(gl, camera, lights, -2f, startTime, true);
+        alien2 = new Alien(gl, camera, lights, 2f, startTime, false);
     }
 
     public void render(GL3 gl) {
@@ -111,12 +111,6 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
         spotLight.updateCameraAnimation(elapsedTime);
 
         spotLight.render(gl);
-
-        alien1.startRockAnimation(elapsedTime, 1f);
-        alien1.startHeadRollFrontNBackAnimation(elapsedTime, 2f);
-
-        alien2.startHeadRollSideToSideAnimation(elapsedTime, 1f);
-        alien2.startRockAnimation(elapsedTime, 2f);
 
         alien1.render(gl);
         alien2.render(gl);
@@ -183,5 +177,68 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
     @Override
     public void brightenSpotLight() {
         lights[1].brighten();
+    }
+
+    @Override
+    public void increaseRockSpeed(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.increaseRockSpeed();
+        } else if (alienIndex == 2) {
+            alien2.increaseRockSpeed();
+        }
+    }
+
+    @Override
+    public void decreaseRockSpeed(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.decreaseRockSpeed();
+        } else if (alienIndex == 2) {
+            alien2.decreaseRockSpeed();
+        }
+    }
+
+    @Override
+    public void increaseRollSpeed(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.increaseRollSpeed();
+        } else if (alienIndex == 2) {
+            alien2.increaseRollSpeed();
+        }
+    }
+
+    @Override
+    public void decreaseRollSpeed(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.decreaseRollSpeed();
+        } else if (alienIndex == 2) {
+            alien2.decreaseRollSpeed();
+        }
+    }
+
+    @Override
+    public void changeRollDirection(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.changeRollDirection();
+        } else if (alienIndex == 2) {
+            alien2.changeRollDirection();
+        }
+    }
+
+    @Override
+    public void toggleRockAnimation(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.toggleRockAnimation();
+        } else if (alienIndex == 2) {
+            alien2.toggleRockAnimation();
+        }
+    }
+
+    @Override
+    public void toggleRollAnimation(int alienIndex) {
+        if (alienIndex == 1) {
+            alien1.toggleRollAnimation();
+        } else if (alienIndex == 2) {
+            alien2.toggleRollAnimation();
+        }
     }
 }

@@ -46,7 +46,7 @@ public class Assignment extends JFrame {
         canvas.addMouseMotionListener(new MouseInput(camera));
         canvas.addKeyListener(new KeyboardInput(camera));
 
-        buildButtons();
+        addControls();
 
         getContentPane().add(canvas, BorderLayout.CENTER);
         addWindowListener(new WindowAdapter() {
@@ -61,49 +61,8 @@ public class Assignment extends JFrame {
         animator.start();
     }
 
-    private void buildButtons() {
-        ClickCallback callback = (ClickCallback) glEventListener;
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JLabel mainLightLabel = new JLabel("Main Light");
-        JButton toggleMainLight = new JButton("Toggle Main light");
-        toggleMainLight.addActionListener(e -> {
-            callback.toggleMainLight();
-        });
-        JButton dimMainLight = new JButton("Dim Main light");
-        dimMainLight.addActionListener(e -> {
-            callback.dimMainLight();
-        });
-        JButton brightenMainLight = new JButton("Brighten Main light");
-        brightenMainLight.addActionListener(e -> {
-            callback.brightenMainLight();
-        });
-        panel.add(mainLightLabel);
-        panel.add(toggleMainLight);
-        panel.add(dimMainLight);
-        panel.add(brightenMainLight);
-
-        JLabel spotLightLabel = new JLabel("SpotLight");
-        JButton toggleSpotLight = new JButton("Toggle Spot light");
-        toggleSpotLight.addActionListener(e -> {
-            callback.toggleSpotLight();
-        });
-        JButton dimSpotLight = new JButton("Dim Spot light");
-        dimSpotLight.addActionListener(e -> {
-            callback.dimSpotLight();
-        });
-        JButton brightenSpotLight = new JButton("Brighten Spot light");
-        brightenSpotLight.addActionListener(e -> {
-            callback.brightenSpotLight();
-        });
-        panel.add(spotLightLabel);
-        panel.add(toggleSpotLight);
-        panel.add(dimSpotLight);
-        panel.add(brightenSpotLight);
-
-        this.add(panel, BorderLayout.EAST);
+    private void addControls() {
+        Controls controls = new Controls((ClickCallback) glEventListener);
+        this.add(controls.panel, BorderLayout.EAST);
     }
 }
