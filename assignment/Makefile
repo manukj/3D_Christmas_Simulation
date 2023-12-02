@@ -1,4 +1,9 @@
 
+#
+#  I declare that this code is my own work
+# Author: Manu Kenchappa Junjanna 
+# 
+
 .PHONY: clean
 
 # This target cleans the built classes.

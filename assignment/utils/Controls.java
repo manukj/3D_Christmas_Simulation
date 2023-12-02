@@ -7,7 +7,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 /**
- * Controls
+ *  I declare that this code is my own work
+ *  Author: Manu Kenchappa Junjanna 
  */
 public class Controls {
 

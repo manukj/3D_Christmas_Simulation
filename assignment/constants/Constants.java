@@ -3,7 +3,8 @@ package constants;
 import gmaths.*;
 
 /**
- * Constants
+ *  I declare that this code is my own work
+ *  Author: Manu Kenchappa Junjanna 
  */
 public class Constants {
     public static final boolean DISPLAY_SHADERS = false;

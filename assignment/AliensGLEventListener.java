@@ -1,6 +1,7 @@
 
 /**
- * AliensGLEventListener
+ *  I declare that this code is my own work
+ *  Author: Manu Kenchappa Junjanna 
  */
 import utils.*;
 import gmaths.*;

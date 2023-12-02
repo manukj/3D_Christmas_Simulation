@@ -1,7 +1,8 @@
 package utils;
 
 /**
- * ClickCallback
+ *  I declare that this code is my own work
+ *  Author: Manu Kenchappa Junjanna 
  */
 public interface ClickCallback {
 

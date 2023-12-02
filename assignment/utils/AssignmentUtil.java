@@ -3,7 +3,8 @@ package utils;
 import gmaths.*;
 
 /**
- * AssignmentUtil
+ *  I declare that this code is my own work
+ *  Author: Manu Kenchappa Junjanna 
  */
 public class AssignmentUtil {
     public static final float BACKDROP_HEIGHT = 6.66f;

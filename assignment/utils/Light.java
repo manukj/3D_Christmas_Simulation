@@ -83,6 +83,7 @@ public class Light {
 
     shader.use(gl);
     shader.setFloatArray(gl, "mvpMatrix", mvpMatrix.toFloatArrayForGLSL());
+    // changes : added support for setting light color dynamically
     shader.setFloat(gl, "lightColor", lightColor.x, lightColor.y, lightColor.z, lightColor.w);
 
     gl.glBindVertexArray(vertexArrayId[0]);
@@ -162,6 +163,7 @@ public class Light {
     // gl.glBindVertexArray(0);
   }
 
+  // change : added support for turning on and off the light
   public void turnOf() {
     Material material = new Material();
     material.setAmbient(0.0f, 0.0f, 0.0f);
@@ -192,6 +194,7 @@ public class Light {
     isOn = true;
   }
 
+  // change : added support for dimming and brightening the light
   public void dim() {
     if (material.getAmbient().x >= 0.0f) {
       material.setAmbient(material.getAmbient().x - 0.1f, material.getAmbient().y - 0.1f,

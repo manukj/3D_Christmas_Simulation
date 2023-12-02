@@ -145,7 +145,7 @@ public class ModelMultipleLights {
       specular.bind(gl);
     }
 
-    // animate the texture by moving
+    // changes : animate the texture by moving
     if (startTime != 0) {
       double t = (AssignmentUtil.getSeconds() - startTime) * 0.1; // *0.1 slows it down a bit
       float offsetX = 0.1f;

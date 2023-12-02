@@ -15,7 +15,8 @@ import com.jogamp.opengl.util.texture.spi.JPEGImage;
 import constants.Constants;
 
 /**
- * SpotLight
+ *  I declare that this code is my own work
+ *  Author: Manu Kenchappa Junjanna 
  */
 public class SpotLight {
     private Camera camera;

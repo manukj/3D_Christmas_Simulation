@@ -10,7 +10,8 @@ import com.jogamp.opengl.util.texture.awt.*;
 import com.jogamp.opengl.util.texture.spi.JPEGImage;
 
 /**
- * Room
+ *  I declare that this code is my own work,but taken  refernce from 3DCG code
+ *  Author: Manu Kenchappa Junjanna 
  */
 public class Room {
 
@@ -51,7 +52,6 @@ public class Room {
     }
 
     private ModelMultipleLights makeFloor(GL3 gl) {
-
         // base blue color
         Vec3 baseBluecolor = new Vec3(0.0f, 0.0f, 1.0f);
         String name = "floor";
