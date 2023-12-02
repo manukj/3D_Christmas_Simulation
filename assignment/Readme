@@ -1,0 +1,20 @@
+# Aliens
+#### How to run Code
+There are 2 ways run this program 
+> Make sure that you are in Path of the project
+1. If you already have make installed in the system just run 
+```
+make run
+```
+2. Through Compiling the Aliens.java and then runing the program  
+```
+// compile the code
+javac Aliens.java 
+// run the program
+java Aliens
+```
+#### Compiled and tested on 
+The Code is Compiled in Mac Opertating system and test 
+JAVA Version ( tested on both )
+1.  JAVA 17
+2.  JAVA 20
