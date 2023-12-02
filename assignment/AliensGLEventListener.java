@@ -96,8 +96,8 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien Models
-        alien1 = new AlienModel(gl, camera, lights, -2f, startTime, true);
-        alien2 = new AlienModel(gl, camera, lights, 2f, startTime, false);
+        alien1 = new AlienModel(gl, camera, lights, -2f, startTime, 1);
+        alien2 = new AlienModel(gl, camera, lights, 2f, startTime, 2);
     }
 
     public void render(GL3 gl) {

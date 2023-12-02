@@ -3,8 +3,8 @@ package constants;
 import gmaths.*;
 
 /**
- *  I declare that this code is my own work
- *  Author: Manu Kenchappa Junjanna 
+ * I declare that this code is my own work
+ * Author: Manu Kenchappa Junjanna
  */
 public class Constants {
     public static final boolean DISPLAY_SHADERS = false;
@@ -36,4 +36,22 @@ public class Constants {
     public static final String TEXTURE_PATH_CAMERA = "textures/camera.jpeg";
     public static final String TEXTURE_NAME_STEEL = "steel";
     public static final String TEXTURE_PATH_STEEL = "textures/steel.jpeg";
+    // eye
+    public static final String TEXTURE_NAME_ALIEN_EYE = "alien_eye";
+    public static final String TEXTURE_PATH_ALIEN_EYE = "textures/eye.png";
+    public static final String TEXTURE_NAME_ALIEN2_EYE = "alien_eye_2";
+    public static final String TEXTURE_PATH_ALIEN2_EYE = "textures/eye_2.png";
+    // ear
+    public static final String TEXTURE_NAME_ALIEN_EAR = "alien_ear";
+    public static final String TEXTURE_PATH_ALIEN_EAR = "textures/ear.png";
+    // anteena
+    public static final String TEXTURE_NAME_ALIEN1_ANTEENA1 = "alien_anteena1_1";
+    public static final String TEXTURE_PATH_ALIEN1_ANTEENA1 = "textures/anteena1_1.png";
+    public static final String TEXTURE_NAME_ALIEN1_ANTEENA2 = "alien_anteena1_1";
+    public static final String TEXTURE_PATH_ALIEN1_ANTEENA2 = "textures/anteena1_2.png";
+    public static final String TEXTURE_NAME_ALIEN2_ANTEENA1 = "alien_anteena2_1";
+    public static final String TEXTURE_PATH_ALIEN2_ANTEENA1 = "textures/anteena2_1.png";
+    public static final String TEXTURE_NAME_ALIEN2_ANTEENA2 = "alien_anteena2_2";
+    public static final String TEXTURE_PATH_ALIEN2_ANTEENA2 = "textures/anteena2_2.png";
+    
 }
