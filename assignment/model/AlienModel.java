@@ -32,6 +32,7 @@ public class AlienModel {
     private float rollSpeed = 2f;
     private TextureLibrary textureLibrary;
     private int alienIndex;
+    Vec3 baseColor = new Vec3(1.0f, 1.0f, 1f);
 
     public AlienModel(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime,
             int alienIndex) {
@@ -51,7 +52,7 @@ public class AlienModel {
             isRolling = true;
         }
         initaliseTextures(gl);
-        sphere = makeSphere(gl);
+        sphere = makeSphere(gl, baseColor);
 
         float bodyScale = 2f;
         float headScale = 1f;
@@ -92,21 +93,24 @@ public class AlienModel {
         ModelNode headShape = new ModelNode("Sphere(head)", sphere);
 
         // antenna and its transform
-        if (isFirstAlien()) {
-            sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_EYE));
-        } else {
-            sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN2_EYE));
-        }
         NameNode antenna = new NameNode("antenna");
         TransformNode antennaTranslate = new TransformNode("antenna translate",
                 Mat4Transform.translate(0, headScale * 0.5f + antennaLength * 0.5f, 0));
         m = Mat4Transform.scale(anteenaScale, antennaLength, anteenaScale);
         TransformNode antennaTransform = new TransformNode("antenna transform", m);
         ModelNode antennaShape = new ModelNode("Sphere(antenna)", sphere);
+        if (isFirstAlien()) {
+            sphere = makeSphere(gl,
+                    textureLibrary.get(Constants.TEXTURE_NAME_ALIEN1_ANTEENA));
+        } else {
+            sphere = makeSphere(gl,
 
+                    textureLibrary.get(Constants.TEXTURE_NAME_ALIEN2_ANTEENA));
+        }
         NameNode antennaSphere = new NameNode("antenna sphere");
         m = Mat4Transform.translate(0, antennaLength * 0.5f + antennaSphereScale * 0.5f, 0);
         m = Mat4.multiply(m, Mat4Transform.scale(antennaSphereScale, antennaSphereScale, antennaSphereScale));
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundY(180));
         TransformNode antennaSphereTransform = new TransformNode("antenna spheretransform", m);
         ModelNode antennaSphereShape = new ModelNode("Sphere(antenna sphere)", sphere);
 
@@ -239,19 +243,21 @@ public class AlienModel {
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_EYE, Constants.TEXTURE_PATH_ALIEN_EYE);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_EYE, Constants.TEXTURE_PATH_ALIEN2_EYE);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_EAR, Constants.TEXTURE_PATH_ALIEN_EAR);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN1_ANTEENA, Constants.TEXTURE_PATH_ALIEN1_ANTEENA);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_ANTEENA, Constants.TEXTURE_PATH_ALIEN2_ANTEENA);
     }
 
     public void dispose(GL3 gl) {
         sphere.dispose(gl);
     }
 
-    private ModelMultipleLights makeSphere(GL3 gl) {
+    private ModelMultipleLights makeSphere(GL3 gl, Vec3 baseColor) {
         String name = "sphere";
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
         Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
                 Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_0_TEXTURE);
-        Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
-                new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+        Material material = new Material(baseColor, baseColor,
+                baseColor, 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
         ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lightIn,
                 camera);

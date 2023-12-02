@@ -45,13 +45,9 @@ public class Constants {
     public static final String TEXTURE_NAME_ALIEN_EAR = "alien_ear";
     public static final String TEXTURE_PATH_ALIEN_EAR = "textures/ear.png";
     // anteena
-    public static final String TEXTURE_NAME_ALIEN1_ANTEENA1 = "alien_anteena1_1";
-    public static final String TEXTURE_PATH_ALIEN1_ANTEENA1 = "textures/anteena1_1.png";
-    public static final String TEXTURE_NAME_ALIEN1_ANTEENA2 = "alien_anteena1_1";
-    public static final String TEXTURE_PATH_ALIEN1_ANTEENA2 = "textures/anteena1_2.png";
-    public static final String TEXTURE_NAME_ALIEN2_ANTEENA1 = "alien_anteena2_1";
-    public static final String TEXTURE_PATH_ALIEN2_ANTEENA1 = "textures/anteena2_1.png";
-    public static final String TEXTURE_NAME_ALIEN2_ANTEENA2 = "alien_anteena2_2";
-    public static final String TEXTURE_PATH_ALIEN2_ANTEENA2 = "textures/anteena2_2.png";
-    
+    public static final String TEXTURE_NAME_ALIEN1_ANTEENA = "alien_anteena1";
+    public static final String TEXTURE_PATH_ALIEN1_ANTEENA = "textures/anteena1.png";
+    public static final String TEXTURE_NAME_ALIEN2_ANTEENA = "alien_anteena2";
+    public static final String TEXTURE_PATH_ALIEN2_ANTEENA = "textures/anteena2.png";
+
 }
