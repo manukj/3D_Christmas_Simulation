@@ -15,8 +15,8 @@ import com.jogamp.opengl.util.texture.spi.JPEGImage;
 import constants.Constants;
 
 /**
- *  I declare that this code is my own work
- *  Author: Manu Kenchappa Junjanna 
+ * I declare that this code is my own work
+ * Author: Manu Kenchappa Junjanna
  */
 public class SpotLight {
     private Camera camera;
@@ -38,6 +38,7 @@ public class SpotLight {
         float cameraWidth = 1f;
         float cameraDepth = 0.5f;
 
+        // Scene graph nodes
         root = new NameNode("root");
         TransformNode rootTranslate = new TransformNode("robot transform", Mat4Transform.translate(-5f, 0, 0));
 
@@ -57,8 +58,6 @@ public class SpotLight {
         m = Mat4.multiply(m, Mat4Transform.translate(0.5f, 0, 0));
         TransformNode spotCameraTransform = new TransformNode("body transform", m);
         ModelNode spotCameraShape = new ModelNode("Sphere(body)", cameraSphere);
-        // ModelNode spotLightCamera = new ModelNode("Sphere(body)",
-        // lightSpotLightCamera.getModel());
 
         root.addChild(rootTranslate);
         rootTranslate.addChild(pole);
@@ -82,7 +81,8 @@ public class SpotLight {
     private ModelMultipleLights makeSphere(GL3 gl, Texture t1) {
         String name = "sphere";
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH, Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
+                Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
                 new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
@@ -91,6 +91,12 @@ public class SpotLight {
         return sphere;
     }
 
+    /**
+     * Updates the camera animation based on the elapsed time. to ratate the camera
+     * Y axis and keeping z axis fixed to 30 degrees
+     * 
+     * @param elapsedTime the elapsed time in seconds
+     */
     public void updateCameraAnimation(double elapsedTime) {
         double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);

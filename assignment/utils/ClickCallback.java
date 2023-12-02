@@ -4,6 +4,11 @@ package utils;
  *  I declare that this code is my own work
  *  Author: Manu Kenchappa Junjanna 
  */
+
+/**
+ * The ClickCallback interface defines the methods that can be called when
+ * certain actions are triggered by a click event on the GUI.
+ */
 public interface ClickCallback {
 
     public void dimMainLight();

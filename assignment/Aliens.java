@@ -29,7 +29,6 @@ public class Aliens extends JFrame {
 
     public static void main(String[] args) {
         Aliens window = new Aliens();
-        // window.getContentPane().setPreferredSize(dimension);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.pack();
         window.setVisible(true);

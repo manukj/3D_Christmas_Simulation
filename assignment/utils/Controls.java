@@ -28,6 +28,7 @@ public class Controls {
 
         // Alien 1 animation controls
         addAlienControls(callback, 1);
+        // Alien 2 animation controls
         addAlienControls(callback, 2);
         JLabel endJLabel = new JLabel("----------------------------");
         panel.add(endJLabel);

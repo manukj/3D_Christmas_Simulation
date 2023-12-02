@@ -15,8 +15,8 @@ import com.jogamp.opengl.util.texture.spi.JPEGImage;
 import constants.Constants;
 
 /**
- *  I declare that this code is my own work
- *  Author: Manu Kenchappa Junjanna 
+ * I declare that this code is my own work
+ * Author: Manu Kenchappa Junjanna
  */
 public class AlienModel {
     private Camera camera;
@@ -31,13 +31,14 @@ public class AlienModel {
     private float rollSpeed = 2f;
     private boolean isRollingFrontNBack = true;
 
-    public AlienModel(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime, boolean isRollingFrontNBack) {
+    public AlienModel(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime,
+            boolean isRollingFrontNBack) {
         this.startTime = startTime;
         this.camera = camera;
         this.lightIn = light;
         this.isRollingFrontNBack = isRollingFrontNBack;
-        // This change is just to show different speed for different aliens, nothing
-        // logical here
+        // This change is just to show different speed for different aliens for the
+        // first time
         if (isRollingFrontNBack) {
             rollSpeed = 1f;
             rockSpeed = 2f;
@@ -64,16 +65,19 @@ public class AlienModel {
         float armLength = 1f;
         float armScale = 0.2f;
 
+        // Scene graph nodes
         root = new NameNode("root");
         TransformNode rootTranslate = new TransformNode("root translate", Mat4Transform.translate(xPosition, 0, 0));
         rockAnimation = new TransformNode("rock animation", Mat4Transform.rotateAroundZ(0));
 
+        // body and its transform
         NameNode body = new NameNode("body");
         Mat4 m = Mat4Transform.scale(bodyScale, bodyScale, bodyScale);
         m = Mat4.multiply(m, Mat4Transform.translate(0, 0.5f, 0));
         TransformNode bodyTransform = new TransformNode("body transform", m);
         ModelNode bodyShape = new ModelNode("Sphere(body)", sphere);
 
+        // head and its transform
         NameNode head = new NameNode("head");
         TransformNode headTranslate = new TransformNode("head translate",
                 Mat4Transform.translate(0, bodyScale + headScale * 0.5f, 0));
@@ -82,6 +86,7 @@ public class AlienModel {
         TransformNode headTransform = new TransformNode("head transform", m);
         ModelNode headShape = new ModelNode("Sphere(head)", sphere);
 
+        // antenna and its transform
         NameNode antenna = new NameNode("antenna");
         TransformNode antennaTranslate = new TransformNode("antenna translate",
                 Mat4Transform.translate(0, headScale * 0.5f + antennaLength * 0.5f, 0));
@@ -95,6 +100,7 @@ public class AlienModel {
         TransformNode antennaSphereTransform = new TransformNode("antenna spheretransform", m);
         ModelNode antennaSphereShape = new ModelNode("Sphere(antenna sphere)", sphere);
 
+        // eyes and its transform
         NameNode leftEye = new NameNode("left eye");
         m = Mat4Transform.translate(headScale * 0.18f, headScale * 0.20f, headScale * 0.38f);
         m = Mat4.multiply(m, Mat4Transform.scale(eyeWidth, eyeScale, eyeDepth));
@@ -107,6 +113,7 @@ public class AlienModel {
         TransformNode rightEyeTransform = new TransformNode("right eye transform", m);
         ModelNode rightEyeShape = new ModelNode("Sphere(right eye)", sphere);
 
+        // ears and its transform
         NameNode leftEar = new NameNode("left ear");
         m = Mat4Transform.translate(headScale * 0.5f, earLength * 0.5f, 0);
         m = Mat4.multiply(m, Mat4Transform.scale(earWidth, earLength, earDepth));
@@ -119,6 +126,7 @@ public class AlienModel {
         TransformNode rightEarTransform = new TransformNode("right ear transform", m);
         ModelNode rightEarShape = new ModelNode("Sphere(right ear)", sphere);
 
+        // arms and its transform
         NameNode leftArm = new NameNode("left arm");
         m = Mat4Transform.translate((bodyScale + armScale) * 0.5f, (bodyScale + armLength) * 0.5f, 0);
         m = Mat4.multiply(m, Mat4Transform.rotateAroundZ(-20));
@@ -190,6 +198,7 @@ public class AlienModel {
     }
 
     public void render(GL3 gl) {
+        // Controling the animation
         if (isRocking) {
             startRockAnimation(rockSpeed);
         } else {
@@ -224,6 +233,11 @@ public class AlienModel {
         return sphere;
     }
 
+    /**
+     * Starts the rock animation for the alien model.
+     * 
+     * @param rollSpeed the speed at which the model rolls
+     */
     private void startRockAnimation(float rollSpeed) {
         double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         float rollAngleMax = 30;
@@ -233,11 +247,20 @@ public class AlienModel {
         rockAnimation.update();
     }
 
+    /**
+     * Stops the rock animation by resetting the transform of the rockAnimation
+     * object.
+     */
     public void stopRockAnimation() {
         rockAnimation.setTransform(Mat4Transform.rotateAroundZ(0));
         rockAnimation.update();
     }
 
+    /**
+     * Starts the head roll animation for the alien in Front and Back moment.
+     * 
+     * @param rollSpeed
+     */
     private void startHeadRollFrontNBackAnimation(float rollSpeed) {
         double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         float rollAngleMax = 20;
@@ -247,6 +270,11 @@ public class AlienModel {
         headRollAnimation.update();
     }
 
+    /**
+     * Starts the head roll animation for the alien in Side to Side moment.
+     * 
+     * @param rollSpeed
+     */
     private void startHeadRollSideToSideAnimation(float rollSpeed) {
         double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         float rollAngleMax = 20;
@@ -256,6 +284,10 @@ public class AlienModel {
         headRollAnimation.update();
     }
 
+    /**
+     * Stops the head roll animation by resetting the transform of the
+     * headRollAnimation object.
+     */
     private void stopHeadRollAnimation() {
         headRollAnimation.setTransform(Mat4Transform.rotateAroundX(0));
         headRollAnimation.update();
@@ -263,14 +295,24 @@ public class AlienModel {
         headRollAnimation.update();
     }
 
+    /**
+     * Toggles states of rock animation from on to off and vice versa.
+     */
     public void toggleRollAnimation() {
         isRolling = !isRolling;
     }
 
+    /**
+     * Toggles states of roll animation from on to off and vice versa.
+     */
     public void toggleRockAnimation() {
         isRocking = !isRocking;
     }
 
+    /**
+     * Changes the direction of the roll animation from front and back to side to
+     * side and vice versa.
+     */
     public void changeRollDirection() {
         isRollingFrontNBack = !isRollingFrontNBack;
     }

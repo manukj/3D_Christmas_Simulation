@@ -10,8 +10,8 @@ import com.jogamp.opengl.util.texture.awt.*;
 import com.jogamp.opengl.util.texture.spi.JPEGImage;
 
 /**
- *  I declare that this code is my own work,but taken  refernce from 3DCG code
- *  Author: Manu Kenchappa Junjanna 
+ * I declare that this code is my own work,but taken refernce from 3DCG code
+ * Author: Manu Kenchappa Junjanna
  */
 public class Room {
 
@@ -44,6 +44,7 @@ public class Room {
         modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
         modelMatrix = Mat4.multiply(Mat4Transform.translate(0f, roomHeight * 0.5f, -3.33f), modelMatrix);
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+        // changes : framgent shader for moving and multiple lights texture
         Shader shader = new Shader(gl, Constants.VERTEX_SHADER_MOVING_PATH,
                 Constants.FRAGMENT_SHADER_MOVING_TEXTURE_MULTIPLE_LIGHTS);
         Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
@@ -52,7 +53,7 @@ public class Room {
     }
 
     private ModelMultipleLights makeFloor(GL3 gl) {
-        // base blue color
+        // Model 2 - a floor
         Vec3 baseBluecolor = new Vec3(0.0f, 0.0f, 1.0f);
         String name = "floor";
         Mat4 modelMatrix = new Mat4(1);

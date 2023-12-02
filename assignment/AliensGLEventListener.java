@@ -41,10 +41,9 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         gl.glClearDepth(1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LESS);
-        gl.glFrontFace(GL.GL_CCW); // default is 'CCW'
-        gl.glEnable(GL.GL_CULL_FACE); // default is 'not enabled'
-        gl.glCullFace(GL.GL_BACK); // default is 'back', assuming CCW
-        System.out.println("OpenGL: " + gl.glGetString(GL.GL_VERSION));
+        gl.glFrontFace(GL.GL_CCW);
+        gl.glEnable(GL.GL_CULL_FACE);
+        gl.glCullFace(GL.GL_BACK);
         startTime = AssignmentUtil.getSeconds();
         initialise(gl);
     }
@@ -84,18 +83,19 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         lights[1] = new Light(gl);
         lights[1].setCamera(camera);
         lights[1].turnOnSpotLight();
-        // orange
+        // set the spot light to orange color
         lights[1].setColor(AssignmentUtil.SPOT_LIGHT_ON_COLOR);
         lights[0].setPosition(Constants.LIGHT_POISTION);
 
+        // room Model - floor and background
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),
                 textures.get(Constants.TEXTURE_NAME_FLOOR), textures.get(Constants.TEXTURE_NAME_SNOWFALL), startTime);
 
-        // spot Light
+        // spot Light Model
         spotLight = new SpotLight(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_STEEL),
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
-        // alien
+        // alien Models
         alien1 = new AlienModel(gl, camera, lights, -2f, startTime, true);
         alien2 = new AlienModel(gl, camera, lights, 2f, startTime, false);
     }
@@ -105,19 +105,23 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         lights[0].render(gl);
         lights[1].setPosition(getLightSpotPosition(elapsedTime));
-        lights[1].render(gl, getSpotLightModelMatrix(elapsedTime));
+        lights[1].render(gl, getLightModelMatrix(elapsedTime));
 
         room.render(gl);
 
+        // animate the spot light and render it
         spotLight.updateCameraAnimation(elapsedTime);
-
         spotLight.render(gl);
 
         alien1.render(gl);
         alien2.render(gl);
     }
 
-    public Mat4 getSpotLightModelMatrix(double elapsedTime) {
+    /*
+     * This method is used give the transformation matrix for the spot light, that
+     * is in sync with the spot light rotation
+     */
+    public Mat4 getLightModelMatrix(double elapsedTime) {
         double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
 
@@ -141,6 +145,11 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         return new Vec3(-5f, 5f, 0f);
     }
 
+    
+    /* 
+     * ClickCallback methods implementation to handle click events
+     */
+    
     @Override
     public void toggleSpotLight() {
         if (lights[1].isOn) {
