@@ -1,6 +1,6 @@
 
 /**
- * Assignment
+ * Aliens
  */
 import utils.*;
 
@@ -16,17 +16,17 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
-public class Assignment extends JFrame {
+public class Aliens extends JFrame {
     private static final int WIDTH = 1024;
     private static final int HEIGHT = 768;
-    private static final String TITLE = "Assignment";
+    private static final String TITLE = "Aliens";
     private static final Dimension dimension = new Dimension(WIDTH, HEIGHT);
     private GLCanvas canvas;
     private GLEventListener glEventListener;
     private final FPSAnimator animator;
 
     public static void main(String[] args) {
-        Assignment window = new Assignment();
+        Aliens window = new Aliens();
         // window.getContentPane().setPreferredSize(dimension);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
         window.pack();
@@ -34,13 +34,13 @@ public class Assignment extends JFrame {
         window.canvas.requestFocusInWindow();
     }
 
-    public Assignment() {
+    public Aliens() {
         super(TITLE);
         GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL3));
         canvas = new GLCanvas(glCapabilities);
         Camera camera = new Camera(Camera.DEFAULT_POSITION, Camera.DEFAULT_TARGET, Camera.DEFAULT_UP);
 
-        glEventListener = new AssignmentGLEventListener(camera);
+        glEventListener = new AliensGLEventListener(camera);
         canvas.addGLEventListener(glEventListener);
 
         canvas.addMouseMotionListener(new MouseInput(camera));

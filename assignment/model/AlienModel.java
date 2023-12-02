@@ -15,9 +15,9 @@ import com.jogamp.opengl.util.texture.spi.JPEGImage;
 import constants.Constants;
 
 /**
- * Alien
+ * AlienModel
  */
-public class Alien {
+public class AlienModel {
     private Camera camera;
     private Light[] lightIn;
     private SGNode root;
@@ -30,7 +30,7 @@ public class Alien {
     private float rollSpeed = 2f;
     private boolean isRollingFrontNBack = true;
 
-    public Alien(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime, boolean isRollingFrontNBack) {
+    public AlienModel(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime, boolean isRollingFrontNBack) {
         this.startTime = startTime;
         this.camera = camera;
         this.lightIn = light;

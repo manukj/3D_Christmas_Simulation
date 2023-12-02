@@ -1,11 +1,11 @@
 
 /**
- * AssignmentGLEventListener
+ * AliensGLEventListener
  */
 import utils.*;
 import gmaths.*;
 import model.SpotLight;
-import model.Alien;
+import model.AlienModel;
 import model.Room;
 import utils.AssignmentUtil.*;
 
@@ -19,16 +19,16 @@ import com.jogamp.opengl.util.glsl.*;
 import constants.Constants;
 import constants.Constants.*;
 
-public class AssignmentGLEventListener implements GLEventListener, ClickCallback {
+public class AliensGLEventListener implements GLEventListener, ClickCallback {
     private Camera camera;
     private double startTime;
     private Room room;
     private Light[] lights = new Light[2];
     private TextureLibrary textures;
     private SpotLight spotLight;
-    private Alien alien1, alien2;
+    private AlienModel alien1, alien2;
 
-    public AssignmentGLEventListener(Camera camera) {
+    public AliensGLEventListener(Camera camera) {
         this.camera = camera;
         this.camera.setPosition(Constants.CAMERA_POISTION);
     }
@@ -95,8 +95,8 @@ public class AssignmentGLEventListener implements GLEventListener, ClickCallback
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien
-        alien1 = new Alien(gl, camera, lights, -2f, startTime, true);
-        alien2 = new Alien(gl, camera, lights, 2f, startTime, false);
+        alien1 = new AlienModel(gl, camera, lights, -2f, startTime, true);
+        alien2 = new AlienModel(gl, camera, lights, 2f, startTime, false);
     }
 
     public void render(GL3 gl) {
