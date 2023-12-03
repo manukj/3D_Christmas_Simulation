@@ -29,7 +29,7 @@ public class SpotLight {
         this.camera = camera;
         this.lights = lights;
         sphere = makeSphere(gl, steelTexture);
-        cameraSphere = makeSphere(gl, cameraTexture);
+        cameraSphere = makeSphere(gl);
 
         float poleHeight = 5f;
         float poleScale = 0.5f;
@@ -110,6 +110,20 @@ public class SpotLight {
     public void dispose(GL3 gl) {
         sphere.dispose(gl);
         cameraSphere.dispose(gl);
+    }
+
+    private ModelMultipleLights makeSphere(GL3 gl) {
+        Vec3 baseColor = new Vec3(1.0f, 1.0f, 1.0f);
+        String name = "sphere";
+        Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
+                Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_0_TEXTURE);
+        Material material = new Material(baseColor, baseColor,
+                baseColor, 32.0f);
+        Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
+        ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights,
+                camera);
+        return sphere;
     }
 
 }
