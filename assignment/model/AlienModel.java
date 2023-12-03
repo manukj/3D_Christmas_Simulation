@@ -26,12 +26,13 @@ public class AlienModel {
     private TransformNode rockAnimation, headRollAnimation;
     private double startTime;
     private boolean isRocking = false;
-    private boolean isRolling = false;
+    private boolean isRolling = true;
     private boolean isRollingFrontNBack = true;
     private float rockSpeed = 2f;
     private float rollSpeed = 2f;
     private TextureLibrary textureLibrary;
     private int alienIndex;
+    private float bodyScale = 2f, headScale = 1f;
     Vec3 baseColor = new Vec3(1.0f, 1.0f, 1f);
 
     public AlienModel(GL3 gl, Camera camera, Light[] light, float xPosition, double startTime,
@@ -54,8 +55,6 @@ public class AlienModel {
         initaliseTextures(gl);
         sphere = makeSphere(gl, baseColor);
 
-        float bodyScale = 2f;
-        float headScale = 1f;
         float eyeWidth = 0.25f;
         float eyeDepth = 0.15f;
         float eyeScale = 0.2f;
@@ -77,17 +76,23 @@ public class AlienModel {
         rockAnimation = new TransformNode("rock animation", Mat4Transform.rotateAroundZ(0));
 
         // body and its transform
+        sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_BODY));
         NameNode body = new NameNode("body");
         Mat4 m = Mat4Transform.scale(bodyScale, bodyScale, bodyScale);
         m = Mat4.multiply(m, Mat4Transform.translate(0, 0.5f, 0));
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundY(180));
         TransformNode bodyTransform = new TransformNode("body transform", m);
         ModelNode bodyShape = new ModelNode("Sphere(body)", sphere);
 
         // head and its transform
+        sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_HEAD));
         NameNode head = new NameNode("head");
         TransformNode headTranslate = new TransformNode("head translate",
-                Mat4Transform.translate(0, bodyScale + headScale * 0.5f, 0));
-        headRollAnimation = new TransformNode("head roll animation", Mat4Transform.rotateAroundZ(0));
+                Mat4Transform.translate(0, bodyScale * 0.5f, 0));
+        m = Mat4Transform.rotateAroundZ(0);
+        m = Mat4.multiply(m, Mat4Transform.translate(0, bodyScale * 0.5f + headScale * 0.5f - 0.1f, 0));
+        headRollAnimation = new TransformNode("head roll animation", m);
+
         m = Mat4Transform.scale(headScale, headScale, headScale);
         TransformNode headTransform = new TransformNode("head transform", m);
         ModelNode headShape = new ModelNode("Sphere(head)", sphere);
@@ -245,6 +250,8 @@ public class AlienModel {
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_EAR, Constants.TEXTURE_PATH_ALIEN_EAR);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN1_ANTEENA, Constants.TEXTURE_PATH_ALIEN1_ANTEENA);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_ANTEENA, Constants.TEXTURE_PATH_ALIEN2_ANTEENA);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_BODY, Constants.TEXTURE_PATH_ALIEN_BODY);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_HEAD, Constants.TEXTURE_PATH_ALIEN_HEAD);
     }
 
     public void dispose(GL3 gl) {
@@ -327,7 +334,9 @@ public class AlienModel {
         float rollAngleMax = 20;
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
-        headRollAnimation.setTransform(Mat4Transform.rotateAroundX(rollAngle));
+        Mat4 m = Mat4Transform.rotateAroundX(rollAngle);
+        m = Mat4.multiply(m, Mat4Transform.translate(0, bodyScale * 0.5f + headScale * 0.5f - 0.1f, 0));
+        headRollAnimation.setTransform(m);
         headRollAnimation.update();
     }
 
@@ -341,7 +350,9 @@ public class AlienModel {
         float rollAngleMax = 20;
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
-        headRollAnimation.setTransform(Mat4Transform.rotateAroundY(rollAngle));
+        Mat4 m = Mat4Transform.rotateAroundZ(rollAngle);
+        m = Mat4.multiply(m, Mat4Transform.translate(0, bodyScale * 0.5f + headScale * 0.5f, 0));
+        headRollAnimation.setTransform(m);
         headRollAnimation.update();
     }
 
@@ -350,9 +361,9 @@ public class AlienModel {
      * headRollAnimation object.
      */
     private void stopHeadRollAnimation() {
-        headRollAnimation.setTransform(Mat4Transform.rotateAroundX(0));
-        headRollAnimation.update();
-        headRollAnimation.setTransform(Mat4Transform.rotateAroundY(0));
+        Mat4 m = Mat4Transform.rotateAroundY(0);
+        m = Mat4.multiply(m, Mat4Transform.translate(0, bodyScale * 0.5f + headScale * 0.5f - 0.1f, 0));
+        headRollAnimation.setTransform(m);
         headRollAnimation.update();
     }
 

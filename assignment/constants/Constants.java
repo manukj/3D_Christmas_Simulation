@@ -49,5 +49,11 @@ public class Constants {
     public static final String TEXTURE_PATH_ALIEN1_ANTEENA = "textures/anteena1.png";
     public static final String TEXTURE_NAME_ALIEN2_ANTEENA = "alien_anteena2";
     public static final String TEXTURE_PATH_ALIEN2_ANTEENA = "textures/anteena2.png";
+    // body
+    public static final String TEXTURE_NAME_ALIEN_BODY = "alien_body";
+    public static final String TEXTURE_PATH_ALIEN_BODY = "textures/body.png";
+    // head
+    public static final String TEXTURE_NAME_ALIEN_HEAD = "alien_head";
+    public static final String TEXTURE_PATH_ALIEN_HEAD = "textures/head.png";
 
 }
