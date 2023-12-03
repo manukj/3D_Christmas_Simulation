@@ -46,6 +46,7 @@ public class SpotLight {
         NameNode pole = new NameNode("spot_light");
         Mat4 m = Mat4Transform.scale(poleScale, poleHeight, poleScale);
         m = Mat4.multiply(m, Mat4Transform.translate(0, 0.5f, 0));
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundY(180));
         TransformNode poleTransform = new TransformNode("body transform", m);
         ModelNode poleShape = new ModelNode("Sphere(body)", sphere);
 

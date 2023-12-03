@@ -35,7 +35,7 @@ public class Constants {
     public static final String TEXTURE_NAME_CAMERA = "camera";
     public static final String TEXTURE_PATH_CAMERA = "textures/camera.jpeg";
     public static final String TEXTURE_NAME_STEEL = "steel";
-    public static final String TEXTURE_PATH_STEEL = "textures/steel.jpeg";
+    public static final String TEXTURE_PATH_STEEL = "textures/steel.png";
     // eye
     public static final String TEXTURE_NAME_ALIEN_EYE = "alien_eye";
     public static final String TEXTURE_PATH_ALIEN_EYE = "textures/eye.png";
