@@ -1,6 +1,7 @@
 package constants;
 
 import gmaths.*;
+import utils.*;
 
 /**
  * I declare that this code is my own work
@@ -8,6 +9,20 @@ import gmaths.*;
  */
 public class Constants {
     public static final boolean DISPLAY_SHADERS = false;
+
+    // LIGHT CONSTANTS
+    public static final Material MAIN_LIGHT_MATERIAL = new Material(new Vec3(0.3f, 0.3f, 0.3f),
+            new Vec3(0.7f, 0.7f, 0.7f),
+            new Vec3(1.0f, 1.0f, 1.0f), Material.DEFAULT_SHININESS);
+    public static final Material SPOT_LIGHT_MATERIAL = new Material(new Vec3(0, 0, 0),
+            new Vec3(0.5f, 0.25f, 0.0f),
+            new Vec3(0.7f, 0.7f, 0.7f), Material.DEFAULT_SHININESS);
+    public static final Material LIGHT_OFF_MATERIAL = new Material(new Vec3(0, 0, 0),
+            new Vec3(0, 0, 0),
+            new Vec3(0, 0, 0), Material.DEFAULT_SHININESS);
+    public static final Vec4 LIGHT_ON_COLOR = new Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    public static final Vec4 LIGHT_OFF_COLOR = new Vec4(0.2f, 0.2f, 0.0f, 1.0f);
+    public static final Vec4 SPOT_LIGHT_ON_COLOR = new Vec4(1.0f, 0.6f, 0.0f, 0f);
 
     // Path to the fragment and vertex shaders
     public static final String VERTEX_SHADER_STANDARD_PATH = "shader/vs_standard.txt";
@@ -52,7 +67,7 @@ public class Constants {
     // body
     public static final String TEXTURE_NAME_ALIEN_BODY = "alien_body";
     public static final String TEXTURE_PATH_ALIEN_BODY = "textures/body.png";
-    public static final String TEXTURE_NAME_ALIEN2_BODY="alien_body_2";
+    public static final String TEXTURE_NAME_ALIEN2_BODY = "alien_body_2";
     public static final String TEXTURE_PATH_ALIEN2_BODY = "textures/body2.png";
     // head
     public static final String TEXTURE_NAME_ALIEN_HEAD = "alien_head";

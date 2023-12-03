@@ -16,12 +16,16 @@ public class Light {
   private Camera camera;
   public boolean isOn = true;
   private Vec4 lightColor = new Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+  public boolean isSpotLight = false;
 
-  public Light(GL3 gl) {
-    material = new Material();
-    material.setAmbient(0.3f, 0.3f, 0.3f);
-    material.setDiffuse(0.7f, 0.7f, 0.7f);
-    material.setSpecular(1.0f, 1.0f, 1.0f);
+  public Light(GL3 gl, int lightIndex) {
+    // change : moved materials to constants and added support for spot light
+    isSpotLight = lightIndex == 2;
+    if (isSpotLight) {
+      setMaterial(Constants.SPOT_LIGHT_MATERIAL);
+    } else {
+      setMaterial(Constants.MAIN_LIGHT_MATERIAL);
+    }
     position = new Vec3(3f, 2f, 1f);
     model = new Mat4(1);
     shader = new Shader(gl, Constants.VERTEX_SHADER_LIGHT_PATH, Constants.FRAGMENT_SHADER_LIGHT_PATH);
@@ -165,60 +169,84 @@ public class Light {
 
   // change : added support for turning on and off the light
   public void turnOf() {
-    Material material = new Material();
-    material.setAmbient(0.0f, 0.0f, 0.0f);
-    material.setDiffuse(0.0f, 0.0f, 0.0f);
-    material.setSpecular(0.0f, 0.0f, 0.0f);
-    setMaterial(material);
-    lightColor = AssignmentUtil.LIGHT_OFF_COLOR;
+    setMaterial(Constants.LIGHT_OFF_MATERIAL);
+    lightColor = Constants.LIGHT_OFF_COLOR;
     isOn = false;
   }
 
   public void turnOn() {
-    Material material = new Material();
-    material.setAmbient(0.3f, 0.3f, 0.3f);
-    material.setDiffuse(0.7f, 0.7f, 0.7f);
-    material.setSpecular(1.0f, 1.0f, 1.0f);
-    setMaterial(material);
-    lightColor = AssignmentUtil.LIGHT_ON_COLOR;
+    setMaterial(Constants.MAIN_LIGHT_MATERIAL);
+    lightColor = Constants.LIGHT_ON_COLOR;
     isOn = true;
   }
 
   public void turnOnSpotLight() {
-    Material material = new Material();
-    material.setAmbient(0.0f, 0.0f, 0.0f);
-    material.setDiffuse(0.5f, 0.25f, 0.0f);
-    material.setSpecular(1.0f, 0.5f, 0.0f);
-    setMaterial(material);
-    lightColor = AssignmentUtil.SPOT_LIGHT_ON_COLOR;
+    setMaterial(Constants.SPOT_LIGHT_MATERIAL);
+    lightColor = Constants.SPOT_LIGHT_ON_COLOR;
     isOn = true;
   }
 
   // change : added support for dimming and brightening the light
-  public void dim() {
-    if (material.getAmbient().x >= 0.0f) {
+  public void dim(int lightNumber) {
+    if (isDimExceededLightThresold(lightNumber)) {
+      turnOf();
+    } else {
       material.setAmbient(material.getAmbient().x - 0.1f, material.getAmbient().y - 0.1f,
           material.getAmbient().z - 0.1f);
       material.setDiffuse(material.getDiffuse().x - 0.1f, material.getDiffuse().y - 0.1f,
           material.getDiffuse().z - 0.1f);
       material.setSpecular(material.getSpecular().x - 0.1f, material.getSpecular().y - 0.1f,
           material.getSpecular().z - 0.1f);
-    } else {
-      isOn = false;
     }
   }
 
-  public void brighten() {
-    if (material.getAmbient().x <= 1.0f) {
+  private boolean isDimExceededLightThresold(int lightNumber) {
+    if (lightNumber == 1) {
+      // for main light, go until the specular x value is 0.5
+      return material.getAmbient().x <= 0.0f &&
+          material.getDiffuse().y <= 0.0f &&
+          material.getSpecular().z <= 0.5;
+    } else {
+      // for spot light, the ambient starts from 0.0f, so we can't go beyond -0.5f
+      return material.getAmbient().x <= 0.0f &&
+          material.getDiffuse().y <= 0.0f &&
+          material.getSpecular().z <= 0.5;
+    }
+  }
+
+  public void brighten(int lightNumber) {
+    if (isBrightenExceededLightThresold(lightNumber)) {
+      if (lightNumber == 1) {
+        turnOn();
+      } else {
+        turnOnSpotLight();
+      }
+    } else {
       material.setAmbient(material.getAmbient().x + 0.1f, material.getAmbient().y + 0.1f,
           material.getAmbient().z + 0.1f);
       material.setDiffuse(material.getDiffuse().x + 0.1f, material.getDiffuse().y + 0.1f,
           material.getDiffuse().z + 0.1f);
       material.setSpecular(material.getSpecular().x + 0.1f, material.getSpecular().y + 0.1f,
           material.getSpecular().z + 0.1f);
-    } else {
-      isOn = true;
+
     }
   }
 
+  public boolean isBrightenExceededLightThresold(int lightNumber) {
+    if (lightNumber == 1) {
+      // for main light, the ambient starts from 0.3f, so we can't go beyond 0.7f
+      return material.getAmbient().x >= 0.7f;
+    } else {
+      // for spot light, the ambient starts from 0.0f, so we can't go beyond 0.5f
+      return material.getAmbient().x >= 0.0f &&
+          material.getDiffuse().y >= 0.5f &&
+          material.getSpecular().z >= 1;
+    }
+  }
+
+  public boolean isSpotLightOn() {
+    return getMaterial().getAmbient().magnitude() == 0.0f &&
+        getMaterial().getDiffuse().magnitude() == 0.5f &&
+        getMaterial().getSpecular().magnitude() == 1.0f;
+  }
 }

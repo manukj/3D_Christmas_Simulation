@@ -65,9 +65,16 @@ public class Material {
    * @param blue  the blue value in the range 0.0..1.0
    */
   public void setAmbient(float red, float green, float blue) {
-    ambient.x = red;
-    ambient.y = green;
-    ambient.z = blue;
+    // changes : making sure the values are in the range 0.0..1.0
+    if (!(red < 0 || red > 1)) {
+      ambient.x = red;
+    }
+    if (!(green < 0 || green > 1)) {
+      ambient.y = green;
+    }
+    if (!(blue < 0 || blue > 1)) {
+      ambient.z = blue;
+    }
   }
 
   /**
