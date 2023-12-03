@@ -175,78 +175,75 @@ public class Light {
   }
 
   public void turnOn() {
-    setMaterial(Constants.MAIN_LIGHT_MATERIAL);
+    Material newMaterial = new Material(Constants.MAIN_LIGHT_MATERIAL.getAmbient(),
+        Constants.MAIN_LIGHT_MATERIAL.getDiffuse(), Constants.MAIN_LIGHT_MATERIAL.getSpecular(),
+        Constants.MAIN_LIGHT_MATERIAL.getShininess());
+    setMaterial(newMaterial);
     lightColor = Constants.LIGHT_ON_COLOR;
     isOn = true;
   }
 
   public void turnOnSpotLight() {
-    setMaterial(Constants.SPOT_LIGHT_MATERIAL);
+    Material newMaterial = new Material(Constants.SPOT_LIGHT_MATERIAL.getAmbient(),
+        Constants.SPOT_LIGHT_MATERIAL.getDiffuse(), Constants.SPOT_LIGHT_MATERIAL.getSpecular(),
+        Constants.SPOT_LIGHT_MATERIAL.getShininess());
+    setMaterial(newMaterial);
     lightColor = Constants.SPOT_LIGHT_ON_COLOR;
     isOn = true;
   }
 
   // change : added support for dimming and brightening the light
-  public void dim(int lightNumber) {
-    if (isDimExceededLightThresold(lightNumber)) {
-      turnOf();
-    } else {
-      material.setAmbient(material.getAmbient().x - 0.1f, material.getAmbient().y - 0.1f,
-          material.getAmbient().z - 0.1f);
-      material.setDiffuse(material.getDiffuse().x - 0.1f, material.getDiffuse().y - 0.1f,
-          material.getDiffuse().z - 0.1f);
-      material.setSpecular(material.getSpecular().x - 0.1f, material.getSpecular().y - 0.1f,
-          material.getSpecular().z - 0.1f);
-    }
-  }
-
-  private boolean isDimExceededLightThresold(int lightNumber) {
-    if (lightNumber == 1) {
-      // for main light, go until the specular x value is 0.5
-      return material.getAmbient().x <= 0.0f &&
-          material.getDiffuse().y <= 0.0f &&
-          material.getSpecular().z <= 0.5;
-    } else {
-      // for spot light, the ambient starts from 0.0f, so we can't go beyond -0.5f
-      return material.getAmbient().x <= 0.0f &&
-          material.getDiffuse().y <= 0.0f &&
-          material.getSpecular().z <= 0.5;
-    }
-  }
-
-  public void brighten(int lightNumber) {
-    if (isBrightenExceededLightThresold(lightNumber)) {
-      if (lightNumber == 1) {
-        turnOn();
-      } else {
-        turnOnSpotLight();
-      }
-    } else {
-      material.setAmbient(material.getAmbient().x + 0.1f, material.getAmbient().y + 0.1f,
-          material.getAmbient().z + 0.1f);
-      material.setDiffuse(material.getDiffuse().x + 0.1f, material.getDiffuse().y + 0.1f,
-          material.getDiffuse().z + 0.1f);
+  public void brightenSpotLight() {
+    if (material.getSpecular().x <= 0.7f) {
+      material.setDiffuse(material.getDiffuse().x + 0.1f, material.getDiffuse().y + 0.05f, 0.0f);
       material.setSpecular(material.getSpecular().x + 0.1f, material.getSpecular().y + 0.1f,
           material.getSpecular().z + 0.1f);
-
     }
   }
 
-  public boolean isBrightenExceededLightThresold(int lightNumber) {
-    if (lightNumber == 1) {
-      // for main light, the ambient starts from 0.3f, so we can't go beyond 0.7f
-      return material.getAmbient().x >= 0.7f;
+  public void dimSpotLight() {
+    if (material.getSpecular().x >= 0.0f) {
+      material.setDiffuse(material.getDiffuse().x - 0.1f, material.getDiffuse().y - 0.05f, 0.0f);
+      material.setSpecular(material.getSpecular().x - 0.1f, material.getSpecular().y - 0.1f,
+          material.getSpecular().z - 0.1f);
     } else {
-      // for spot light, the ambient starts from 0.0f, so we can't go beyond 0.5f
-      return material.getAmbient().x >= 0.0f &&
-          material.getDiffuse().y >= 0.5f &&
-          material.getSpecular().z >= 1;
+      turnOf();
     }
   }
 
-  public boolean isSpotLightOn() {
-    return getMaterial().getAmbient().magnitude() == 0.0f &&
-        getMaterial().getDiffuse().magnitude() == 0.5f &&
-        getMaterial().getSpecular().magnitude() == 1.0f;
+  public void brightenMainLight() {
+    float offset = 0.3f / 10;
+    if (material.getAmbient().x <= 0.3f) {
+      material.setAmbient(material.getAmbient().x + offset, material.getAmbient().y + offset,
+          material.getAmbient().z + offset);
+    }
+    offset = 0.7f / 10;
+    if (material.getSpecular().x <= 0.7f) {
+      material.setSpecular(material.getSpecular().x + offset, material.getSpecular().y + offset,
+          material.getSpecular().z + offset);
+    }
+    offset = 1f / 10;
+    if (material.getDiffuse().x <= 1f) {
+      material.setDiffuse(material.getDiffuse().x + offset, material.getDiffuse().y + offset,
+          material.getDiffuse().z + offset);
+    }
+  }
+
+  public void dimmerMainLight() {
+    float offset = 0.3f / 10;
+    if (material.getAmbient().x >= offset * 0.5f) {
+      material.setAmbient(material.getAmbient().x - offset, material.getAmbient().y - offset,
+          material.getAmbient().z - offset);
+    }
+    offset = 0.7f / 10;
+    if (material.getSpecular().x >= offset * 0.5f) {
+      material.setSpecular(material.getSpecular().x - offset, material.getSpecular().y - offset,
+          material.getSpecular().z - offset);
+    }
+    offset = 1f / 10;
+    if (material.getDiffuse().x >= offset * 0.5f) {
+      material.setDiffuse(material.getDiffuse().x - offset, material.getDiffuse().y - offset,
+          material.getDiffuse().z - offset);
+    }
   }
 }

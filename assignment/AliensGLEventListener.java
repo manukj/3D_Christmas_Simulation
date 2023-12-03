@@ -78,9 +78,9 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         textures.add(gl, Constants.TEXTURE_NAME_CAMERA, Constants.TEXTURE_PATH_CAMERA);
         textures.add(gl, Constants.TEXTURE_NAME_STEEL, Constants.TEXTURE_PATH_STEEL);
 
-        lights[0] = new Light(gl,1);
+        lights[0] = new Light(gl, 1);
         lights[0].setCamera(camera);
-        lights[1] = new Light(gl,2);
+        lights[1] = new Light(gl, 2);
         lights[1].setCamera(camera);
         lights[1].turnOnSpotLight();
         // set the spot light to orange color
@@ -170,22 +170,22 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
 
     @Override
     public void dimMainLight() {
-        lights[0].dim(1);
+        lights[0].dimmerMainLight();
     }
 
     @Override
     public void brightenMainLight() {
-        lights[0].brighten(1);
+        lights[0].brightenMainLight();
     }
 
     @Override
     public void dimSpotLight() {
-        lights[1].dim(2);
+        lights[1].dimSpotLight();
     }
 
     @Override
     public void brightenSpotLight() {
-        lights[1].brighten(2);
+        lights[1].brightenSpotLight();
     }
 
     @Override
