@@ -98,12 +98,6 @@ public class AlienModel {
         ModelNode headShape = new ModelNode("Sphere(head)", sphere);
 
         // antenna and its transform
-        NameNode antenna = new NameNode("antenna");
-        TransformNode antennaTranslate = new TransformNode("antenna translate",
-                Mat4Transform.translate(0, headScale * 0.5f + antennaLength * 0.5f, 0));
-        m = Mat4Transform.scale(anteenaScale, antennaLength, anteenaScale);
-        TransformNode antennaTransform = new TransformNode("antenna transform", m);
-        ModelNode antennaShape = new ModelNode("Sphere(antenna)", sphere);
         if (isFirstAlien()) {
             sphere = makeSphere(gl,
                     textureLibrary.get(Constants.TEXTURE_NAME_ALIEN1_ANTEENA));
@@ -112,6 +106,12 @@ public class AlienModel {
 
                     textureLibrary.get(Constants.TEXTURE_NAME_ALIEN2_ANTEENA));
         }
+        NameNode antenna = new NameNode("antenna");
+        TransformNode antennaTranslate = new TransformNode("antenna translate",
+                Mat4Transform.translate(0, headScale * 0.5f + antennaLength * 0.5f, 0));
+        m = Mat4Transform.scale(anteenaScale, antennaLength, anteenaScale);
+        TransformNode antennaTransform = new TransformNode("antenna transform", m);
+        ModelNode antennaShape = new ModelNode("Sphere(antenna)", sphere);
         NameNode antennaSphere = new NameNode("antenna sphere");
         m = Mat4Transform.translate(0, antennaLength * 0.5f + antennaSphereScale * 0.5f, 0);
         m = Mat4.multiply(m, Mat4Transform.scale(antennaSphereScale, antennaSphereScale, antennaSphereScale));
@@ -155,6 +155,7 @@ public class AlienModel {
 
         // arms and its transform
         NameNode leftArm = new NameNode("left arm");
+        sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_ARM));
         m = Mat4Transform.translate((bodyScale + armScale) * 0.5f, (bodyScale + armLength) * 0.5f, 0);
         m = Mat4.multiply(m, Mat4Transform.rotateAroundZ(-20));
         m = Mat4.multiply(m, Mat4Transform.scale(armScale, armLength, armScale));
@@ -252,6 +253,7 @@ public class AlienModel {
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_ANTEENA, Constants.TEXTURE_PATH_ALIEN2_ANTEENA);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_BODY, Constants.TEXTURE_PATH_ALIEN_BODY);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_HEAD, Constants.TEXTURE_PATH_ALIEN_HEAD);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_ARM, Constants.TEXTURE_PATH_ALIEN_ARM);
     }
 
     public void dispose(GL3 gl) {
