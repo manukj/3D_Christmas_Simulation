@@ -89,7 +89,12 @@ public class AlienModel {
         ModelNode bodyShape = new ModelNode("Sphere(body)", sphere);
 
         // head and its transform
-        sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_HEAD));
+        if (isFirstAlien()) {
+            sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_HEAD));
+        } else {
+            sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN2_HEAD));
+
+        }
         NameNode head = new NameNode("head");
         TransformNode headTranslate = new TransformNode("head translate",
                 Mat4Transform.translate(0, bodyScale * 0.5f, 0));
@@ -98,6 +103,7 @@ public class AlienModel {
         headRollAnimation = new TransformNode("head roll animation", m);
 
         m = Mat4Transform.scale(headScale, headScale, headScale);
+        m = Mat4.multiply(m, Mat4Transform.rotateAroundY(180));
         TransformNode headTransform = new TransformNode("head transform", m);
         ModelNode headShape = new ModelNode("Sphere(head)", sphere);
 
@@ -258,6 +264,7 @@ public class AlienModel {
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_BODY, Constants.TEXTURE_PATH_ALIEN_BODY);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_BODY, Constants.TEXTURE_PATH_ALIEN2_BODY);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_HEAD, Constants.TEXTURE_PATH_ALIEN_HEAD);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_HEAD, Constants.TEXTURE_PATH_ALIEN2_HEAD);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_ARM, Constants.TEXTURE_PATH_ALIEN_ARM);
     }
 
