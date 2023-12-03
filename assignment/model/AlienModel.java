@@ -76,7 +76,11 @@ public class AlienModel {
         rockAnimation = new TransformNode("rock animation", Mat4Transform.rotateAroundZ(0));
 
         // body and its transform
-        sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_BODY));
+        if (isFirstAlien()) {
+            sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN_BODY));
+        } else {
+            sphere = makeSphere(gl, textureLibrary.get(Constants.TEXTURE_NAME_ALIEN2_BODY));
+        }
         NameNode body = new NameNode("body");
         Mat4 m = Mat4Transform.scale(bodyScale, bodyScale, bodyScale);
         m = Mat4.multiply(m, Mat4Transform.translate(0, 0.5f, 0));
@@ -252,6 +256,7 @@ public class AlienModel {
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN1_ANTEENA, Constants.TEXTURE_PATH_ALIEN1_ANTEENA);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_ANTEENA, Constants.TEXTURE_PATH_ALIEN2_ANTEENA);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_BODY, Constants.TEXTURE_PATH_ALIEN_BODY);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_BODY, Constants.TEXTURE_PATH_ALIEN2_BODY);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_HEAD, Constants.TEXTURE_PATH_ALIEN_HEAD);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_ARM, Constants.TEXTURE_PATH_ALIEN_ARM);
     }
@@ -353,7 +358,7 @@ public class AlienModel {
         float rollAngleDelta = rollSpeed * (float) elapsedTime;
         float rollAngle = rollAngleMax * (float) Math.sin(rollAngleDelta);
         Mat4 m = Mat4Transform.rotateAroundZ(rollAngle);
-        m = Mat4.multiply(m, Mat4Transform.translate(0, bodyScale * 0.5f + headScale * 0.5f, 0));
+        m = Mat4.multiply(m, Mat4Transform.translate(0, bodyScale * 0.5f + headScale * 0.5f - 0.1f, 0));
         headRollAnimation.setTransform(m);
         headRollAnimation.update();
     }
