@@ -139,17 +139,16 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
     private Vec3 getLightSpotPosition(double elapsedTime) {
         double rotationFraction = elapsedTime % (2 * Math.PI);
         float rotateAngle = (float) Math.toDegrees(rotationFraction);
-        float x = -5f + (float) (Math.cos(Math.toRadians(rotateAngle)));
-        float y = 0.5f;
-        float z = 1.0f * (float) (Math.cos(Math.toRadians(elapsedTime * 80)));
-        return new Vec3(-5f, 5f, 0f);
+        float x = -5f + -5.0f * (float) (Math.sin(Math.toRadians(-rotateAngle - 90)));
+        float y = 1f;
+        float z = 2.0f * (float) (Math.cos(Math.toRadians(-rotateAngle - 90)));
+        return new Vec3(x, y, z);
     }
 
-    
-    /* 
+    /*
      * ClickCallback methods implementation to handle click events
      */
-    
+
     @Override
     public void toggleSpotLight() {
         if (lights[1].isOn) {
