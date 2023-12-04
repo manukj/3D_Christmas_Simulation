@@ -408,7 +408,8 @@ public class AlienModel {
     }
 
     public void decreaseRockSpeed() {
-        rockSpeed -= 0.5f;
+        if (rockSpeed >= 0)
+            rockSpeed -= 0.5f;
     }
 
     public void increaseRollSpeed() {
@@ -416,6 +417,7 @@ public class AlienModel {
     }
 
     public void decreaseRollSpeed() {
-        rollSpeed -= 0.5f;
+        if (rollSpeed >= 0)
+            rollSpeed -= 0.5f;
     }
 }
