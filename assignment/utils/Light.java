@@ -169,9 +169,11 @@ public class Light {
 
   // change : added support for turning on and off the light
   public void turnOf() {
-    setMaterial(Constants.LIGHT_OFF_MATERIAL);
-    lightColor = Constants.LIGHT_OFF_COLOR;
-    isOn = false;
+    Material newMaterial = new Material(Constants.LIGHT_OFF_MATERIAL.getAmbient(),
+        Constants.LIGHT_OFF_MATERIAL.getDiffuse(), Constants.LIGHT_OFF_MATERIAL.getSpecular(),
+        Constants.LIGHT_OFF_MATERIAL.getShininess());
+    setMaterial(newMaterial);
+    toggleState(false);
   }
 
   public void turnOn() {
@@ -180,7 +182,7 @@ public class Light {
         Constants.MAIN_LIGHT_MATERIAL.getShininess());
     setMaterial(newMaterial);
     lightColor = Constants.LIGHT_ON_COLOR;
-    isOn = true;
+    toggleState(true);
   }
 
   public void turnOnSpotLight() {
@@ -189,11 +191,22 @@ public class Light {
         Constants.SPOT_LIGHT_MATERIAL.getShininess());
     setMaterial(newMaterial);
     lightColor = Constants.SPOT_LIGHT_ON_COLOR;
-    isOn = true;
+    toggleState(true);
+  }
+
+  private void toggleState(boolean turnOn) {
+    if (turnOn) {
+      lightColor = isSpotLight ? Constants.SPOT_LIGHT_ON_COLOR : Constants.LIGHT_ON_COLOR;
+      isOn = true;
+    } else {
+      lightColor = Constants.LIGHT_OFF_COLOR;
+      isOn = false;
+    }
   }
 
   // change : added support for dimming and brightening the light
   public void brightenSpotLight() {
+    toggleState(true);
     if (material.getSpecular().x <= 0.7f) {
       material.setDiffuse(material.getDiffuse().x + 0.1f, material.getDiffuse().y + 0.05f, 0.0f);
       material.setSpecular(material.getSpecular().x + 0.1f, material.getSpecular().y + 0.1f,
@@ -206,44 +219,44 @@ public class Light {
       material.setDiffuse(material.getDiffuse().x - 0.1f, material.getDiffuse().y - 0.05f, 0.0f);
       material.setSpecular(material.getSpecular().x - 0.1f, material.getSpecular().y - 0.1f,
           material.getSpecular().z - 0.1f);
-    } else {
-      turnOf();
-    }
+    }else{
+      toggleState(false);
+    } 
   }
 
   public void brightenMainLight() {
-    float offset = 0.3f / 10;
-    if (material.getAmbient().x <= 0.3f) {
+    float offset = Constants.MAIN_LIGHT_MAX_AMBIENT / 5;
+    if (material.getAmbient().x <= Constants.MAIN_LIGHT_MAX_AMBIENT) {
       material.setAmbient(material.getAmbient().x + offset, material.getAmbient().y + offset,
           material.getAmbient().z + offset);
     }
-    offset = 0.7f / 10;
-    if (material.getSpecular().x <= 0.7f) {
-      material.setSpecular(material.getSpecular().x + offset, material.getSpecular().y + offset,
-          material.getSpecular().z + offset);
-    }
-    offset = 1f / 10;
-    if (material.getDiffuse().x <= 1f) {
+    offset = Constants.MAIN_LIGHT_MAX_DIFFUSE / 5;
+    if (material.getDiffuse().x <= Constants.MAIN_LIGHT_MAX_DIFFUSE) {
       material.setDiffuse(material.getDiffuse().x + offset, material.getDiffuse().y + offset,
           material.getDiffuse().z + offset);
+    }
+    offset = Constants.MAIN_LIGHT_MAX_SPECULAR / 5;
+    if (material.getSpecular().x <= Constants.MAIN_LIGHT_MAX_SPECULAR) {
+      material.setSpecular(material.getSpecular().x + offset, material.getSpecular().y + offset,
+          material.getSpecular().z + offset);
     }
   }
 
   public void dimmerMainLight() {
-    float offset = 0.3f / 10;
-    if (material.getAmbient().x >= offset * 0.5f) {
+    float offset = Constants.MAIN_LIGHT_MAX_AMBIENT / 5;
+    if (material.getAmbient().x >= 0.0f) {
       material.setAmbient(material.getAmbient().x - offset, material.getAmbient().y - offset,
           material.getAmbient().z - offset);
     }
-    offset = 0.7f / 10;
-    if (material.getSpecular().x >= offset * 0.5f) {
-      material.setSpecular(material.getSpecular().x - offset, material.getSpecular().y - offset,
-          material.getSpecular().z - offset);
-    }
-    offset = 1f / 10;
-    if (material.getDiffuse().x >= offset * 0.5f) {
+    offset = Constants.MAIN_LIGHT_MAX_DIFFUSE / 5;
+    if (material.getDiffuse().x >= 0.0f) {
       material.setDiffuse(material.getDiffuse().x - offset, material.getDiffuse().y - offset,
           material.getDiffuse().z - offset);
     }
+    offset = Constants.MAIN_LIGHT_MAX_SPECULAR / 5;
+    if (material.getSpecular().x >= 0.0f) {
+      material.setSpecular(material.getSpecular().x - offset, material.getSpecular().y - offset,
+          material.getSpecular().z - offset);
+    } 
   }
 }

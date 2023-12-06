@@ -11,11 +11,11 @@ package utils;
  */
 public interface ClickCallback {
 
-    public void dimMainLight();
+    public void dimMainLight(int lightIndex);
 
-    public void brightenMainLight();
+    public void brightenMainLight(int lightIndex);
 
-    public void toggleMainLight();
+    public void toggleMainLight(int lightIndex);
 
     public void toggleSpotLight();
 

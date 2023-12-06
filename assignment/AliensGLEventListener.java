@@ -24,7 +24,7 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
     private Camera camera;
     private double startTime;
     private Room room;
-    private Light[] lights = new Light[2];
+    private Light[] lights = new Light[3];
     private TextureLibrary textures;
     private SpotLight spotLight;
     private AlienModel alien1, alien2;
@@ -78,14 +78,21 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         textures.add(gl, Constants.TEXTURE_NAME_CAMERA, Constants.TEXTURE_PATH_CAMERA);
         textures.add(gl, Constants.TEXTURE_NAME_STEEL, Constants.TEXTURE_PATH_STEEL);
 
+        // general light 1
         lights[0] = new Light(gl, 1);
         lights[0].setCamera(camera);
-        lights[1] = new Light(gl, 2);
+        // general light 2
+        lights[1] = new Light(gl, 1);
         lights[1].setCamera(camera);
-        lights[1].turnOnSpotLight();
+        // spot light
+        lights[2] = new Light(gl, 2);
+        lights[2].setCamera(camera);
+        lights[2].turnOnSpotLight();
+
         // set the spot light to orange color
-        lights[1].setColor(Constants.SPOT_LIGHT_ON_COLOR);
         lights[0].setPosition(Constants.LIGHT_POISTION);
+        lights[1].setPosition(Constants.LIGHT_POISTION2);
+        lights[2].setColor(Constants.SPOT_LIGHT_ON_COLOR);
 
         // room Model - floor and background
         room = new Room(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_BACKGROUND),
@@ -104,8 +111,9 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         double elapsedTime = AssignmentUtil.getSeconds() - startTime;
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         lights[0].render(gl);
-        lights[1].setPosition(getLightSpotPosition(elapsedTime));
-        lights[1].render(gl, getLightModelMatrix(elapsedTime));
+        lights[1].render(gl);
+        lights[2].setPosition(getLightSpotPosition(elapsedTime));
+        lights[2].render(gl, getLightModelMatrix(elapsedTime));
 
         room.render(gl);
 
@@ -151,41 +159,41 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
 
     @Override
     public void toggleSpotLight() {
-        if (lights[1].isOn) {
-            lights[1].turnOf();
+        if (lights[2].isOn) {
+            lights[2].turnOf();
         } else {
-            lights[1].turnOnSpotLight();
+            lights[2].turnOnSpotLight();
         }
 
     }
 
     @Override
-    public void toggleMainLight() {
-        if (lights[0].isOn) {
-            lights[0].turnOf();
+    public void toggleMainLight(int lightIndex) {
+        if (lights[lightIndex].isOn) {
+            lights[lightIndex].turnOf();
         } else {
-            lights[0].turnOn();
+            lights[lightIndex].turnOn();
         }
     }
 
     @Override
-    public void dimMainLight() {
-        lights[0].dimmerMainLight();
+    public void dimMainLight(int lightIndex) {
+        lights[lightIndex].dimmerMainLight();
     }
 
     @Override
-    public void brightenMainLight() {
-        lights[0].brightenMainLight();
+    public void brightenMainLight(int lightIndex) {
+        lights[lightIndex].brightenMainLight();
     }
 
     @Override
     public void dimSpotLight() {
-        lights[1].dimSpotLight();
+        lights[2].dimSpotLight();
     }
 
     @Override
     public void brightenSpotLight() {
-        lights[1].brightenSpotLight();
+        lights[2].brightenSpotLight();
     }
 
     @Override

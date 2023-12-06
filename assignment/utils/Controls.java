@@ -7,8 +7,8 @@ import java.awt.event.WindowEvent;
 import javax.swing.*;
 
 /**
- *  I declare that this code is my own work
- *  Author: Manu Kenchappa Junjanna 
+ * I declare that this code is my own work
+ * Author: Manu Kenchappa Junjanna
  */
 public class Controls {
 
@@ -21,7 +21,8 @@ public class Controls {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // main light controls
-        mainLightControls(callback);
+        mainLightControls(callback, 0);
+        mainLightControls(callback, 1);
 
         // spot light controls
         spotLightControls(callback);
@@ -96,19 +97,19 @@ public class Controls {
 
     }
 
-    void mainLightControls(ClickCallback callback) {
-        JLabel mainLightLabel = new JLabel("--------- Main Light ---------");
-        JButton toggleMainLight = new JButton("Toggle Main light");
+    void mainLightControls(ClickCallback callback, int lightIndex) {
+        JLabel mainLightLabel = new JLabel("------- Main Light " + (lightIndex + 1) + " -------");
+        JButton toggleMainLight = new JButton("Toggle light");
         toggleMainLight.addActionListener(e -> {
-            callback.toggleMainLight();
+            callback.toggleMainLight(lightIndex);
         });
-        JButton dimMainLight = new JButton("Dim Main light");
+        JButton dimMainLight = new JButton("Dim light");
         dimMainLight.addActionListener(e -> {
-            callback.dimMainLight();
+            callback.dimMainLight(lightIndex);
         });
-        JButton brightenMainLight = new JButton("Brighten Main light");
+        JButton brightenMainLight = new JButton("Brighten light");
         brightenMainLight.addActionListener(e -> {
-            callback.brightenMainLight();
+            callback.brightenMainLight(lightIndex);
         });
         panel.add(mainLightLabel);
         panel.add(toggleMainLight);
