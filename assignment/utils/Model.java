@@ -22,6 +22,7 @@ public class Model {
   private Light light;
   private Texture diffuse;
   private Texture specular;
+  private Texture bump;
 
   public Model() {
     name = null;
@@ -99,6 +100,10 @@ public class Model {
     render(gl, modelMatrix, startTime);
   }
 
+  public void setBump(Texture t) {
+    this.bump = t;
+  }
+
   // second version of render is so that modelMatrix can be overriden with a new
   // parameter
 
@@ -146,6 +151,11 @@ public class Model {
       shader.setInt(gl, "second_texture", 1);
       gl.glActiveTexture(GL.GL_TEXTURE1);
       specular.bind(gl);
+    }
+    if (bump != null) {
+      shader.setInt(gl, "normalMapTexture", 1);
+      gl.glActiveTexture(GL.GL_TEXTURE1);
+      bump.bind(gl);
     }
 
     double t = (AssignmentUtil.getSeconds() - startTime) * 0.1; // *0.1 slows it down a bit

@@ -2,6 +2,9 @@ package utils;
 
 import gmaths.*;
 import java.nio.*;
+
+import org.w3c.dom.Text;
+
 import com.jogamp.common.nio.*;
 import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.texture.*;
@@ -19,6 +22,7 @@ public class ModelMultipleLights {
   private Light[] lights;
   private Texture diffuse;
   private Texture specular;
+  private Texture bump;
 
   public ModelMultipleLights() {
     name = null;
@@ -71,6 +75,10 @@ public class ModelMultipleLights {
 
   public void setShader(Shader shader) {
     this.shader = shader;
+  }
+
+  public void setBump(Texture t) {
+    this.bump = t;
   }
 
   public void setCamera(Camera camera) {
@@ -143,6 +151,11 @@ public class ModelMultipleLights {
       shader.setInt(gl, "second_texture", 1);
       gl.glActiveTexture(GL.GL_TEXTURE1);
       specular.bind(gl);
+    }
+    if (bump != null) {
+      shader.setInt(gl, "normalMapTexture", 1);
+      gl.glActiveTexture(GL.GL_TEXTURE1);
+      bump.bind(gl);
     }
 
     // changes : animate the texture by moving

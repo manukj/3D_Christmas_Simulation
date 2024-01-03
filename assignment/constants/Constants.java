@@ -41,6 +41,8 @@ public class Constants {
         public static final String FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE = "shader/fs_standard_m_1t.txt";
         public static final String FRAGMENT_SHADER_MULTIPLE_LIGHTS_2_TEXTURE = "shader/fs_standard_m_2t.txt";
         public static final String FRAGMENT_SHADER_MOVING_TEXTURE_MULTIPLE_LIGHTS = "shader/fs_moving_ml_2t.txt";
+        public static final String VERTEX_SHADER_BUMP_PATH = "shader/vs_bump_mt_1t.txt";
+        public static final String FRAGMENT_SHADER_BUMP_PATH = "shader/fs_bump_mt_1t.txt";
 
         public static final Vec3 CAMERA_POISTION = new Vec3(0, 6, 14);
 
@@ -58,6 +60,9 @@ public class Constants {
         public static final String TEXTURE_PATH_CAMERA = "textures/camera.jpeg";
         public static final String TEXTURE_NAME_STEEL = "steel";
         public static final String TEXTURE_PATH_STEEL = "textures/steel.png";
+        public static final String TEXTURE_NAME_FLOOR_GREY_SCALE = "floor_grey_scale";
+        public static final String TEXTURE_PATH_FLOOR_GREY_SCALE = "textures/floor_grey_scale.png";
+
         // eye
         public static final String TEXTURE_NAME_ALIEN_EYE = "alien_eye";
         public static final String TEXTURE_PATH_ALIEN_EYE = "textures/eye.png";

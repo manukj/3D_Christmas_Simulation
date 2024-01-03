@@ -18,12 +18,13 @@ public class Room {
     private ModelMultipleLights[] wall;
     private Camera camera;
     private Light[] lights;
-    private Texture backgroundTexture, floorTexture, snowFallTexture;
+    private Texture backgroundTexture, floorTexture, snowFallTexture, bumpFloorTexture;
     private float roomWidth = 12f, roomHeight = 6.66f;
     private Vec3 basecolor = new Vec3(0.5f, 0.5f, 0.5f);
     private double startTime;
 
-    public Room(GL3 gl, Camera camera, Light[] lights, Texture background, Texture floor, Texture snowFall,
+    public Room(GL3 gl, Camera camera, Light[] lights, Texture background, Texture floor, Texture greyScaleFloor,
+            Texture snowFall,
             double startTime) {
         this.camera = camera;
         this.lights = lights;
@@ -31,6 +32,7 @@ public class Room {
         this.snowFallTexture = snowFall;
         this.floorTexture = floor;
         this.startTime = startTime;
+        this.bumpFloorTexture = greyScaleFloor;
         wall = new ModelMultipleLights[2];
         wall[0] = makeFloor(gl);
         wall[1] = makeBackground(gl);
@@ -59,10 +61,13 @@ public class Room {
         Mat4 modelMatrix = new Mat4(1);
         modelMatrix = Mat4.multiply(Mat4Transform.scale(roomWidth, 1f, roomHeight), modelMatrix);
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_BUMP_PATH,
                 Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
         Material material = new Material(baseBluecolor, baseBluecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
-        return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, floorTexture);
+        ModelMultipleLights modelMultipleLights = new ModelMultipleLights(name, mesh, modelMatrix, shader, material,
+                lights, camera, floorTexture);
+        modelMultipleLights.setBump(bumpFloorTexture);
+        return modelMultipleLights;
     }
 
     public void dispose(GL3 gl) {
