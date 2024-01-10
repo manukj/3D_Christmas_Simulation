@@ -77,6 +77,7 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
         textures.add(gl, Constants.TEXTURE_NAME_SNOWFALL, Constants.TEXTURE_PATH_SNOWFALL);
         textures.add(gl, Constants.TEXTURE_NAME_CAMERA, Constants.TEXTURE_PATH_CAMERA);
         textures.add(gl, Constants.TEXTURE_NAME_STEEL, Constants.TEXTURE_PATH_STEEL);
+        textures.add(gl, Constants.TEXTURE_NAME_STEEL_BUMP, Constants.TEXTURE_PATH_STEEL_BUMP);
         textures.add(gl, Constants.TEXTURE_NAME_FLOOR_GREY_SCALE, Constants.TEXTURE_PATH_FLOOR_GREY_SCALE);
 
         // general light 1
@@ -102,6 +103,7 @@ public class AliensGLEventListener implements GLEventListener, ClickCallback {
 
         // spot Light Model
         spotLight = new SpotLight(gl, camera, lights, textures.get(Constants.TEXTURE_NAME_STEEL),
+                textures.get(Constants.TEXTURE_NAME_STEEL_BUMP),
                 textures.get(Constants.TEXTURE_NAME_CAMERA));
 
         // alien Models

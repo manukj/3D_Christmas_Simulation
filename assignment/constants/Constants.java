@@ -62,6 +62,8 @@ public class Constants {
         public static final String TEXTURE_PATH_STEEL = "textures/steel.png";
         public static final String TEXTURE_NAME_FLOOR_GREY_SCALE = "floor_grey_scale";
         public static final String TEXTURE_PATH_FLOOR_GREY_SCALE = "textures/floor_grey_scale.png";
+        public static final String TEXTURE_NAME_STEEL_BUMP = "steel_bump";
+        public static final String TEXTURE_PATH_STEEL_BUMP = "textures/steel_bump.png";
 
         // eye
         public static final String TEXTURE_NAME_ALIEN_EYE = "alien_eye";

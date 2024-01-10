@@ -32,7 +32,7 @@ public class Room {
         this.snowFallTexture = snowFall;
         this.floorTexture = floor;
         this.startTime = startTime;
-        this.bumpFloorTexture = greyScaleFloor;
+        this.bumpFloorTexture = null;
         wall = new ModelMultipleLights[2];
         wall[0] = makeFloor(gl);
         wall[1] = makeBackground(gl);
@@ -61,8 +61,15 @@ public class Room {
         Mat4 modelMatrix = new Mat4(1);
         modelMatrix = Mat4.multiply(Mat4Transform.scale(roomWidth, 1f, roomHeight), modelMatrix);
         Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_BUMP_PATH,
-                Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
+        Shader shader;
+        if (bumpFloorTexture != null) {
+            shader = new Shader(gl, Constants.VERTEX_SHADER_BUMP_PATH,
+                    Constants.FRAGMENT_SHADER_BUMP_PATH);
+        } else {
+            shader = new Shader(gl, Constants.VERTEX_SHADER_BUMP_PATH,
+                    Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
+        }
+
         Material material = new Material(baseBluecolor, baseBluecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
         ModelMultipleLights modelMultipleLights = new ModelMultipleLights(name, mesh, modelMatrix, shader, material,
                 lights, camera, floorTexture);

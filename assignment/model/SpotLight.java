@@ -25,10 +25,11 @@ public class SpotLight {
     private SGNode root;
     private TransformNode cameraRotationY;
 
-    public SpotLight(GL3 gl, Camera camera, Light[] lights, Texture steelTexture, Texture cameraTexture) {
+    public SpotLight(GL3 gl, Camera camera, Light[] lights, Texture steelTexture, Texture steelBumpTexture,
+            Texture cameraTexture) {
         this.camera = camera;
         this.lights = lights;
-        sphere = makeSphere(gl, steelTexture);
+        sphere = makeSphere(gl, steelTexture,null);
         cameraSphere = makeSphere(gl);
 
         float poleHeight = 5f;
@@ -79,16 +80,23 @@ public class SpotLight {
         root.draw(gl);
     }
 
-    private ModelMultipleLights makeSphere(GL3 gl, Texture t1) {
+    private ModelMultipleLights makeSphere(GL3 gl, Texture t1, Texture bump) {
         String name = "sphere";
         Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
-        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
-                Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
+        Shader shader;
+        if (bump != null) {
+            shader = new Shader(gl, Constants.VERTEX_SHADER_BUMP_PATH,
+                    Constants.FRAGMENT_SHADER_BUMP_PATH);
+        } else {
+            shader = new Shader(gl, Constants.VERTEX_SHADER_STANDARD_PATH,
+                    Constants.FRAGMENT_SHADER_MULTIPLE_LIGHTS_1_TEXTURE);
+        }
         Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
                 new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
         ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera,
                 t1);
+        sphere.setBump(bump);
         return sphere;
     }
 
