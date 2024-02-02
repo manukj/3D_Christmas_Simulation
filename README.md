@@ -1,7 +1,6 @@
 
 # COM6503 3D Computer Graphics @ University of Sheffield 
-
-Assignemnt Output
+## 3D Alien Scene
 
 ![3d_output](https://github.com/manukj/university_3d_lab/assets/22499119/9a8572c0-cf09-4c88-b86b-95880bd39b91)
 
