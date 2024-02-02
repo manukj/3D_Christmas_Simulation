@@ -8,3 +8,16 @@ Assignemnt Output
 
 
 demo Video : https://drive.google.com/file/d/1w3amx93NuQt-gmrfE0eNeNzvoZHt0urp/view?usp=sharing
+
+
+How to run 
+
+Prerequisite : 
+1. java 11
+2. JOGEL
+
+go to assignment folder and run make file
+
+```
+make run
+```
