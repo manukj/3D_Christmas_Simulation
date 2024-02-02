@@ -266,6 +266,8 @@ public class AlienModel {
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_HEAD, Constants.TEXTURE_PATH_ALIEN_HEAD);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN2_HEAD, Constants.TEXTURE_PATH_ALIEN2_HEAD);
         textureLibrary.add(gl, Constants.TEXTURE_NAME_ALIEN_ARM, Constants.TEXTURE_PATH_ALIEN_ARM);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_DUST, Constants.TEXTURE_PATH_DUST);
+        textureLibrary.add(gl, Constants.TEXTURE_NAME_DUST_BUMP, Constants.TEXTURE_PATH_DUST_BUMP);
     }
 
     public void dispose(GL3 gl) {
@@ -295,6 +297,20 @@ public class AlienModel {
         Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
         ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lightIn,
                 camera, texture1);
+        return sphere;
+    }
+
+    private ModelMultipleLights makeSphere(GL3 gl, Texture texture1, Texture bumpTexture, boolean bump) {
+        String name = "sphere";
+        Mesh mesh = new Mesh(gl, Sphere.vertices.clone(), Sphere.indices.clone());
+        Shader shader = new Shader(gl, Constants.VERTEX_SHADER_BUMP_PATH,
+                Constants.FRAGMENT_SHADER_BUMP_PATH);
+        Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f),
+                new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
+        Mat4 modelMatrix = Mat4.multiply(Mat4Transform.scale(4, 4, 4), Mat4Transform.translate(0, 0.5f, 0));
+        ModelMultipleLights sphere = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lightIn,
+                camera, texture1);
+        sphere.setBump(bumpTexture);
         return sphere;
     }
 

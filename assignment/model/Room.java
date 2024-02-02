@@ -32,7 +32,7 @@ public class Room {
         this.snowFallTexture = snowFall;
         this.floorTexture = floor;
         this.startTime = startTime;
-        this.bumpFloorTexture = null;
+        this.bumpFloorTexture = greyScaleFloor;
         wall = new ModelMultipleLights[2];
         wall[0] = makeFloor(gl);
         wall[1] = makeBackground(gl);

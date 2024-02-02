@@ -91,5 +91,10 @@ public class Constants {
         // arm
         public static final String TEXTURE_NAME_ALIEN_ARM = "alien_arm";
         public static final String TEXTURE_PATH_ALIEN_ARM = "textures/arm.png";
+        // dust
+        public static final String TEXTURE_NAME_DUST = "dust";
+        public static final String TEXTURE_PATH_DUST = "textures/dust.png";
+        public static final String TEXTURE_NAME_DUST_BUMP = "dust_bump";
+        public static final String TEXTURE_PATH_DUST_BUMP = "textures/dust_grey_scale.png";
 
 }
