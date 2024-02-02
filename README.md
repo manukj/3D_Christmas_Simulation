@@ -1,5 +1,5 @@
 
-COM6503 3D Computer Graphics @ University of Sheffield 
+# COM6503 3D Computer Graphics @ University of Sheffield 
 
 Assignemnt Output
 
@@ -10,11 +10,14 @@ Assignemnt Output
 demo Video : https://drive.google.com/file/d/1w3amx93NuQt-gmrfE0eNeNzvoZHt0urp/view?usp=sharing
 
 
-How to run 
+
 
 Prerequisite : 
 1. java 11
 2. JOGEL
+
+----
+### To Run Project 
 
 go to assignment folder and run make file
 
