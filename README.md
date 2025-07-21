@@ -1,5 +1,5 @@
 
-# COM6503 3D Computer Graphics @ University of Sheffield 
+
 ## 3D Alien Scene
 
 Christmas Simulation Using JAva and JOGEL library 
